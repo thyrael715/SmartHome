@@ -1,0 +1,18 @@
+welcome|Welcome!
+introduction|Hi, I am Salli, a virtual assistant based on artificial intelligence.
+thank_you|Thank you!
+no_problem|No problem!
+your_welcome|Your welcome!
+my_pleasure|My pleasure!
+ok|Ok!
+its_ok|It's ok!
+allright|Allright!
+yes|Yes!
+no|No!
+how_are_you|How are you?
+who_are_you|Who are you?
+say_again|Say again please!
+something_went_wrong|Something went wrong!
+main_program_start|Smarthome project has launched!
+main_program_stop|Smarthome project has stopped!
+main_program_run|Smarthome project is running!

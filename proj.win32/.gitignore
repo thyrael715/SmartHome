@@ -1,4 +1,2 @@
-/proj.win32.opensdf
-/proj.win32.sdf
-/proj.win32.v12.suo
-/x64/
+*.win32.sdf
+*.win32.opensdf

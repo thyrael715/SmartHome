@@ -32,7 +32,7 @@ bool Speaker::init()
 		return FALSE; 
  
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&p_voice); 
- 
+	
 	if (!SUCCEEDED(hr)) 
 		return FALSE; 
  

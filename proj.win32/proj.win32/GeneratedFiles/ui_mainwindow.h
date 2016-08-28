@@ -6,8 +6,10 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_MAINWINDOW_H
-#define UI_MAINWINDOW_H
+#ifndef UI_MAINWINDOW_CLASS_H
+#define UI_MAINWINDOW_CLASS_H
+
+// ***** Includes *****
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -16,53 +18,75 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QDesktopWidget>
+
+#include "BackgroundWidget.h"
+
+
+
+// ***** Namespace *****
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindowClass
+
+// ***** Macros *****
+
+#define WINDOW_SCALE_X 0.5		// used to determine the width of program window from screen resolution
+#define WINDOW_SCALE_Y 0.5		// used to determine the height of program window from screen resolution
+
+#define ASPECT_RATIO_16_9 16/9; // 16:9
+
+
+// ***** MainWindow class *****
+
+
+class MainWindowClass
 {
+private:
+
+	BackgroundWidget *centralWidget;
+
 public:
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
-    QWidget *centralWidget;
-    QStatusBar *statusBar;
 
-    void setupUi(QMainWindow *MainWindowClass)
-    {
-        if (MainWindowClass->objectName().isEmpty())
-            MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(600, 400);
-        menuBar = new QMenuBar(MainWindowClass);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        MainWindowClass->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindowClass);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        MainWindowClass->addToolBar(mainToolBar);
-        centralWidget = new QWidget(MainWindowClass);
-        centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        MainWindowClass->setCentralWidget(centralWidget);
-        statusBar = new QStatusBar(MainWindowClass);
-        statusBar->setObjectName(QStringLiteral("statusBar"));
-        MainWindowClass->setStatusBar(statusBar);
+	void setupUI(QMainWindow *MainWindowClass)
+	{
+		if (MainWindowClass->objectName().isEmpty())
+			MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
 
-        retranslateUi(MainWindowClass);
+		// Create Window
 
-        QMetaObject::connectSlotsByName(MainWindowClass);
-    } // setupUi
+		MainWindowClass->resize(1280, 720);
+		//MainWindowClass->showFullScreen();
 
-    void retranslateUi(QMainWindow *MainWindowClass)
-    {
-        MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "MainWindow", 0));
-    } // retranslateUi
+		// Central widget
+
+		centralWidget = new BackgroundWidget(MainWindowClass);
+
+		MainWindowClass->setCentralWidget(centralWidget);
+		MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "SmartHome", 0));
+
+		QMetaObject::connectSlotsByName(MainWindowClass);
+	} // setupUi
+
+
+	QSize generateResolution()
+	{
+		QDesktopWidget widget;
+		QRect mainScreenSize = widget.availableGeometry(widget.primaryScreen());
+
+		unsigned int h = mainScreenSize.height() * WINDOW_SCALE_Y;
+		unsigned int w = h * ASPECT_RATIO_16_9;
+
+		return QSize(w, h);
+	} // generateResolution
 
 };
 
-namespace Ui {
-    class MainWindowClass: public Ui_MainWindowClass {};
-} // namespace Ui
+
 
 QT_END_NAMESPACE
 

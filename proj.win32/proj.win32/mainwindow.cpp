@@ -3,7 +3,7 @@
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
-	ui.setupUi(this);
+	ui.setupUI(this);
 }
 
 MainWindow::~MainWindow()

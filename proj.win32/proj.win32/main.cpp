@@ -16,9 +16,15 @@
 #include <iostream>
 #include "Defaults.h"
 #include "Speaker.h"
+#include "mainwindow.h"
+#include <QtWidgets/QApplication>
+
 
 int main(int argc, char* argv[])
 {
-	Speaker* sp = Speaker::getInstance();
-	sp->say(tx::main_program_start());
+	QApplication a(argc, argv);
+	MainWindow w;
+	w.show();
+		
+	return a.exec();
 }

@@ -28,6 +28,12 @@
     <Filter Include="Classes">
       <UniqueIdentifier>{17f43d32-3d52-4f81-a79b-5c378cf11cab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GUI">
+      <UniqueIdentifier>{15ffc5c0-6637-429b-a9e5-8e51fd3d7d3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Speech">
+      <UniqueIdentifier>{93c90686-a614-4e94-a725-c05d80a8ecf2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
@@ -45,7 +51,10 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Classes\Speech\Speaker.cpp">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Speech</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\BackgroundWidget.cpp">
+      <Filter>Classes\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,10 +72,13 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\Speech\Speaker.h">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Speech</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\Speech\tx.h">
-      <Filter>Classes</Filter>
+      <Filter>Classes\Speech</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\BackgroundWidget.h">
+      <Filter>Classes\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

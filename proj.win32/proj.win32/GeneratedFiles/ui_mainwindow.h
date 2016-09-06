@@ -25,7 +25,7 @@
 #include <QtWidgets/QDesktopWidget>
 
 #include "BackgroundWidget.h"
-
+#include "CentralWidget.h"
 
 
 // ***** Namespace *****
@@ -48,7 +48,8 @@ class MainWindowClass
 {
 private:
 
-	BackgroundWidget *centralWidget;
+	BackgroundWidget* backgroundWidget;
+	CentralWidget* centralWidget;
 
 public:
 
@@ -62,11 +63,16 @@ public:
 		MainWindowClass->resize(1280, 720);
 		//MainWindowClass->showFullScreen();
 
-		// Central widget
+		// Create widgets
 
-		centralWidget = new BackgroundWidget(MainWindowClass);
+		backgroundWidget = BackgroundWidget::create(MainWindowClass);
+		centralWidget = CentralWidget::create();
 
-		MainWindowClass->setCentralWidget(centralWidget);
+		backgroundWidget->getMainLayout()->addWidget(centralWidget);
+		
+		// Init main window
+
+		MainWindowClass->setCentralWidget(backgroundWidget);
 		MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "SmartHome", 0));
 
 		QMetaObject::connectSlotsByName(MainWindowClass);

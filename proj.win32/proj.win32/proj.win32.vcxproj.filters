@@ -56,6 +56,9 @@
     <ClCompile Include="..\..\Classes\GUI\BackgroundWidget.cpp">
       <Filter>Classes\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\CentralWidget.cpp">
+      <Filter>Classes\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mainwindow.ui">
@@ -78,6 +81,9 @@
       <Filter>Classes\Speech</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\GUI\BackgroundWidget.h">
+      <Filter>Classes\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\CentralWidget.h">
       <Filter>Classes\GUI</Filter>
     </ClInclude>
   </ItemGroup>

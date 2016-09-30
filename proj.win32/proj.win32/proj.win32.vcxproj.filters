@@ -1,76 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
-      <Extensions>qrc;*</Extensions>
-      <ParseFiles>false</ParseFiles>
-    </Filter>
-    <Filter Include="Generated Files">
-      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
-      <Extensions>moc;h;cpp</Extensions>
-      <SourceControlFiles>False</SourceControlFiles>
-    </Filter>
-    <Filter Include="Generated Files\Debug">
-      <UniqueIdentifier>{327895b1-8379-434f-b450-e7bf74b4356f}</UniqueIdentifier>
-      <Extensions>cpp;moc</Extensions>
-      <SourceControlFiles>False</SourceControlFiles>
-    </Filter>
-    <Filter Include="Generated Files\Release">
-      <UniqueIdentifier>{eed31645-c4be-4b7b-829f-68be738df19b}</UniqueIdentifier>
-      <Extensions>cpp;moc</Extensions>
-      <SourceControlFiles>False</SourceControlFiles>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Classes">
-      <UniqueIdentifier>{17f43d32-3d52-4f81-a79b-5c378cf11cab}</UniqueIdentifier>
+      <UniqueIdentifier>{b30f0a7d-abf1-416c-883e-db99952aa8f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\GUI">
-      <UniqueIdentifier>{15ffc5c0-6637-429b-a9e5-8e51fd3d7d3e}</UniqueIdentifier>
+      <UniqueIdentifier>{1cbda874-e7e9-4fe1-90e9-b8a58d4fb30b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Classes\Speech">
-      <UniqueIdentifier>{93c90686-a614-4e94-a725-c05d80a8ecf2}</UniqueIdentifier>
+      <UniqueIdentifier>{2f378ad4-ba93-4999-97da-9c49899c5208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="proj.win32">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GeneratedFiles\Debug\moc_mainwindow.cpp">
-      <Filter>Generated Files\Debug</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>proj.win32</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_mainwindow.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\qrc_mainwindow.cpp">
-      <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Classes\Speech\Speaker.cpp">
       <Filter>Classes\Speech</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Classes\GUI\BackgroundWidget.cpp">
+    <ClCompile Include="..\..\Classes\GUI\Background.cpp">
       <Filter>Classes\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Classes\GUI\CentralWidget.cpp">
+    <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp">
+      <Filter>Classes\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp">
       <Filter>Classes\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="mainwindow.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="mainwindow.qrc">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="mainwindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_mainwindow.h" />
     <ClInclude Include="..\..\Classes\Defaults.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -80,10 +49,13 @@
     <ClInclude Include="..\..\Classes\Speech\tx.h">
       <Filter>Classes\Speech</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Classes\GUI\BackgroundWidget.h">
+    <ClInclude Include="..\..\Classes\GUI\Background.h">
       <Filter>Classes\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Classes\GUI\CentralWidget.h">
+    <ClInclude Include="..\..\Classes\GUI\CentralPanel.h">
+      <Filter>Classes\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h">
       <Filter>Classes\GUI</Filter>
     </ClInclude>
   </ItemGroup>

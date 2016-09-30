@@ -1,30 +1,45 @@
-//#include "mainwindow.h"
-//#include <QtWidgets/QApplication>
-//
-//int main(int argc, char *argv[])
-//{
-//	QApplication a(argc, argv);
-//	MainWindow w;
-//	w.show();
-//	
-//	return a.exec();
-//}
-
-
-#include <sapi.h>
-#include <sphelper.h>
-#include <iostream>
+#include <SFML/Graphics.hpp>
+#include "Background.h"
+#include "CentralPanel.h"
 #include "Defaults.h"
-#include "Speaker.h"
-#include "mainwindow.h"
-#include <QtWidgets/QApplication>
 
+#include <iostream>
 
-int main(int argc, char* argv[])
+int main()
 {
-	QApplication a(argc, argv);
-	MainWindow w;
-	w.show();
-		
-	return a.exec();
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 16;
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "SmartHome", sf::Style::Default, settings);
+
+	Defaults::getInstance()->setWindowSize((float)window.getSize().x, (float)window.getSize().y);
+	
+	Background* bg = Background::create();
+	CentralPanel *cp = CentralPanel::create();
+	window.setFramerateLimit(60);
+	
+	while (window.isOpen())
+	{
+		window.clear();
+
+		sf::Event event;
+
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+				case sf::Event::Closed:
+				{
+					window.close();
+					break;
+				}
+			}
+		}
+
+		bg->draw(window);
+		cp->draw(window);
+
+		window.display();
+	}
+
+	return 0;
 }

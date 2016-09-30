@@ -1,0 +1,11 @@
+*.sdf
+*.suo
+/proj.win32/*.suo
+*.exe
+*.ilk
+*.pdb
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+*.idb

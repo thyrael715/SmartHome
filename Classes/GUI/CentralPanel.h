@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "RhombusWheel.h"
+#include "ArcShape.h"
+#include "ButtonArc.h"
 
 class CentralPanel
 {
@@ -15,14 +17,13 @@ public:
 protected:
 
 private:
+
+	explicit			CentralPanel();
 	
-	RhombusWheel* m_wheelShape;
-	ConcaveShape m_arc;
+	RhombusWheel*		m_wheelShape;
+	std::vector<ArcShape*>	m_outerArc;
+	std::vector<ButtonArc*>	m_mainButtons;
 
-	void init();
-	void createWheel();
+	void				init();
 
-	explicit CentralPanel();
-	CentralPanel(const CentralPanel&) = delete;
-	CentralPanel& operator=(const CentralPanel&) = delete;
 };

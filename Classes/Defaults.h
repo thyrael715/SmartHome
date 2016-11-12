@@ -4,11 +4,18 @@
 
 #include <string> 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 // *** Macros ***
 
 #define STOI(S)		std::stoi(S)
 #define ITOS(I)		std::to_string(I)
+
+#define C2WW(v)		static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowWidth() * \
+											   (v / Defaults::getInstance()->getWindowWidth())))
+
+#define C2WH(v)		static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
+											   (v / Defaults::getInstance()->getWindowHeight())))
 
 #define PI			3.14159265
 
@@ -16,9 +23,16 @@
 #define COLOR_WHITE			sf::Color{255, 255, 255, 255}
 
 
+#define CALLBACK_0(__selector__,__target__, ...) std::bind(&__selector__,__target__, ##__VA_ARGS__)
+#define CALLBACK_1(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, ##__VA_ARGS__)
+#define CALLBACK_2(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, ##__VA_ARGS__)
+#define CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
+
+
 // *** Typedefs ***
 
-typedef std::vector<sf::ConvexShape> ConcaveShape;
+typedef std::vector<sf::Shape*> ConcaveShape;
+
 
 
 class Defaults
@@ -39,7 +53,26 @@ public:
 	float				getWindowWidth() const;
 	float				getWindowHeight() const;
 
+	template<typename T>
+	void				safeVectorReleaser(std::vector<T*>& v) const;
+
 private:
 
-	sf::Vector2f		windowSize;
+	sf::Vector2f		m_windowSize;
 };
+
+
+
+template<typename T>
+void Defaults::safeVectorReleaser(std::vector<T*>& v) const
+{
+	if (v.size() == 0)
+		return;
+
+	for (auto it = v.begin(); it != v.end(); ++it)
+	{
+		delete (*it);
+	}
+
+	v.clear();
+}

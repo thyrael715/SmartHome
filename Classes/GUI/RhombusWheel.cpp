@@ -3,7 +3,7 @@
 
 RhombusWheel::RhombusWheel()
 	: m_pos(0.0f, 0.0f)
-	, m_color(sf::Color(255, 255, 255))
+	, m_color(COLOR_WHITE)
 	, m_radius(0.0f)
 	, m_width(0.0f)
 	, m_height(0.0f)
@@ -17,7 +17,7 @@ RhombusWheel::RhombusWheel()
 
 RhombusWheel::~RhombusWheel()
 {
-	m_wheelShape.clear();
+	Defaults::getInstance()->safeVectorReleaser(m_wheelShape);
 }
 
 RhombusWheel* RhombusWheel::create(sf::Vector2f pos, float radius, size_t count, float w, float h, sf::Color color)
@@ -42,22 +42,22 @@ void RhombusWheel::createWheel()
 
 	for (size_t i = 0; i < m_wheelPartCount; i++)
 	{
-		sf::ConvexShape cs;
+		sf::ConvexShape* cs = new sf::ConvexShape();
 
 		float x = (float)(cos(i * angle * PI / 180.0f) * m_radius) + m_pos.x;
 		float y = (float)(sin(i * angle * PI / 180.0f) * m_radius) + m_pos.y;
 
-		cs.setPointCount(4);
+		cs->setPointCount(4);
 
 		// define the points
-		cs.setPoint(0, sf::Vector2f(0, 0));
-		cs.setPoint(1, sf::Vector2f(0, m_width));
-		cs.setPoint(2, sf::Vector2f(m_height, m_width + m_height));
-		cs.setPoint(3, sf::Vector2f(m_height, m_height));
-		cs.setOrigin(m_height / 2, (m_width + m_height) / 2);
-		cs.setPosition(x, y);
-		cs.rotate(i*angle);
-		cs.setFillColor(m_color);
+		cs->setPoint(0, sf::Vector2f(0, 0));
+		cs->setPoint(1, sf::Vector2f(0, m_width));
+		cs->setPoint(2, sf::Vector2f(m_height, m_width + m_height));
+		cs->setPoint(3, sf::Vector2f(m_height, m_height));
+		cs->setOrigin(m_height / 2, (m_width + m_height) / 2);
+		cs->setPosition(x, y);
+		cs->rotate(i*angle);
+		cs->setFillColor(m_color);
 
 		m_wheelShape.push_back(cs);
 	}
@@ -80,7 +80,7 @@ void RhombusWheel::draw(sf::RenderWindow& window)
 			m_transform.rotate(m_animAngle, { m_animCenter.x, m_animCenter.y });
 		}
 
-		window.draw(item, m_transform);
+		window.draw(*item, m_transform);
 	}
 }
 
@@ -89,9 +89,9 @@ void RhombusWheel::setColor(sf::Color color)
 {
 	m_color = color;
 	
-	for each (auto shape in m_wheelShape)
+	for (size_t item = 0; item < m_wheelShape.size(); item++)
 	{
-		shape.setFillColor(color);
+		static_cast<sf::ConvexShape>(item).setFillColor(color);
 	}
 }
 
@@ -104,9 +104,9 @@ void RhombusWheel::setPosition(sf::Vector2f pos)
 {
 	m_pos = pos;
 
-	for each (auto shape in m_wheelShape)
+	for (size_t item = 0; item < m_wheelShape.size(); item++)
 	{
-		shape.setPosition(pos);
+		static_cast<sf::ConvexShape>(item).setPosition(pos);
 	}
 }
 
@@ -114,10 +114,12 @@ void RhombusWheel::setPositionX(float posX)
 {
 	m_pos.x = posX;
 
-	for each (auto shape in m_wheelShape)
+	for (size_t item = 0; item < m_wheelShape.size(); item++)
 	{
-		float y = shape.getPosition().y;
-		shape.setPosition(posX, y);
+		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
+
+		float y = convexShape.getPosition().y;
+		convexShape.setPosition(posX, y);
 	}
 }
 
@@ -125,10 +127,12 @@ void RhombusWheel::setPositionY(float posY)
 {
 	m_pos.y = posY;
 
-	for each (auto shape in m_wheelShape)
+	for (size_t item = 0; item < m_wheelShape.size(); item++)
 	{
-		float x = shape.getPosition().x;
-		shape.setPosition(x, posY);
+		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
+
+		float x = convexShape.getPosition().x;
+		convexShape.setPosition(x, posY);
 	}
 }
 

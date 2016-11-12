@@ -1,7 +1,7 @@
 #include "Defaults.h"
 
 Defaults::Defaults()
-	: windowSize(0, 0)
+	: m_windowSize(0, 0)
 {
 
 }
@@ -14,21 +14,21 @@ Defaults* Defaults::getInstance()
 
 void Defaults::setWindowSize(float x, float y)
 {
-	windowSize.x = x;
-	windowSize.y = y;
+	m_windowSize.x = x;
+	m_windowSize.y = y;
 }
 
 sf::Vector2f Defaults::getWindowSize() const
 {
-	return windowSize;
+	return m_windowSize;
 }
 
 float Defaults::getWindowWidth() const
 {
-	return windowSize.x;
+	return m_windowSize.x;
 }
 
 float Defaults::getWindowHeight() const
 {
-	return windowSize.y;
+	return m_windowSize.y;
 }

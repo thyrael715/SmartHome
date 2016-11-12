@@ -32,6 +32,11 @@ int main()
 					window.close();
 					break;
 				}
+				case sf::Event::MouseButtonPressed:
+				case sf::Event::MouseButtonReleased:
+				{
+					EventDispatcher::getInstance()->handleEvent(event);
+				}
 			}
 		}
 

@@ -1,99 +1,83 @@
 #include "CentralPanel.h"
 #include "Defaults.h"
-#include <iostream>
 
 
 CentralPanel::CentralPanel()
 {
-	init();
+
 }
 
 CentralPanel::~CentralPanel()
 {
 	delete m_wheelShape;
+
+	Defaults::getInstance()->safeVectorReleaser(m_outerArc);
+	Defaults::getInstance()->safeVectorReleaser(m_mainButtons);
 }
 
 CentralPanel* CentralPanel::create()
 {
-	static CentralPanel* cp = new CentralPanel();
+	CentralPanel* cp = new CentralPanel();
+	cp->init();
+
 	return cp;
 }
 
 void CentralPanel::init()
 {
+	float windowWidth = Defaults::getInstance()->getWindowWidth();
+	float windowHeight = Defaults::getInstance()->getWindowHeight();
+
+	sf::Vector2f windowCenter(windowWidth / 2, windowHeight / 2);
+
 	// create rhombus wheel
 
-	const float animSpeed = 0.0025f;
-	const float radius = 200.0f;
-	const unsigned int count = 40;
-	const float rWidth = 12.0f;
-	const float rHeight = 7.0f;
-
-	sf::Vector2f windowCenter(Defaults::getInstance()->getWindowWidth() / 2,
-							  Defaults::getInstance()->getWindowHeight() / 2);
-
-	m_wheelShape = RhombusWheel::create(windowCenter, radius, count, rWidth, rHeight);
+	m_wheelShape = RhombusWheel::create(windowCenter, C2WH(150.0f), 40, C2WW(12.0f), C2WH(7.0f));
 	m_wheelShape->setAnimCenter(windowCenter);
-	m_wheelShape->setAnimAngle(animSpeed);
+	m_wheelShape->setAnimAngle(0.0025f);
 	m_wheelShape->startAnimation();
 
-	createWheel();
+	// create outer Arc 
+
+	size_t radius = C2WH(250);
+	size_t thickness = C2WH(1);
+
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 5, 55));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 65, 85));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 95, 115));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 125, 145));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 155, 175));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 180, 300));
+	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 320, 360));
+
+	radius = C2WH(200);
+	thickness = C2WH(45);
+
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 305, 320));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 325, 340));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 345, 360));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 5, 20));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 25, 40));
+
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 140, 155));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 160, 175));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 180, 195));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 200, 215));
+	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 220, 235));
 }
 
-void CentralPanel::createWheel()
-{
-	int r1 = 100;
-	int r2 = 80;
-	int angle2 = 270;
-	int startAngle = 0;
-
-	for (int k = startAngle; k < 360; k++)
-	{
-		sf::ConvexShape tempArc;
-		sf::Color color;
-		
-		if (k > 270)
-		{
-			color = sf::Color(0, 110, 175);
-		}
-		else
-		{
-			color = sf::Color(0, 220, 255);
-		}
-
-		tempArc.setFillColor(color);
-		tempArc.setPosition(640, 360);
-		tempArc.setPointCount(6);
-		int counter = 0;
-
-		for (int i = k; i <= k + 2; i++)
-		{
-			float x = (float)(cos(i * PI / 180.0) * r1);
-			float y = (float)(sin(i * PI / 180.0) * r1);
-
-			tempArc.setPoint(counter, sf::Vector2f(x, y));
-			counter++;
-		}
-
-		for (int j = k + 2; j >= k; --j)
-		{
-			float x = (float)(cos(j * PI / 180.0) * r2);
-			float y = (float)(sin(j * PI / 180.0) * r2);
-
-			tempArc.setPoint(counter, sf::Vector2f(x, y));
-			counter++;
-		}
-
-		m_arc.push_back(tempArc);
-	}
-}
 
 void CentralPanel::draw(sf::RenderWindow& window) const
 {
 	m_wheelShape->draw(window);
 
-	for each (auto& actArc in m_arc)
+	for each (auto& item in m_outerArc)
 	{
-		window.draw(actArc);
-	}	
+		window.draw(*item);
+	}
+
+	for each (auto& item in m_mainButtons)
+	{
+		window.draw(*item);
+	}
 }

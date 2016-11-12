@@ -11,6 +11,12 @@
     <Filter Include="Classes\GUI">
       <UniqueIdentifier>{ae817c25-dd1a-45e5-aeb0-4adbab065be8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\GUI\Objects">
+      <UniqueIdentifier>{b95544ef-6bb8-4bc1-9250-825723818b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Base">
+      <UniqueIdentifier>{8515d370-0a5d-41e4-8c53-0e5a79f55f33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -28,6 +34,24 @@
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp">
       <Filter>Classes\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\Node.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\EventListener.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\EventListenerMouse.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\ButtonArc.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Defaults.h">
@@ -41,6 +65,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h">
       <Filter>Classes\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\Node.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\EventDispatcher.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\EventListener.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\EventListenerMouse.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\ButtonArc.h">
+      <Filter>Classes\GUI\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

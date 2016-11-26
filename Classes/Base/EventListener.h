@@ -5,6 +5,7 @@
 #include <new>
 #include <functional>
 
+class Node;
 
 class EventListener
 {
@@ -24,16 +25,18 @@ public:
 	Type			getType() const;
 	std::string		getListenerID() const;
 	void			onEvent(sf::Event e);
+	void			setAssociatedNode(Node* node);
+	Node*			getAssociatedNode() const;
 
 protected:
 
 	typedef			std::function<void(sf::Event e)> EventCallBack;
 
+	Type			m_type;
+	bool			m_isEnabled;
 	std::string		m_listenerID;
 	EventCallBack	m_onEvent;
-	void*			m_associatedNode;
-	bool			m_isEnabled;
-	Type			m_type;
+	Node*			m_associatedNode;	
 	
 	EventListener();
 

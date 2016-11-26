@@ -18,12 +18,12 @@ protected:
 
 private:
 
-	explicit			CentralPanel();
-	
-	RhombusWheel*		m_wheelShape;
+	RhombusWheel*			m_wheelShape;
 	std::vector<ArcShape*>	m_outerArc;
 	std::vector<ButtonArc*>	m_mainButtons;
 
-	void				init();
+	explicit			CentralPanel();
 
+	void				init();
+	void				createCentralCircleMenu();
 };

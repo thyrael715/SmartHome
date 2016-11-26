@@ -9,7 +9,7 @@ int main()
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 16;
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "SmartHome", sf::Style::Default, settings);
+	sf::RenderWindow window(sf::VideoMode(1600, 900), "SmartHome", sf::Style::Default, settings);
 
 	Defaults::getInstance()->setWindowSize((float)window.getSize().x, (float)window.getSize().y);
 	
@@ -36,6 +36,7 @@ int main()
 				case sf::Event::MouseButtonReleased:
 				{
 					EventDispatcher::getInstance()->handleEvent(event);
+					break;
 				}
 			}
 		}

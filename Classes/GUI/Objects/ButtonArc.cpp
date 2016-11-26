@@ -50,15 +50,7 @@ bool ButtonArc::init()
 
 void ButtonArc::onMousePressed(sf::Event e)
 {
-	sf::FloatRect boundingBox = getBoundingBox();
-
-	if (e.mouseButton.x > boundingBox.left &&
-		e.mouseButton.x < boundingBox.left + boundingBox.width &&
-		e.mouseButton.y > boundingBox.top &&
-		e.mouseButton.y < boundingBox.top + boundingBox.height)
-	{
-		std::cout << "\n\rButton <" << "> has been pressed!";
-	}
+	setColor(sf::Color(255, 0, 0));
 }
 
 void ButtonArc::onMouseReleased(sf::Event e)

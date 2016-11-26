@@ -25,10 +25,7 @@ CentralPanel* CentralPanel::create()
 
 void CentralPanel::init()
 {
-	float windowWidth = Defaults::getInstance()->getWindowWidth();
-	float windowHeight = Defaults::getInstance()->getWindowHeight();
-
-	sf::Vector2f windowCenter(windowWidth / 2, windowHeight / 2);
+	sf::Vector2f windowCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
 	// create rhombus wheel
 
@@ -50,8 +47,16 @@ void CentralPanel::init()
 	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 180, 300));
 	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 320, 360));
 
-	radius = C2WH(200);
-	thickness = C2WH(45);
+	createCentralCircleMenu();
+}
+
+
+void CentralPanel::createCentralCircleMenu()
+{
+	sf::Vector2f windowCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+
+	size_t radius = C2WH(200);
+	size_t thickness = C2WH(35);
 
 	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 305, 320));
 	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 325, 340));

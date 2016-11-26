@@ -46,12 +46,9 @@ void Background::createHexaGrid()
 	unsigned shiftX = static_cast<unsigned>((sqrt(3) * (BG_SIZE_OF_HEXAGON / 2)) + BG_THICKNESS_OF_HEXAGON);
 	unsigned shiftY = static_cast<unsigned>((0.75 * BG_SIZE_OF_HEXAGON) + BG_THICKNESS_OF_HEXAGON);
 
-	float windowWidth = Defaults::getInstance()->getWindowWidth();
-	float windowHeight = Defaults::getInstance()->getWindowHeight();
-
-	for (size_t i = 0; i < windowHeight / shiftY; i++)
+	for (size_t i = 0; i < WINDOW_HEIGHT / shiftY; i++)
 	{
-		for (size_t j = 0; j < windowWidth / shiftX; j++)
+		for (size_t j = 0; j < WINDOW_WIDTH / shiftX; j++)
 		{
 			sf::Vector2f pos(0.0f, 0.0f);
 

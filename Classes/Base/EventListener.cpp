@@ -5,6 +5,8 @@ EventListener::EventListener()
 	: m_isEnabled(true)
 	, m_type(Type::UNKNOWN)
 	, m_listenerID("__unknown_id")
+	, m_onEvent(nullptr)
+	, m_associatedNode(nullptr)
 {
 
 }
@@ -40,4 +42,14 @@ std::string EventListener::getListenerID() const
 void EventListener::onEvent(sf::Event e)
 {
 	m_onEvent(e);
+}
+
+void EventListener::setAssociatedNode(Node* node)
+{
+	m_associatedNode = node;
+}
+
+Node* EventListener::getAssociatedNode() const
+{
+	return m_associatedNode;
 }

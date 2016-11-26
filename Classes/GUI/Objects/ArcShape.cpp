@@ -14,7 +14,7 @@ ArcShape::ArcShape()
 
 ArcShape::~ArcShape()
 {
-	Defaults::getInstance()->safeVectorReleaser(m_arc);
+
 }
 
 ArcShape* ArcShape::create(sf::Vector2f pos, size_t radius, size_t thickness, size_t fromAngle, size_t toAngle, sf::Color color)
@@ -40,9 +40,7 @@ ArcShape* ArcShape::create(sf::Vector2f pos, size_t radius, size_t thickness, si
 
 void ArcShape::createWith()
 {
-	const size_t range = 1;
-	const size_t pointCount = (2 * range) + 2;
-	size_t r1, r2;
+	size_t r1 = 0, r2 = 0;
 
 	if (m_thickness > 1)
 	{
@@ -57,35 +55,24 @@ void ArcShape::createWith()
 
 	for (size_t k = m_fromAngle; k < m_toAngle; k++)
 	{
-		sf::ConvexShape* tempArc = new sf::ConvexShape();
+		float x1 = (float)(cos(k * PI / 180.0f) * r1) + m_pos.x;
+		float y1 = (float)(sin(k * PI / 180.0f) * r1) + m_pos.y;
 
-		tempArc->setPosition(m_pos);
-		tempArc->setFillColor(m_color);
-		tempArc->setPointCount(pointCount);
+		float x2 = (float)(cos(k * PI / 180.0f) * r2) + m_pos.x;
+		float y2 = (float)(sin(k * PI / 180.0f) * r2) + m_pos.y;
+		
+		sf::Vertex v1(sf::Vector2f(x1, y1));
+		v1.color = m_color;
 
-		size_t counter = 0;
+		sf::Vertex v2(sf::Vector2f(x2, y2));
+		v2.color = m_color;
 
-		for (size_t i = 0; i <= range; i++)
-		{
-			float x = (float)(cos((k + i) * PI / 180.0f) * r1);
-			float y = (float)(sin((k + i) * PI / 180.0f) * r1);
-
-			tempArc->setPoint(counter, sf::Vector2f(x, y));
-			counter++;
-		}
-
-		for (size_t j = 0; j <= range; j++)
-		{
-			float x = (float)((cos(((k + range) - j) * PI / 180.0f) * r2));
-			float y = (float)((sin(((k + range) - j) * PI / 180.0f) * r2));
-
-			tempArc->setPoint(counter, sf::Vector2f(x, y));
-			counter++;
-		}
-
-		m_arc.push_back(tempArc);
+		m_arc.push_back(v1);
+		m_arc.push_back(v2);
 	}
 }
+
+
 
 bool ArcShape::init()
 {
@@ -95,37 +82,30 @@ bool ArcShape::init()
 
 sf::FloatRect ArcShape::getBoundingBox() const
 {
-	sf::FloatRect boundingBox(Defaults::getInstance()->getWindowWidth(),
-							  Defaults::getInstance()->getWindowHeight(),
-							  0,
-							  0);
 	if (m_arc.empty())
 	{
 		return sf::FloatRect(0, 0, 0, 0);
 	}
 
-	for each (auto& shape in m_arc)
+	sf::FloatRect boundingBox(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
+
+	for each (const auto& item in m_arc)
 	{
-		sf::FloatRect rect = shape->getGlobalBounds();
-
-		if (boundingBox.left > rect.left)
+		if (item.position.x < boundingBox.left)
 		{
-			boundingBox.left = rect.left;
+			boundingBox.left = item.position.x;
 		}
-
-		if (boundingBox.top > rect.top)
+		if (item.position.y < boundingBox.top)
 		{
-			boundingBox.top = rect.top;
+			boundingBox.top = item.position.y;
 		}
-
-		if (boundingBox.width < rect.left + rect.width)
+		if (item.position.x > boundingBox.width)
 		{
-			boundingBox.width = rect.left + rect.width;
+			boundingBox.width = item.position.x;
 		}
-
-		if (boundingBox.height < rect.top + rect.height)
+		if (item.position.y > boundingBox.height)
 		{
-			boundingBox.height = rect.top + rect.height;
+			boundingBox.height = item.position.y;
 		}
 	}
 
@@ -136,10 +116,72 @@ sf::FloatRect ArcShape::getBoundingBox() const
 }
 
 
+bool ArcShape::contains(const sf::Vector2f& point) const
+{
+	std::vector<sf::Vector2f> v(m_arc.size());
+
+	int range = static_cast<int>(m_arc.size());
+	int start = 0;
+	int end = range - 1;
+
+	for (int i = 0; i < range; i++)
+	{
+		if (i % 2 == 0)
+		{
+			v[start] = sf::Vector2f(m_arc[i].position.x, m_arc[i].position.y);
+			start++;
+		}
+		else
+		{
+			v[end] = sf::Vector2f(m_arc[i].position.x, m_arc[i].position.y);
+			end--;
+		}
+	}
+
+	return Maths::isInside(v, point);
+}
+
+
 void ArcShape::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for each (auto& item in m_arc)
+	if (m_arc.empty())
+		return;
+
+	target.draw(&m_arc[0], m_arc.size(), sf::TrianglesStrip);
+}
+
+
+void ArcShape::setColor(sf::Color color)
+{
+	for (auto& item : m_arc)
 	{
-		target.draw(*item);
+		item.color = color;
 	}
+}
+
+sf::Color ArcShape::getColor() const
+{
+	return m_color;
+}
+
+void ArcShape::setPosition(sf::Vector2f vec)
+{
+	for (auto& item : m_arc)
+	{
+		item.position = vec;
+	}
+}
+
+void ArcShape::setPosition(float x, float y)
+{
+	for (auto& item : m_arc)
+	{
+		item.position.x = x;
+		item.position.y = y;
+	}
+}
+
+sf::Vector2f ArcShape::getPosition() const
+{
+	return m_pos;
 }

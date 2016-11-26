@@ -5,23 +5,26 @@
 #include <string> 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Maths.h"
 
 // *** Macros ***
 
-#define STOI(S)		std::stoi(S)
-#define ITOS(I)		std::to_string(I)
+#define STOI(S) std::stoi(S)
+#define ITOS(I) std::to_string(I)
 
-#define C2WW(v)		static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowWidth() * \
-											   (v / Defaults::getInstance()->getWindowWidth())))
+#define WINDOW_WIDTH  Defaults::getInstance()->getWindowWidth()
+#define WINDOW_HEIGHT Defaults::getInstance()->getWindowHeight()
 
-#define C2WH(v)		static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
-											   (v / Defaults::getInstance()->getWindowHeight())))
+#define C2WW(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowWidth() * \
+										(v / Defaults::getInstance()->getWindowWidth())))
 
-#define PI			3.14159265
+#define C2WH(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
+										(v / Defaults::getInstance()->getWindowHeight())))
+
+#define PI 3.14159265
 
 #define COLOR_TRANSPARENT	sf::Color(0, 0, 0, 0)
 #define COLOR_WHITE			sf::Color{255, 255, 255, 255}
-
 
 #define CALLBACK_0(__selector__,__target__, ...) std::bind(&__selector__,__target__, ##__VA_ARGS__)
 #define CALLBACK_1(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, ##__VA_ARGS__)

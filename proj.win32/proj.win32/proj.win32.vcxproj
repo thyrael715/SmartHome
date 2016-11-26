@@ -94,6 +94,7 @@
     <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ButtonArc.cpp" />
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
+    <ClCompile Include="..\..\Classes\Maths.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +108,7 @@
     <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ButtonArc.h" />
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />
+    <ClInclude Include="..\..\Classes\Maths.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

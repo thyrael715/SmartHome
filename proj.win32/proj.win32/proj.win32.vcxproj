@@ -87,12 +87,14 @@
     <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListener.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerMouse.cpp" />
-    <ClCompile Include="..\..\Classes\Base\Node.cpp" />
+    <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Background.cpp" />
     <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ButtonArc.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\Line.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\Shape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
     <ClCompile Include="..\..\Classes\Maths.cpp" />
     <ClCompile Include="main.cpp" />
@@ -101,12 +103,14 @@
     <ClInclude Include="..\..\Classes\Base\EventDispatcher.h" />
     <ClInclude Include="..\..\Classes\Base\EventListener.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerMouse.h" />
-    <ClInclude Include="..\..\Classes\Base\Node.h" />
+    <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />
     <ClInclude Include="..\..\Classes\GUI\Background.h" />
     <ClInclude Include="..\..\Classes\GUI\CentralPanel.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ButtonArc.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\Line.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\Shape.h" />
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />
     <ClInclude Include="..\..\Classes\Maths.h" />
   </ItemGroup>

@@ -37,9 +37,6 @@
     <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp">
       <Filter>Classes\GUI\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Classes\Base\Node.cpp">
-      <Filter>Classes\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp">
       <Filter>Classes\Base</Filter>
     </ClCompile>
@@ -54,6 +51,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Classes\Maths.cpp">
       <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\Line.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\Shape.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\Object.cpp">
+      <Filter>Classes\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,9 +78,6 @@
     <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h">
       <Filter>Classes\GUI\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Classes\Base\Node.h">
-      <Filter>Classes\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Classes\Base\EventDispatcher.h">
       <Filter>Classes\Base</Filter>
     </ClInclude>
@@ -89,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Classes\Maths.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\Line.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\Shape.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\Object.h">
+      <Filter>Classes\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

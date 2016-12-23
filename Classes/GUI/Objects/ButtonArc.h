@@ -1,19 +1,19 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
-#include "Defaults.h"
 #include "ArcShape.h"
-
+#include "EventDispatcher.h"
+#include "Defaults.h"
+#include "Object.h"
 
 class ButtonArc : public ArcShape
 {
 public:
-
+	
+	ButtonArc(float fromAngle, float toAngle, float radius);
 	virtual ~ButtonArc();
 
-	static ButtonArc* create(sf::Vector2f pos, size_t radius, size_t thickness, size_t fromAngle, size_t toAngle, sf::Color color = COLOR_WHITE);
-
-protected:
+protected:	
 
 	virtual bool init() override;
 
@@ -24,6 +24,4 @@ protected:
 private:
 	
 	EventListenerMouse* m_eventListener;
-
-	explicit ButtonArc();
 };

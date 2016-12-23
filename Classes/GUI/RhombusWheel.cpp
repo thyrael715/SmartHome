@@ -2,8 +2,7 @@
 
 
 RhombusWheel::RhombusWheel()
-	: m_pos(0.0f, 0.0f)
-	, m_color(COLOR_WHITE)
+	: m_color(COLOR_WHITE)
 	, m_radius(0.0f)
 	, m_width(0.0f)
 	, m_height(0.0f)
@@ -22,7 +21,8 @@ RhombusWheel::~RhombusWheel()
 
 RhombusWheel* RhombusWheel::create(sf::Vector2f pos, float radius, size_t count, float w, float h, sf::Color color)
 {
-	RhombusWheel* wheel = new RhombusWheel();
+	RhombusWheel* wheel = new (std::nothrow) RhombusWheel();
+
 	wheel->m_pos = pos;
 	wheel->m_radius = radius;
 	wheel->m_wheelPartCount = count;
@@ -63,6 +63,40 @@ void RhombusWheel::createWheel()
 	}
 }
 
+sf::FloatRect RhombusWheel::getBoundingBox() const
+{
+	if (m_wheelShape.empty())
+	{
+		return sf::FloatRect(0, 0, 0, 0);
+	}
+
+	sf::FloatRect boundingBox(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
+
+	for each (const auto& item in m_wheelShape)
+	{
+		if (item->getPosition().x < boundingBox.left)
+		{
+			boundingBox.left = item->getPosition().x;
+		}
+		if (item->getPosition().y < boundingBox.top)
+		{
+			boundingBox.top = item->getPosition().y;
+		}
+		if (item->getPosition().x > boundingBox.width)
+		{
+			boundingBox.width = item->getPosition().x;
+		}
+		if (item->getPosition().y > boundingBox.height)
+		{
+			boundingBox.height = item->getPosition().y;
+		}
+	}
+
+	boundingBox.width -= boundingBox.left;
+	boundingBox.height -= boundingBox.top;
+
+	return boundingBox;
+}
 
 void RhombusWheel::reCreate()
 {
@@ -100,46 +134,28 @@ sf::Color RhombusWheel::getColor() const
 	return m_color;
 }
 
-void RhombusWheel::setPosition(sf::Vector2f pos)
-{
-	m_pos = pos;
-
-	for (size_t item = 0; item < m_wheelShape.size(); item++)
-	{
-		static_cast<sf::ConvexShape>(item).setPosition(pos);
-	}
-}
-
-void RhombusWheel::setPositionX(float posX)
-{
-	m_pos.x = posX;
-
-	for (size_t item = 0; item < m_wheelShape.size(); item++)
-	{
-		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
-
-		float y = convexShape.getPosition().y;
-		convexShape.setPosition(posX, y);
-	}
-}
-
-void RhombusWheel::setPositionY(float posY)
-{
-	m_pos.y = posY;
-
-	for (size_t item = 0; item < m_wheelShape.size(); item++)
-	{
-		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
-
-		float x = convexShape.getPosition().x;
-		convexShape.setPosition(x, posY);
-	}
-}
-
-sf::Vector2f RhombusWheel::getPosition() const
-{
-	return m_pos;
-}
+//void RhombusWheel::setPosition(sf::Vector2f pos)
+//{
+//	Object::setPosition(pos);
+//
+//	for (size_t item = 0; item < m_wheelShape.size(); item++)
+//	{
+//		static_cast<sf::ConvexShape>(item).setPosition(pos);
+//	}
+//}
+//
+//void RhombusWheel::setPosition(float posX, float posY)
+//{
+//	Object::setPosition(posX, posY);
+//
+//	for (size_t item = 0; item < m_wheelShape.size(); item++)
+//	{
+//		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
+//
+//		float y = convexShape.getPosition().y;
+//		convexShape.setPosition(posX, posY);
+//	}
+//}
 
 void RhombusWheel::setAnimAngle(float angle)
 {

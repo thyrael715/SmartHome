@@ -8,7 +8,7 @@
 
 
 
-class Node;
+class Object;
 
 class EventDispatcher
 {
@@ -18,7 +18,7 @@ public:
 
 	static EventDispatcher* getInstance();
 
-	void addEventListener(EventListener* listener, Node* node);
+	void addEventListener(EventListener* listener, Object* obj);
 	void removeEventListener(EventListener* listener);
 	std::vector<EventListener*>* getListeners(const std::string listenerID) const;
 

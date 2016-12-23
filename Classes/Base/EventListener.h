@@ -5,7 +5,7 @@
 #include <new>
 #include <functional>
 
-class Node;
+class Object;
 
 class EventListener
 {
@@ -25,8 +25,8 @@ public:
 	Type			getType() const;
 	std::string		getListenerID() const;
 	void			onEvent(sf::Event e);
-	void			setAssociatedNode(Node* node);
-	Node*			getAssociatedNode() const;
+	void			setAssociatedObject(Object* obj);
+	Object*			getAssociatedObject() const;
 
 protected:
 
@@ -36,7 +36,7 @@ protected:
 	bool			m_isEnabled;
 	std::string		m_listenerID;
 	EventCallBack	m_onEvent;
-	Node*			m_associatedNode;	
+	Object*			m_associatedObject;
 	
 	EventListener();
 

@@ -1,6 +1,6 @@
 #include "EventDispatcher.h"
 #include "Maths.h"
-#include "Node.h"
+#include "Object.h"
 
 EventDispatcher::EventDispatcher()
 {
@@ -18,10 +18,10 @@ EventDispatcher* EventDispatcher::getInstance()
 	return ed;
 }
 
-void EventDispatcher::addEventListener(EventListener* listener, Node* node)
+void EventDispatcher::addEventListener(EventListener* listener, Object* obj)
 {
 	std::vector<EventListener*>* listenerVector = nullptr;
-	listener->setAssociatedNode(node);
+	listener->setAssociatedObject(obj);
 	const std::string listenerID = listener->getListenerID();
 
 	auto iter = m_listenerMap.find(listenerID);
@@ -40,8 +40,10 @@ void EventDispatcher::addEventListener(EventListener* listener, Node* node)
 
 void EventDispatcher::removeEventListener(EventListener* listener)
 {
-	const std::string listenerID = listener->getListenerID();
+	if (listener == nullptr)
+		return;
 
+	const std::string listenerID = listener->getListenerID();
 	auto iter = m_listenerMap.find(listenerID);
 
 	if (iter != m_listenerMap.end())
@@ -113,7 +115,7 @@ void EventDispatcher::handleEventMouse(sf::Event e)
 
 	for each (auto& listener in *listenerVector)
 	{
-		if (listener->getAssociatedNode()->contains(mousePos))
+		if (listener->getAssociatedObject()->contains(mousePos))
 		{
 			listener->onEvent(e);
 		}

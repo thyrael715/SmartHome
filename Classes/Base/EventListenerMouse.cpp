@@ -21,12 +21,12 @@ EventListenerMouse* EventListenerMouse::create()
 {
 	auto ret = new (std::nothrow) EventListenerMouse();
 
-	if (ret)
+	if (ret && ret->init())
 	{
-		ret->init();
+		return ret;
 	}
 
-	return ret;
+	return nullptr;
 }
 
 bool EventListenerMouse::init()

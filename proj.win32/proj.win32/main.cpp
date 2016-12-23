@@ -5,6 +5,7 @@
 
 #include <iostream>
 
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -16,7 +17,7 @@ int main()
 	Background* bg = Background::create();
 	CentralPanel *cp = CentralPanel::create();
 	window.setFramerateLimit(60);
-	
+
 	while (window.isOpen())
 	{
 		window.clear();

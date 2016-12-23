@@ -1,23 +1,23 @@
-#include "Node.h"
+#include "Object.h"
 
-Node::Node()
+Object::Object()
 	: m_eventDispatcher(nullptr)
 {
 	init();
 }
 
-Node::~Node()
+Object::~Object()
 {
-
+	
 }
 
-bool Node::init()
+bool Object::init()
 {
 	m_eventDispatcher = EventDispatcher::getInstance();
 	return true;
 }
 
-EventDispatcher* Node::getEventDispatcher() const
+EventDispatcher* Object::getEventDispatcher() const
 {
 	return m_eventDispatcher;
 }

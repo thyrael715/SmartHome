@@ -6,7 +6,7 @@ EventListener::EventListener()
 	, m_type(Type::UNKNOWN)
 	, m_listenerID("__unknown_id")
 	, m_onEvent(nullptr)
-	, m_associatedNode(nullptr)
+	, m_associatedObject(nullptr)
 {
 
 }
@@ -44,12 +44,12 @@ void EventListener::onEvent(sf::Event e)
 	m_onEvent(e);
 }
 
-void EventListener::setAssociatedNode(Node* node)
+void EventListener::setAssociatedObject(Object* node)
 {
-	m_associatedNode = node;
+	m_associatedObject = node;
 }
 
-Node* EventListener::getAssociatedNode() const
+Object* EventListener::getAssociatedObject() const
 {
-	return m_associatedNode;
+	return m_associatedObject;
 }

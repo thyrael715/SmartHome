@@ -36,16 +36,16 @@ void CentralPanel::init()
 
 	// create outer Arc 
 
-	size_t radius = C2WH(250);
-	size_t thickness = C2WH(1);
-
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 5, 55));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 65, 85));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 95, 115));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 125, 145));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 155, 175));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 180, 300));
-	m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 320, 360));
+	float radius = C2WH(250.0f);
+	float thickness = C2WH(1.0f);
+	
+	for (size_t i = 0; i < 7; i++)
+	{
+		ArcShape *arc = new ArcShape(35 + (i * 30), 55 + (i * 30), radius);
+		arc->setThickness(thickness);
+		arc->setPosition(windowCenter);
+		m_outerArc.push_back(arc);
+	}
 
 	createCentralCircleMenu();
 }
@@ -55,20 +55,21 @@ void CentralPanel::createCentralCircleMenu()
 {
 	sf::Vector2f windowCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
 
-	size_t radius = C2WH(200);
-	size_t thickness = C2WH(35);
+	float radius = C2WH(200.0f);
+	float thickness = C2WH(35.0f);
 
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 305, 320));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 325, 340));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 345, 360));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 5, 20));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 25, 40));
+	for (float i = 0; i < 24; i++)
+	{
+		float start = (i * 15.0f) + 0.5f;
+		float end = start + 14.0f;
 
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 140, 155));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 160, 175));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 180, 195));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 200, 215));
-	m_mainButtons.push_back(ButtonArc::create(windowCenter, radius, thickness, 220, 235));
+		ButtonArc* b = new ButtonArc(start, end, radius);
+		b->setFillColor(sf::Color(25, 75, 125));
+		b->setThickness(thickness);
+		b->setPosition(windowCenter);
+
+		m_mainButtons.push_back(b);
+	}
 }
 
 

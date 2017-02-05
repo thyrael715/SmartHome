@@ -21,6 +21,7 @@ bool EventListener::init(Type eventType, std::string listenerID, const EventCall
 	m_type = eventType;
 	m_listenerID = listenerID;
 	m_onEvent = onEvent;
+
 	return true;
 }
 

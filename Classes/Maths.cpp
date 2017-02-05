@@ -17,12 +17,6 @@ Maths::~Maths()
 
 }
 
-Maths* Maths::create()
-{
-	static Maths* ret = new Maths();
-	return ret;
-}
-
 int Maths::orientation(sf::Vector2f p, sf::Vector2f q, sf::Vector2f r)
 {
 	float val = (q.y - p.y) * (r.x - q.x) -

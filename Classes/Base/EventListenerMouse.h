@@ -8,15 +8,15 @@ public:
 
 	static const std::string LISTENER_ID;
 
+	EventListenerMouse();
 	virtual ~EventListenerMouse();
-	static EventListenerMouse* create();
 
 	EventCallBack onMousePressed;
 	EventCallBack onMouseReleased;
-	EventCallBack onMouseScroll;
+	EventCallBack onMouseScrolled;
+	EventCallBack onMouseMoved;
 
 protected:
 
-	EventListenerMouse();
 	bool init();
 };

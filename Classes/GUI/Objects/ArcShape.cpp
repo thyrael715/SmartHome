@@ -11,21 +11,14 @@ ArcShape::ArcShape(float fromAngle, float toAngle, float radius)
 	m_fromAngle = fromAngle;
 	m_toAngle = toAngle;
 	m_radius = radius;
+
+	update();
 }
 
 ArcShape::~ArcShape()
 {
 	m_vertices.clear();
-
-	if (m_outline.size() == 0)
-		return;
-
-	for (auto it = m_outline.begin(); it != m_outline.end(); ++it)
-	{
-		delete (*it);
-	}
-
-	m_outline.clear();
+	SAVE_DELETE_VECTOR(m_outline);
 }
 
 bool ArcShape::contains(const sf::Vector2f& point) const

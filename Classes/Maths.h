@@ -2,12 +2,15 @@
 
 #include <SFML\Graphics.hpp>
 
+
+#define PI 3.14159265
+
 class Maths
 {
 public:
 
 	virtual ~Maths();
-	static Maths* create();
+
 	static bool onSegment(sf::Vector2f p, sf::Vector2f q, sf::Vector2f r);
 	static bool doIntersect(sf::Vector2f p1, sf::Vector2f q1, sf::Vector2f p2, sf::Vector2f q2);
 	static bool isInside(const std::vector<sf::Vector2f>& polygon, sf::Vector2f p);

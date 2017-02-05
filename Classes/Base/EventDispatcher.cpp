@@ -66,7 +66,7 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 	}
 }
 
-void EventDispatcher::handleEvent(sf::Event e)
+void EventDispatcher::triggerEventHandling(sf::Event e)
 {
 	switch (e.type)
 	{
@@ -124,10 +124,10 @@ void EventDispatcher::handleEventMouse(sf::Event e)
 
 void EventDispatcher::handleEventKeyboard(sf::Event e)
 {
-	
+	// TODO: extend it
 }
 
 void EventDispatcher::handleEventVoice()
 {
-
+	// TODO: extend it
 }

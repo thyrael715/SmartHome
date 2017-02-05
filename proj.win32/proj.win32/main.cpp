@@ -36,7 +36,7 @@ int main()
 				case sf::Event::MouseButtonPressed:
 				case sf::Event::MouseButtonReleased:
 				{
-					EventDispatcher::getInstance()->handleEvent(event);
+					EventDispatcher::getInstance()->triggerEventHandling(event);
 					break;
 				}
 			}

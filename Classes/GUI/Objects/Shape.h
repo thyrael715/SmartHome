@@ -20,7 +20,7 @@ public:
 
 public:
 
-	virtual bool contains(const sf::Vector2f& point) const = 0;
+	virtual bool contains(const sf::Vector2f& point) const override = 0;
 	
 protected:
 
@@ -32,15 +32,16 @@ protected:
 	virtual void update();
 	
 protected:
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-protected:
 	
-	sf::VertexArray m_vertices;
+	mutable sf::VertexArray m_vertices;
 	std::vector<sf::Shape*> m_outline;
 
 	float m_outlineThickness;
 	sf::Color m_outlineColor;
 	sf::Color m_fillColor;
+	
+private:
+
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
 }; 

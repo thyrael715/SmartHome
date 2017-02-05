@@ -1,8 +1,8 @@
 #include "RhombusWheel.h"
 
 
-RhombusWheel::RhombusWheel()
-	: m_color(COLOR_WHITE)
+RhombusWheel::RhombusWheel(float radius, size_t count, float w, float h)
+	: m_outlineColor(COLOR_WHITE)
 	, m_radius(0.0f)
 	, m_width(0.0f)
 	, m_height(0.0f)
@@ -11,44 +11,32 @@ RhombusWheel::RhombusWheel()
 	, m_animCenter(0.0f, 0.0f)
 	, m_isAnimating(false)
 {
+	m_radius = radius;
+	m_wheelPartCount = count;
+	m_width = w;
+	m_height = h;
 
+	create();
 }
 
 RhombusWheel::~RhombusWheel()
 {
-	Defaults::getInstance()->safeVectorReleaser(m_wheelShape);
+	SAVE_DELETE_VECTOR(m_wheelShape);
 }
 
-RhombusWheel* RhombusWheel::create(sf::Vector2f pos, float radius, size_t count, float w, float h, sf::Color color)
+void RhombusWheel::create()
 {
-	RhombusWheel* wheel = new (std::nothrow) RhombusWheel();
-
-	wheel->m_pos = pos;
-	wheel->m_radius = radius;
-	wheel->m_wheelPartCount = count;
-	wheel->m_width = w;
-	wheel->m_height = h;
-	wheel->m_color = color;
-
-	wheel->createWheel();
-
-	return wheel;
-}
-
-
-void RhombusWheel::createWheel()
-{
-	float angle = 360.0f / m_wheelPartCount;
+	const float angle = 360.0f / m_wheelPartCount;
 
 	for (size_t i = 0; i < m_wheelPartCount; i++)
 	{
 		sf::ConvexShape* cs = new sf::ConvexShape();
 
-		float x = (float)(cos(i * angle * PI / 180.0f) * m_radius) + m_pos.x;
-		float y = (float)(sin(i * angle * PI / 180.0f) * m_radius) + m_pos.y;
+		const float x = (float)(cos(i * angle * PI / 180.0f) * m_radius);
+		const float y = (float)(sin(i * angle * PI / 180.0f) * m_radius);
 
 		cs->setPointCount(4);
-
+		
 		// define the points
 		cs->setPoint(0, sf::Vector2f(0, 0));
 		cs->setPoint(1, sf::Vector2f(0, m_width));
@@ -57,13 +45,19 @@ void RhombusWheel::createWheel()
 		cs->setOrigin(m_height / 2, (m_width + m_height) / 2);
 		cs->setPosition(x, y);
 		cs->rotate(i*angle);
-		cs->setFillColor(m_color);
+		cs->setFillColor(m_outlineColor);
 
 		m_wheelShape.push_back(cs);
 	}
 }
 
-sf::FloatRect RhombusWheel::getBoundingBox() const
+void RhombusWheel::reCreate()
+{
+	SAVE_DELETE_VECTOR(m_wheelShape);
+	create();
+}
+
+sf::FloatRect RhombusWheel::getGlobalBounds() const
 {
 	if (m_wheelShape.empty())
 	{
@@ -98,40 +92,43 @@ sf::FloatRect RhombusWheel::getBoundingBox() const
 	return boundingBox;
 }
 
-void RhombusWheel::reCreate()
+bool RhombusWheel::contains(const sf::Vector2f& point) const
 {
-	m_wheelShape.clear();
-	createWheel();
+	return false;
 }
 
-
-void RhombusWheel::draw(sf::RenderWindow& window)
+void RhombusWheel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	static sf::Transform transform;
+
+	// Combine transforms
+	states.transform *= getTransform();
+
 	for each (auto& item in m_wheelShape)
 	{
 		if (m_isAnimating)
 		{
-			m_transform.rotate(m_animAngle, { m_animCenter.x, m_animCenter.y });
+			transform.rotate(m_animAngle, { m_animCenter.x, m_animCenter.y });
 		}
 
-		window.draw(*item, m_transform);
+		target.draw(*item, transform);
 	}
 }
 
 
-void RhombusWheel::setColor(sf::Color color)
+void RhombusWheel::setOutlineColor(sf::Color color)
 {
-	m_color = color;
+	m_outlineColor = color;
 	
-	for (size_t item = 0; item < m_wheelShape.size(); item++)
+	for (sf::ConvexShape*& item : m_wheelShape)
 	{
-		static_cast<sf::ConvexShape>(item).setFillColor(color);
+		item->setFillColor(color);
 	}
 }
 
-sf::Color RhombusWheel::getColor() const
+sf::Color RhombusWheel::getOutlineColor() const
 {
-	return m_color;
+	return m_outlineColor;
 }
 
 //void RhombusWheel::setPosition(sf::Vector2f pos)
@@ -157,6 +154,50 @@ sf::Color RhombusWheel::getColor() const
 //	}
 //}
 
+void RhombusWheel::setRadius(float radius)
+{
+	m_radius = radius;
+	reCreate();
+}
+
+float RhombusWheel::getRadius() const
+{
+	return m_radius;
+}
+
+void RhombusWheel::setWidth(float width)
+{
+	m_width = width;
+	reCreate();
+}
+
+float RhombusWheel::getWidth() const
+{
+	return m_width;
+}
+
+void RhombusWheel::setHeight(float height)
+{
+	m_height = height;
+	reCreate();
+}
+
+float RhombusWheel::getHeight() const
+{
+	return m_height;
+}
+
+void RhombusWheel::setWheelPartCount(size_t wheelPartCount)
+{
+	m_wheelPartCount = wheelPartCount;
+	reCreate();
+}
+
+size_t RhombusWheel::getWheelPartCount() const
+{
+	return m_wheelPartCount;
+}
+
 void RhombusWheel::setAnimAngle(float angle)
 {
 	m_animAngle = angle;
@@ -176,3 +217,4 @@ void RhombusWheel::stopAnimation()
 {
 	m_isAnimating = false;
 }
+

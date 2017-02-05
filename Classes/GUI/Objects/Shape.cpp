@@ -5,6 +5,7 @@ Shape::Shape()
 	: m_outlineThickness(0.0f)
 	, m_outlineColor(sf::Color(255, 255, 255))
 	, m_fillColor(sf::Color(255, 255, 255))
+	, m_vertices(sf::TrianglesStrip)
 {
 
 }
@@ -17,11 +18,13 @@ Shape::~Shape()
 
 void Shape::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	// Combine transforms
 	states.transform *= getTransform();
 
+	// Draw shape and its outline
 	target.draw(m_vertices, states);
 
-	if (m_outlineThickness != 0.0f && m_outline.empty())
+	if (m_outlineThickness != 0.0f && !m_outline.empty())
 	{
 		for (auto& item : m_outline)
 		{

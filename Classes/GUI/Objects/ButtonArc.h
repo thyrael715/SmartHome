@@ -15,13 +15,9 @@ public:
 
 protected:	
 
-	virtual bool init() override;
-
-	void onMousePressed(sf::Event e);
-	void onMouseReleased(sf::Event e);
-	void onMouseScroll(sf::Event e);
+	virtual void onMousePressed(sf::Event e) override;
+	virtual void onMouseReleased(sf::Event e) override;
+	virtual void onMouseMoved(sf::Event e) override;
 
 private:
-	
-	EventListenerMouse* m_eventListener;
 };

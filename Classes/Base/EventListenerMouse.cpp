@@ -7,9 +7,10 @@ const std::string EventListenerMouse::LISTENER_ID = "__listener_mouse";
 EventListenerMouse::EventListenerMouse()
 	: onMousePressed(nullptr)
 	, onMouseReleased(nullptr)
-	, onMouseScroll(nullptr)
+	, onMouseScrolled(nullptr)
+	, onMouseMoved(nullptr)
 {
-
+	init();
 }
 
 EventListenerMouse::~EventListenerMouse()
@@ -17,34 +18,36 @@ EventListenerMouse::~EventListenerMouse()
 
 }
 
-EventListenerMouse* EventListenerMouse::create()
-{
-	auto ret = new (std::nothrow) EventListenerMouse();
-
-	if (ret && ret->init())
-	{
-		return ret;
-	}
-
-	return nullptr;
-}
 
 bool EventListenerMouse::init()
 {
 	auto listener = [this](sf::Event e)
 	{
-		if (e.type == sf::Event::MouseButtonPressed)
+		switch (e.type)
 		{
-			if (onMousePressed != nullptr)
+			case sf::Event::MouseButtonPressed:
 			{
-				onMousePressed(e);
+				if (onMousePressed != nullptr) { onMousePressed(e); }
+				break;
 			}
-		}
-		else if (e.type == sf::Event::MouseButtonReleased)
-		{
-			if (onMouseReleased != nullptr)
+			case sf::Event::MouseButtonReleased:
 			{
-				onMouseReleased(e);
+				if (onMouseReleased != nullptr) { onMouseReleased(e); }
+				break;
+			}
+			case sf::Event::MouseWheelScrolled:
+			{
+				if (onMouseScrolled != nullptr) { onMouseScrolled(e); }
+				break;
+			}
+			case sf::Event::MouseMoved:
+			{
+				if (onMouseMoved != nullptr) { onMouseMoved(e); }
+				break;
+			}
+			default:
+			{
+				break;
 			}
 		}
 	};

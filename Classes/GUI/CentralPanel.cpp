@@ -9,10 +9,10 @@ CentralPanel::CentralPanel()
 
 CentralPanel::~CentralPanel()
 {
-	delete m_wheelShape;
+	SAFE_DELETE(m_wheelShape);
 
-	Defaults::getInstance()->safeVectorReleaser(m_outerArc);
-	Defaults::getInstance()->safeVectorReleaser(m_mainButtons);
+	SAVE_DELETE_VECTOR(m_outerArc);
+	SAVE_DELETE_VECTOR(m_mainButtons);
 }
 
 CentralPanel* CentralPanel::create()
@@ -29,10 +29,11 @@ void CentralPanel::init()
 
 	// create rhombus wheel
 
-	m_wheelShape = RhombusWheel::create(windowCenter, C2WH(150.0f), 40, C2WW(12.0f), C2WH(7.0f));
-	m_wheelShape->setAnimCenter(windowCenter);
-	m_wheelShape->setAnimAngle(0.0025f);
-	m_wheelShape->startAnimation();
+	m_wheelShape = new RhombusWheel(C2WH(150.0f), 40, C2WW(12.0f), C2WH(7.0f));
+	m_wheelShape->setPosition(windowCenter);
+	//m_wheelShape->setAnimCenter(windowCenter);
+	//m_wheelShape->setAnimAngle(0.0025f);
+	//m_wheelShape->startAnimation();
 
 	// create outer Arc 
 
@@ -46,6 +47,15 @@ void CentralPanel::init()
 		arc->setPosition(windowCenter);
 		m_outerArc.push_back(arc);
 	}
+
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 5, 55));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 65, 85));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 95, 115));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 125, 145));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 155, 175));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 180, 300));
+	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 320, 360));
+
 
 	createCentralCircleMenu();
 }
@@ -75,7 +85,7 @@ void CentralPanel::createCentralCircleMenu()
 
 void CentralPanel::draw(sf::RenderWindow& window) const
 {
-	m_wheelShape->draw(window);
+	window.draw(*m_wheelShape);
 
 	for each (auto& item in m_outerArc)
 	{

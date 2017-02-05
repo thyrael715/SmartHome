@@ -13,10 +13,10 @@ public:
 
 	enum class Type
 	{
-		UNKNOWN,
-		MOUSE,
-		KEYBOARD,
-		VOICE
+		UNKNOWN = -1,
+		MOUSE = 0,
+		KEYBOARD = 1,
+		VOICE = 2
 	};
 
 	virtual ~EventListener();

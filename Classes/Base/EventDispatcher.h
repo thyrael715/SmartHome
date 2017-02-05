@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 #include "EventListenerMouse.h"
-
+#include "EventListenerKeyboard.h"
 
 
 class Object;
@@ -21,8 +21,10 @@ public:
 	void addEventListener(EventListener* listener, Object* obj);
 	void removeEventListener(EventListener* listener);
 	std::vector<EventListener*>* getListeners(const std::string listenerID) const;
+	void triggerEventHandling(sf::Event e);
 
-	void handleEvent(sf::Event e);
+protected:
+
 	void handleEventMouse(sf::Event e);
 	void handleEventKeyboard(sf::Event e);
 	void handleEventVoice();

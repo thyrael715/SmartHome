@@ -53,13 +53,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,6 +86,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListener.cpp" />
+    <ClCompile Include="..\..\Classes\Base\EventListenerKeyboard.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerMouse.cpp" />
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
@@ -102,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Base\EventDispatcher.h" />
     <ClInclude Include="..\..\Classes\Base\EventListener.h" />
+    <ClInclude Include="..\..\Classes\Base\EventListenerKeyboard.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerMouse.h" />
     <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />

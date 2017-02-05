@@ -21,8 +21,6 @@
 #define C2WH(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
 										(v / Defaults::getInstance()->getWindowHeight())))
 
-#define PI 3.14159265
-
 #define COLOR_TRANSPARENT	sf::Color(0, 0, 0, 0)
 #define COLOR_WHITE			sf::Color{255, 255, 255, 255}
 
@@ -32,7 +30,7 @@
 #define CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
 
 #define SAFE_DELETE(p) if (p != nullptr) {delete p; p = nullptr;}
-
+#define SAVE_DELETE_VECTOR(v) Defaults::getInstance()->safeVectorReleaser(v);
 
 
 class Defaults
@@ -54,7 +52,7 @@ public:
 	float				getWindowHeight() const;
 
 	template<typename T>
-	void				safeVectorReleaser(std::vector<T*>& v) const;
+	void safeVectorReleaser(std::vector<T*>& v);
 
 private:
 
@@ -62,9 +60,8 @@ private:
 };
 
 
-
 template<typename T>
-void Defaults::safeVectorReleaser(std::vector<T*>& v) const
+void Defaults::safeVectorReleaser(std::vector<T*>& v)
 {
 	if (v.size() == 0)
 		return;

@@ -42,6 +42,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 		glview = GLViewImpl::createWithRect("SmartHome", cocos2d::Rect(0, 0, actualResolutionSize.width, actualResolutionSize.height));
+		//glview = GLViewImpl::createWithFullScreen("SmartHome");
 #else
         glview = GLViewImpl::create("SmartHome");
 #endif

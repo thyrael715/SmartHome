@@ -16,11 +16,8 @@ Shape::~Shape()
 	std::vector<sf::Shape*> m_outline;
 }
 
-void Shape::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Shape::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
-	// Combine transforms
-	states.transform *= getTransform();
-
 	// Draw shape and its outline
 	target.draw(m_vertices, states);
 
@@ -35,7 +32,7 @@ void Shape::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Shape::setFillColor(sf::Color color)
 {
-	m_outlineColor = color;
+	m_fillColor = color;
 	updateFillColor();
 }
 
@@ -80,7 +77,7 @@ void Shape::updateFillColor()
 {
 	for (size_t i = 0; i < m_vertices.getVertexCount(); i++)
 	{
-		m_vertices[0].color = m_fillColor;
+		m_vertices[i].color = m_fillColor;
 	}
 }
 
@@ -109,9 +106,4 @@ void Shape::updateOutlineColor()
 	{
 		item->setFillColor(m_outlineColor);
 	}
-}
-
-void Shape::update()
-{
-
 }

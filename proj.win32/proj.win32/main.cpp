@@ -2,7 +2,7 @@
 #include "Background.h"
 #include "CentralPanel.h"
 #include "Defaults.h"
-
+#include "Scheduler.h"
 #include <iostream>
 
 
@@ -13,16 +13,23 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1600, 900), "SmartHome", sf::Style::Default, settings);
 
 	Defaults::getInstance()->setWindowSize((float)window.getSize().x, (float)window.getSize().y);
-	
-	Background* bg = Background::create();
-	CentralPanel *cp = CentralPanel::create();
+	auto scheduler = Scheduler::getInstance();
+
+
+	Background* bg = new Background();
+	CentralPanel *cp = new CentralPanel();
+
+	cp->setPosition(800, 450);
+
 	window.setFramerateLimit(60);
+
+	sf::Clock clock;
 
 	while (window.isOpen())
 	{
-		window.clear();
-
 		sf::Event event;
+		
+		sf::Time deltaTime = clock.getElapsedTime();
 
 		while (window.pollEvent(event))
 		{
@@ -42,11 +49,23 @@ int main()
 			}
 		}
 
-		bg->draw(window);
-		cp->draw(window);
+		scheduler->update(deltaTime.asMilliseconds());
 
+		clock.restart().asMilliseconds();
+
+
+		// draw...
+		window.clear();
+
+
+		window.draw(*bg);
+		window.draw(*cp);
+
+		// end the current frame
 		window.display();
 	}
+
+
 
 	return 0;
 }

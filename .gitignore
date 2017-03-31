@@ -9,3 +9,4 @@
 *.tlog
 *.lastbuildstate
 *.idb
+/proj.win32/proj.win32/*.user

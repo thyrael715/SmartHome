@@ -1,10 +1,9 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
-#include "Defaults.h"
 #include "Object.h"
 
-class RhombusWheel : public Object , public sf::Drawable
+class RhombusWheel : public Object
 {
 public:
 
@@ -12,7 +11,7 @@ public:
 	virtual ~RhombusWheel();
 
 	virtual sf::FloatRect	getGlobalBounds() const;
-	virtual bool			contains(const sf::Vector2f& point) const;
+	virtual bool			contains(const sf::Vector2f& point) const override;
 	
 	void					setOutlineColor(sf::Color color);
 	sf::Color				getOutlineColor() const;
@@ -36,14 +35,12 @@ public:
 	void					startAnimation();
 	void					stopAnimation();
 
-protected:
+public:
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void onUpdate(float dt) override;
 
 private:
-
-	std::vector<sf::ConvexShape*>	m_wheelShape;
-	
+		
 	// Properties of RhombusWheel
 
 	sf::Color				m_outlineColor;
@@ -60,7 +57,5 @@ private:
 
 private:
 
-	void					create();
 	void					reCreate();
-	void					update();
 };

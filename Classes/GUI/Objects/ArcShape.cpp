@@ -12,7 +12,7 @@ ArcShape::ArcShape(float fromAngle, float toAngle, float radius)
 	m_toAngle = toAngle;
 	m_radius = radius;
 
-	update();
+	create();
 }
 
 ArcShape::~ArcShape()
@@ -46,7 +46,7 @@ bool ArcShape::contains(const sf::Vector2f& point) const
 	return Maths::isInside(v, point);
 }
 
-void ArcShape::update()
+void ArcShape::create()
 {
 	m_vertices.clear();
 
@@ -71,15 +71,21 @@ void ArcShape::update()
 		float x2 = (float)(cos(k * PI / 180.0f) * r2);
 		float y2 = (float)(sin(k * PI / 180.0f) * r2);
 
-		m_vertices.append(sf::Vector2f(x1, y1));
-		m_vertices.append(sf::Vector2f(x2, y2));
+		sf::Vertex v1(sf::Vector2f(x1, y1));
+		sf::Vertex v2(sf::Vector2f(x2, y2));
+
+		v1.color = m_fillColor;
+		v2.color = m_fillColor;
+
+		m_vertices.append(v1);
+		m_vertices.append(v2);
 	}
 }
 
 void ArcShape::setThickness(float thickness)
 {
 	m_thickness = thickness;
-	update();
+	create();
 }
 
 float ArcShape::getThickness() const
@@ -90,7 +96,7 @@ float ArcShape::getThickness() const
 void ArcShape::setToAngle(float toAngle)
 {
 	m_toAngle = toAngle;
-	update();
+	create();
 }
 
 float ArcShape::getToAngle() const
@@ -101,7 +107,7 @@ float ArcShape::getToAngle() const
 void ArcShape::setFromAngle(float fromAngle)
 {
 	m_fromAngle = fromAngle;
-	update();
+	create();
 }
 
 float ArcShape::getFromAngle() const
@@ -112,7 +118,7 @@ float ArcShape::getFromAngle() const
 void ArcShape::setRadius(float radius)
 {
 	m_radius = radius;
-	update();
+	create();
 }
 
 float ArcShape::getRadius() const

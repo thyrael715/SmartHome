@@ -64,6 +64,15 @@
     <ClCompile Include="..\..\Classes\Base\EventListenerKeyboard.cpp">
       <Filter>Classes\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\CircleShape.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\ConvexShape.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\Scheduler.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Defaults.h">
@@ -106,6 +115,15 @@
       <Filter>Classes\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\Base\EventListenerKeyboard.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\CircleShape.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\ConvexShape.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\Scheduler.h">
       <Filter>Classes\Base</Filter>
     </ClInclude>
   </ItemGroup>

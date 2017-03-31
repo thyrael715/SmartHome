@@ -1,16 +1,18 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Object.h"
 
 
-class Background
+class Background : public Object
 {
 public:
 
-	~Background();
-	static Background* create();
+	Background();
+	virtual ~Background();
+	virtual void init() override;
 
-	void draw(sf::RenderWindow& window) const;
+	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const override;
 	
 protected:
 
@@ -18,13 +20,7 @@ protected:
 	void createGradientForGrid();
 	
 private:
-	
+
 	std::vector<sf::CircleShape> shapes;
 	sf::Vertex* gradientVertices;
-		
-	explicit Background();
-	Background(const Background&) = delete;
-	Background& operator=(const Background&) = delete;
-
-	void init();
 };

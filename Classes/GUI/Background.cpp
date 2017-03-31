@@ -9,10 +9,10 @@
 
 #define BG_SIZE_OF_HEXAGON			20
 #define BG_THICKNESS_OF_HEXAGON		1
-#define BG_SIZE_OF_GRADIENT			200
+#define BG_SIZE_OF_GRADIENT			250
 
 #define COLOR_HEXAGON				sf::Color(40, 40, 40, 255)
-#define COLOR_GRADIENT				sf::Color(0, 0, 0, 100)
+#define COLOR_GRADIENT				sf::Color(0, 0, 0, 200)
 
 
 // ***** Function definitions *****
@@ -26,12 +26,6 @@ Background::Background()
 Background::~Background()
 {
 
-}
-
-Background* Background::create()
-{
-	static Background* bg = new Background();
-	return bg;
 }
 
 void Background::init()
@@ -111,15 +105,15 @@ void Background::createGradientForGrid()
 }
 
 
-void Background::draw(sf::RenderWindow& window) const
+void Background::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
 	for each (sf::CircleShape s in shapes)
 	{
-		window.draw(s);
+		target.draw(s);
 	}	
 
 	if (gradientVertices)
 	{
-		window.draw(gradientVertices, 16, sf::Quads);
+		target.draw(gradientVertices, 16, sf::Quads);
 	}
 }

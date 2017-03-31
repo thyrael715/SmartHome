@@ -3,10 +3,11 @@
 #include <SFML\Graphics.hpp>
 #include "Object.h"
 
-class Shape : public sf::Drawable, public Object
+class Shape : public Object
 {
 public:
 
+	Shape();
 	~Shape();
 
 	void setFillColor(sf::Color color);
@@ -24,12 +25,11 @@ public:
 	
 protected:
 
-	Shape();
+	virtual void create() = 0;
 
 	void updateFillColor();
 	void updateOutline();
 	void updateOutlineColor();
-	virtual void update();
 	
 protected:
 	
@@ -42,6 +42,6 @@ protected:
 	
 private:
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const override;
 
 }; 

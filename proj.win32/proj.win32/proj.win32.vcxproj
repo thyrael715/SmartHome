@@ -72,7 +72,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,7 +80,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -89,11 +89,14 @@
     <ClCompile Include="..\..\Classes\Base\EventListenerKeyboard.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerMouse.cpp" />
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
+    <ClCompile Include="..\..\Classes\Base\Scheduler.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Background.cpp" />
     <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ButtonArc.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\CircleShape.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\ConvexShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Line.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Shape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
@@ -106,11 +109,14 @@
     <ClInclude Include="..\..\Classes\Base\EventListenerKeyboard.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerMouse.h" />
     <ClInclude Include="..\..\Classes\Base\Object.h" />
+    <ClInclude Include="..\..\Classes\Base\Scheduler.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />
     <ClInclude Include="..\..\Classes\GUI\Background.h" />
     <ClInclude Include="..\..\Classes\GUI\CentralPanel.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ButtonArc.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\CircleShape.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\ConvexShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Line.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Shape.h" />
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />

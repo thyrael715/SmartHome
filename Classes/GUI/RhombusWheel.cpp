@@ -1,4 +1,6 @@
+
 #include "RhombusWheel.h"
+#include "ConvexShape.h"
 
 
 RhombusWheel::RhombusWheel(float radius, size_t count, float w, float h)
@@ -16,27 +18,28 @@ RhombusWheel::RhombusWheel(float radius, size_t count, float w, float h)
 	m_width = w;
 	m_height = h;
 
-	create();
+	reCreate();
+	Scheduler::getInstance()->scheduleUpdate(this);
 }
 
 RhombusWheel::~RhombusWheel()
 {
-	SAVE_DELETE_VECTOR(m_wheelShape);
+
 }
 
-void RhombusWheel::create()
+void RhombusWheel::reCreate()
 {
+	this->removeAllChildren();
+
 	const float angle = 360.0f / m_wheelPartCount;
 
 	for (size_t i = 0; i < m_wheelPartCount; i++)
 	{
-		sf::ConvexShape* cs = new sf::ConvexShape();
+		ConvexShape* cs = new ConvexShape(4);
 
 		const float x = (float)(cos(i * angle * PI / 180.0f) * m_radius);
 		const float y = (float)(sin(i * angle * PI / 180.0f) * m_radius);
 
-		cs->setPointCount(4);
-		
 		// define the points
 		cs->setPoint(0, sf::Vector2f(0, 0));
 		cs->setPoint(1, sf::Vector2f(0, m_width));
@@ -47,19 +50,12 @@ void RhombusWheel::create()
 		cs->rotate(i*angle);
 		cs->setFillColor(m_outlineColor);
 
-		m_wheelShape.push_back(cs);
+		this->addChild(cs);
 	}
 }
-
-void RhombusWheel::reCreate()
-{
-	SAVE_DELETE_VECTOR(m_wheelShape);
-	create();
-}
-
 sf::FloatRect RhombusWheel::getGlobalBounds() const
 {
-	if (m_wheelShape.empty())
+	/*if (m_wheelShape.empty())
 	{
 		return sf::FloatRect(0, 0, 0, 0);
 	}
@@ -89,7 +85,8 @@ sf::FloatRect RhombusWheel::getGlobalBounds() const
 	boundingBox.width -= boundingBox.left;
 	boundingBox.height -= boundingBox.top;
 
-	return boundingBox;
+	return boundingBox;*/
+	return sf::FloatRect(0, 0, 0, 0);
 }
 
 bool RhombusWheel::contains(const sf::Vector2f& point) const
@@ -97,22 +94,11 @@ bool RhombusWheel::contains(const sf::Vector2f& point) const
 	return false;
 }
 
-void RhombusWheel::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void RhombusWheel::onUpdate(float dt)
 {
-	static sf::Transform transform;
-
-	// Combine transforms
-	states.transform *= getTransform();
-
-	for each (auto& item in m_wheelShape)
-	{
-		if (m_isAnimating)
-		{
-			transform.rotate(m_animAngle, { m_animCenter.x, m_animCenter.y });
-		}
-
-		target.draw(*item, transform);
-	}
+	setRotation(m_animAngle);
+	setOrigin(200, 200);
+	m_animAngle += (0.04 * dt);
 }
 
 
@@ -120,9 +106,12 @@ void RhombusWheel::setOutlineColor(sf::Color color)
 {
 	m_outlineColor = color;
 	
-	for (sf::ConvexShape*& item : m_wheelShape)
+	for (auto& item : getChildren())
 	{
-		item->setFillColor(color);
+		if (auto cs = dynamic_cast<Shape*>(item.second))
+		{
+			cs->setFillColor(color);
+		}
 	}
 }
 
@@ -130,29 +119,6 @@ sf::Color RhombusWheel::getOutlineColor() const
 {
 	return m_outlineColor;
 }
-
-//void RhombusWheel::setPosition(sf::Vector2f pos)
-//{
-//	Object::setPosition(pos);
-//
-//	for (size_t item = 0; item < m_wheelShape.size(); item++)
-//	{
-//		static_cast<sf::ConvexShape>(item).setPosition(pos);
-//	}
-//}
-//
-//void RhombusWheel::setPosition(float posX, float posY)
-//{
-//	Object::setPosition(posX, posY);
-//
-//	for (size_t item = 0; item < m_wheelShape.size(); item++)
-//	{
-//		sf::ConvexShape convexShape = static_cast<sf::ConvexShape>(item);
-//
-//		float y = convexShape.getPosition().y;
-//		convexShape.setPosition(posX, posY);
-//	}
-//}
 
 void RhombusWheel::setRadius(float radius)
 {

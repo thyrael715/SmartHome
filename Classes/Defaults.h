@@ -9,6 +9,21 @@
 
 // *** Macros ***
 
+#define CREATE_FUNC(__TYPE__) \
+static __TYPE__* create() \
+{ \
+	__TYPE__ *pRet = new(std::nothrow) __TYPE__(); \
+	if (pRet) \
+	{ \
+		pRet->init(); \
+	} \
+	else \
+	{ \
+		SAFE_DELETE(pRet) \
+	} \
+	return pRet; \
+} \
+
 #define STOI(S) std::stoi(S)
 #define ITOS(I) std::to_string(I)
 

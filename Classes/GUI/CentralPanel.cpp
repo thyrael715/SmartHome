@@ -1,26 +1,16 @@
 #include "CentralPanel.h"
-#include "Defaults.h"
+#include "CircleShape.h"
 
 
 CentralPanel::CentralPanel()
 {
-
+	init();
 }
 
 CentralPanel::~CentralPanel()
 {
-	SAFE_DELETE(m_wheelShape);
-
 	SAVE_DELETE_VECTOR(m_outerArc);
 	SAVE_DELETE_VECTOR(m_mainButtons);
-}
-
-CentralPanel* CentralPanel::create()
-{
-	CentralPanel* cp = new CentralPanel();
-	cp->init();
-
-	return cp;
 }
 
 void CentralPanel::init()
@@ -29,11 +19,14 @@ void CentralPanel::init()
 
 	// create rhombus wheel
 
-	m_wheelShape = new RhombusWheel(C2WH(150.0f), 40, C2WW(12.0f), C2WH(7.0f));
-	m_wheelShape->setPosition(windowCenter);
-	//m_wheelShape->setAnimCenter(windowCenter);
-	//m_wheelShape->setAnimAngle(0.0025f);
-	//m_wheelShape->startAnimation();
+	RhombusWheel* wheelShape = new RhombusWheel(C2WH(150.0f), 40, C2WW(12.0f), C2WH(7.0f));
+	wheelShape->setOutlineColor(sf::Color::Red);
+	
+	wheelShape->setAnimCenter(windowCenter);
+	wheelShape->setAnimAngle(0.25f);
+	wheelShape->startAnimation();
+
+	this->addChild(wheelShape);
 
 	// create outer Arc 
 
@@ -44,9 +37,11 @@ void CentralPanel::init()
 	{
 		ArcShape *arc = new ArcShape(35 + (i * 30), 55 + (i * 30), radius);
 		arc->setThickness(thickness);
-		arc->setPosition(windowCenter);
-		m_outerArc.push_back(arc);
+		this->addChild(arc);
 	}
+
+	CircleShape* cs = new CircleShape(50, 60);
+	this->addChild(cs);
 
 	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 5, 55));
 	//m_outerArc.push_back(ArcShape::create(windowCenter, radius, thickness, 65, 85));
@@ -63,8 +58,6 @@ void CentralPanel::init()
 
 void CentralPanel::createCentralCircleMenu()
 {
-	sf::Vector2f windowCenter(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-
 	float radius = C2WH(200.0f);
 	float thickness = C2WH(35.0f);
 
@@ -76,24 +69,23 @@ void CentralPanel::createCentralCircleMenu()
 		ButtonArc* b = new ButtonArc(start, end, radius);
 		b->setFillColor(sf::Color(25, 75, 125));
 		b->setThickness(thickness);
-		b->setPosition(windowCenter);
-
-		m_mainButtons.push_back(b);
+		
+		this->addChild(b);
 	}
 }
 
 
-void CentralPanel::draw(sf::RenderWindow& window) const
+void CentralPanel::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
-	window.draw(*m_wheelShape);
+	//target.draw(*m_wheelShape);
 
-	for each (auto& item in m_outerArc)
-	{
-		window.draw(*item);
-	}
+	//for each (auto& item in m_outerArc)
+	//{
+	//	target.draw(*item);
+	//}
 
-	for each (auto& item in m_mainButtons)
-	{
-		window.draw(*item);
-	}
+	//for each (auto& item in m_mainButtons)
+	//{
+	//	target.draw(*item);
+	//}
 }

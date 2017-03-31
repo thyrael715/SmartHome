@@ -2,14 +2,30 @@
 
 
 Object::Object()
+	: m_zOrder(0)
 {
-
+	init();
 }
+
 
 Object::~Object()
 {
 	unregisterAllEvent();
+	removeAllChildren();
 }
+
+
+void Object::init()
+{
+	// Base init code
+}
+
+
+bool Object::contains(const sf::Vector2f& point) const
+{
+	return true;
+}
+
 
 void Object::registerAllEvent()
 {
@@ -18,6 +34,7 @@ void Object::registerAllEvent()
 		registerEvent(EventType(i));
 	}
 }
+
 
 void Object::registerEvent(Object::EventType eventType)
 {
@@ -79,6 +96,7 @@ void Object::registerEvent(Object::EventType eventType)
 	}
 }
 
+
 void Object::unregisterAllEvent()
 {
 	for (size_t i = 0; i < (size_t)(EventType::VOICE); i++)
@@ -86,6 +104,7 @@ void Object::unregisterAllEvent()
 		unregisterEvent(EventType(i));
 	}
 }
+
 
 void Object::unregisterEvent(Object::EventType eventType)
 {
@@ -99,10 +118,75 @@ void Object::unregisterEvent(Object::EventType eventType)
 	m_eventMap.erase(iter);
 }
 
+
 void Object::addEvent(Object::EventType eventType, const std::function<void()>& func)
 {
 	if (m_eventMap.find(eventType) == m_eventMap.end())
 		return;
 
 	m_eventMap.at(eventType).callbacks.push_back(func);
+}
+
+
+int Object::getZOrder() const
+{
+	return m_zOrder;
+}
+
+
+void Object::addChild(Object* obj, int zOrder)
+{
+	m_children.insert(std::pair<int, Object*>(zOrder, obj));
+}
+
+
+void Object::removeChild(Object* obj)
+{
+	for (auto it = m_children.begin(); it != m_children.end(); it++)
+	{
+		if (it->first == obj->m_zOrder && it->second == obj)
+		{
+			delete it->second;
+			m_children.erase(it);
+			break;
+		}
+	}
+}
+
+
+void Object::removeAllChildren()
+{
+	for (auto it = m_children.begin(); it != m_children.end(); it++)
+	{
+		delete it->second;
+		it = m_children.erase(it);
+	}
+
+	m_children.clear();
+}
+
+
+std::multimap<int, Object*> Object::getChildren() const
+{
+	return m_children;
+}
+
+
+void Object::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
+{
+	// Nothing to do here
+}
+
+
+void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	// Combine transforms
+	states.transform *= getTransform();
+
+	this->onDraw(target, states);
+
+	for each (auto& item in m_children)
+	{
+		target.draw(*item.second, states);
+	}
 }

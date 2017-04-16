@@ -3,8 +3,9 @@
 
 Object::Object()
 	: m_zOrder(0)
+	, m_parent(nullptr)
 {
-	init();
+
 }
 
 
@@ -15,21 +16,61 @@ Object::~Object()
 }
 
 
-void Object::init()
+bool Object::contains(const sf::Vector2f& point) const
 {
-	// Base init code
+	for each (auto item in m_children)
+	{
+		if (item.second->contains(point))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 
-bool Object::contains(const sf::Vector2f& point) const
+sf::FloatRect Object::getGlobalBounds() const
 {
-	return true;
+	if (m_children.empty())
+	{
+		return sf::FloatRect(0, 0, 0, 0);
+	}
+
+	sf::FloatRect boundingBox(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
+
+	for each (auto item in m_children)
+	{
+		sf::FloatRect actChildBounds = item.second->getGlobalBounds();
+		
+		if (actChildBounds.left < boundingBox.left)
+		{
+			boundingBox.left = actChildBounds.left;
+		}
+		if (actChildBounds.top < boundingBox.top)
+		{
+			boundingBox.top = actChildBounds.top;
+		}
+		if (actChildBounds.width > boundingBox.width)
+		{
+			boundingBox.width = actChildBounds.width;
+		}
+		if (actChildBounds.height > boundingBox.height)
+		{
+			boundingBox.height = actChildBounds.height;
+		}
+	}
+
+	boundingBox.width -= boundingBox.left;
+	boundingBox.height -= boundingBox.top;
+
+	return boundingBox;
 }
 
 
 void Object::registerAllEvent()
 {
-	for (size_t i = 0; i < (size_t)(EventType::VOICE); i++)
+	for (size_t i = 0; i < (size_t)(EventType::UNKNOWN); ++i)
 	{
 		registerEvent(EventType(i));
 	}
@@ -55,7 +96,7 @@ void Object::registerEvent(Object::EventType eventType)
 	{
 		EventListenerMouse* elm = new EventListenerMouse();
 		elm->onMousePressed = CALLBACK_1(Object::onMousePressed, this);
-		elm->onMouseReleased = [=, &eventType](sf::Event e)
+		elm->onMouseReleased = [=](sf::Event e)
 		{
 			onMouseReleased(e);
 			invokeEvents(eventType);
@@ -73,7 +114,7 @@ void Object::registerEvent(Object::EventType eventType)
 	{
 		EventListenerKeyboard* elk = new EventListenerKeyboard();
 		elk->onKeyPressed = CALLBACK_1(Object::onKeyPressed, this);
-		elk->onKeyReleased = [=, &eventType](sf::Event e)
+		elk->onKeyReleased = [=](sf::Event e)
 		{
 			onKeyReleased(e);
 			invokeEvents(eventType);
@@ -99,7 +140,7 @@ void Object::registerEvent(Object::EventType eventType)
 
 void Object::unregisterAllEvent()
 {
-	for (size_t i = 0; i < (size_t)(EventType::VOICE); i++)
+	for (size_t i = 0; i < (size_t)(EventType::UNKNOWN); ++i)
 	{
 		unregisterEvent(EventType(i));
 	}
@@ -128,21 +169,50 @@ void Object::addEvent(Object::EventType eventType, const std::function<void()>& 
 }
 
 
-int Object::getZOrder() const
+sf::Vector2f Object::convertToWorldSpace(const sf::Vector2f& point) const
 {
-	return m_zOrder;
+	sf::Vector2f res(point);
+
+	Object* actParent = m_parent;
+
+	while (actParent != nullptr)
+	{
+		res += actParent->getPosition();
+		actParent = actParent->getParent();
+	}
+
+	return res;
+}
+
+
+sf::Vector2f Object::convertToObjectSpace(const sf::Vector2f& point) const
+{
+	return point - convertToWorldSpace(getPosition());
+}
+
+
+void Object::setParent(Object* obj)
+{
+	m_parent = obj;
+}
+
+
+Object* Object::getParent() const
+{
+	return m_parent;
 }
 
 
 void Object::addChild(Object* obj, int zOrder)
 {
 	m_children.insert(std::pair<int, Object*>(zOrder, obj));
+	obj->setParent(this);
 }
 
 
 void Object::removeChild(Object* obj)
 {
-	for (auto it = m_children.begin(); it != m_children.end(); it++)
+	for (auto it = m_children.begin(); it != m_children.end(); ++it)
 	{
 		if (it->first == obj->m_zOrder && it->second == obj)
 		{
@@ -156,7 +226,7 @@ void Object::removeChild(Object* obj)
 
 void Object::removeAllChildren()
 {
-	for (auto it = m_children.begin(); it != m_children.end(); it++)
+	for (auto it = m_children.begin(); it != m_children.end();)
 	{
 		delete it->second;
 		it = m_children.erase(it);
@@ -172,12 +242,6 @@ std::multimap<int, Object*> Object::getChildren() const
 }
 
 
-void Object::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
-{
-	// Nothing to do here
-}
-
-
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	// Combine transforms
@@ -185,8 +249,8 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	this->onDraw(target, states);
 
-	for each (auto& item in m_children)
+	for (auto& it = m_children.rbegin(); it != m_children.rend(); ++it)
 	{
-		target.draw(*item.second, states);
+		target.draw(*it->second, states);
 	}
 }

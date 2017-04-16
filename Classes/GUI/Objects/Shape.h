@@ -1,14 +1,14 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+
 #include "Object.h"
+
 
 class Shape : public Object
 {
 public:
 
-	Shape();
-	~Shape();
+	virtual ~Shape();
 
 	void setFillColor(sf::Color color);
 	sf::Color getFillColor() const;
@@ -21,20 +21,26 @@ public:
 
 public:
 
-	virtual bool contains(const sf::Vector2f& point) const override = 0;
+	virtual bool contains(const sf::Vector2f& point) const;
 	
 protected:
 
-	virtual void create() = 0;
+	Shape();
+
+	virtual void reCreate() = 0;
+
+	void update();
 
 	void updateFillColor();
 	void updateOutline();
 	void updateOutlineColor();
+
+	void orderVertices(const sf::VertexArray& input, sf::VertexArray& output) const;
 	
 protected:
 	
 	mutable sf::VertexArray m_vertices;
-	std::vector<sf::Shape*> m_outline;
+	std::vector<Shape*> m_outline;
 
 	float m_outlineThickness;
 	sf::Color m_outlineColor;

@@ -61,6 +61,13 @@
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)..\..\Resources" "$(OutDir)" /D /E /I /F /Y
+xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy files</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -82,8 +89,16 @@
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PreBuildEvent>
+      <Command>xcopy "$(ProjectDir)..\..\Resources" "$(OutDir)" /D /E /I /F /Y
+xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Copy files</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Classes\Application.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListener.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerKeyboard.cpp" />
@@ -91,19 +106,22 @@
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Base\Scheduler.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
-    <ClCompile Include="..\..\Classes\GUI\Background.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\BackgroundLayer.cpp" />
     <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\MainLayer.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ArcShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ButtonArc.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\CircleShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ConvexShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Line.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Shape.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\Text.cpp" />
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
     <ClCompile Include="..\..\Classes\Maths.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Classes\Application.h" />
     <ClInclude Include="..\..\Classes\Base\EventDispatcher.h" />
     <ClInclude Include="..\..\Classes\Base\EventListener.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerKeyboard.h" />
@@ -111,14 +129,16 @@
     <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Base\Scheduler.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />
-    <ClInclude Include="..\..\Classes\GUI\Background.h" />
+    <ClInclude Include="..\..\Classes\GUI\BackgroundLayer.h" />
     <ClInclude Include="..\..\Classes\GUI\CentralPanel.h" />
+    <ClInclude Include="..\..\Classes\GUI\MainLayer.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ArcShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ButtonArc.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\CircleShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ConvexShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Line.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Shape.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\Text.h" />
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />
     <ClInclude Include="..\..\Classes\Maths.h" />
   </ItemGroup>

@@ -74,10 +74,10 @@ bool Maths::doIntersect(sf::Vector2f p1, sf::Vector2f q1, sf::Vector2f p2, sf::V
 
 
 // Returns true if the point p lies inside the polygon[] with n vertices
-bool Maths::isInside(const std::vector<sf::Vector2f>& polygon, sf::Vector2f p)
+bool Maths::isInside(const sf::VertexArray& polygon, sf::Vector2f p)
 {
 	// There must be at least 3 vertices in polygon[]
-	if (polygon.size() < 3)
+	if (polygon.getVertexCount() < 3)
 		return false;
 
 	// Create a point for line segment from p to infinite
@@ -88,18 +88,18 @@ bool Maths::isInside(const std::vector<sf::Vector2f>& polygon, sf::Vector2f p)
 
 	do
 	{
-		int next = (i + 1) % polygon.size();
+		int next = (i + 1) % polygon.getVertexCount();
 
 		// Check if the line segment from 'p' to 'extreme' intersects
 		// with the line segment from 'polygon[i]' to 'polygon[next]'
-		if (doIntersect(polygon[i], polygon[next], p, extreme))
+		if (doIntersect(polygon[i].position, polygon[next].position, p, extreme))
 		{
 			// If the point 'p' is colinear with line segment 'i-next',
 			// then check if it lies on segment. If it lies, return true,
 			// otherwise false
-			if (orientation(polygon[i], p, polygon[next]) == 0)
+			if (orientation(polygon[i].position, p, polygon[next].position) == 0)
 			{
-				return onSegment(polygon[i], p, polygon[next]);
+				return onSegment(polygon[i].position, p, polygon[next].position);
 			}
 
 			count++;

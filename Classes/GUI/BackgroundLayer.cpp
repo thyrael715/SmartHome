@@ -1,6 +1,6 @@
 // ***** Includes *****
 
-#include "Background.h"
+#include "BackgroundLayer.h"
 #include "Defaults.h"
 #include <iostream>
 
@@ -17,25 +17,27 @@
 
 // ***** Function definitions *****
 
-Background::Background()
+BackgroundLayer::BackgroundLayer()
 	: gradientVertices(nullptr)
 {
-	init();
+
 }
 
-Background::~Background()
+
+BackgroundLayer::~BackgroundLayer()
 {
 
 }
 
-void Background::init()
+
+void BackgroundLayer::init()
 {
 	createHexaGrid();
 	createGradientForGrid();
 }
 
 
-void Background::createHexaGrid()
+void BackgroundLayer::createHexaGrid()
 {
 	unsigned shiftX = static_cast<unsigned>((sqrt(3) * (BG_SIZE_OF_HEXAGON / 2)) + BG_THICKNESS_OF_HEXAGON);
 	unsigned shiftY = static_cast<unsigned>((0.75 * BG_SIZE_OF_HEXAGON) + BG_THICKNESS_OF_HEXAGON);
@@ -68,7 +70,7 @@ void Background::createHexaGrid()
 }
 
 
-void Background::createGradientForGrid()
+void BackgroundLayer::createGradientForGrid()
 {
 	auto windowSize = Defaults::getInstance()->getWindowSize();
 
@@ -105,12 +107,13 @@ void Background::createGradientForGrid()
 }
 
 
-void Background::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
+void BackgroundLayer::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
 	for each (sf::CircleShape s in shapes)
 	{
 		target.draw(s);
-	}	
+	}
+
 
 	if (gradientVertices)
 	{

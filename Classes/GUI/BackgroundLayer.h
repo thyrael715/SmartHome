@@ -1,16 +1,21 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+
 #include "Object.h"
 
 
-class Background : public Object
+class BackgroundLayer : public Object
 {
 public:
 
-	Background();
-	virtual ~Background();
-	virtual void init() override;
+	CREATE_FUNC(BackgroundLayer);
+
+	BackgroundLayer();
+	virtual ~BackgroundLayer();
+
+	void init();
+
+protected:
 
 	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const override;
 	

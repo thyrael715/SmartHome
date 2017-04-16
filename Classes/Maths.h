@@ -13,7 +13,7 @@ public:
 
 	static bool onSegment(sf::Vector2f p, sf::Vector2f q, sf::Vector2f r);
 	static bool doIntersect(sf::Vector2f p1, sf::Vector2f q1, sf::Vector2f p2, sf::Vector2f q2);
-	static bool isInside(const std::vector<sf::Vector2f>& polygon, sf::Vector2f p);
+	static bool isInside(const sf::VertexArray& polygon, sf::Vector2f p);
 	static bool isInRect(const sf::FloatRect& rect, const sf::Vector2f& point);
 
 protected:

@@ -36,8 +36,10 @@ static __TYPE__* create() \
 #define C2WH(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
 										(v / Defaults::getInstance()->getWindowHeight())))
 
-#define COLOR_TRANSPARENT	sf::Color(0, 0, 0, 0)
-#define COLOR_WHITE			sf::Color{255, 255, 255, 255}
+#define COLOR_TRANSPARENT		sf::Color(0, 0, 0, 0)
+#define COLOR_WHITE				sf::Color(255, 255, 255)
+#define COLOR_BASECOLOR_CIAN	sf::Color(0, 174, 175)
+#define COLOR_BASECOLOR_BLUE	sf::Color(2, 186, 248)
 
 #define CALLBACK_0(__selector__,__target__, ...) std::bind(&__selector__,__target__, ##__VA_ARGS__)
 #define CALLBACK_1(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, ##__VA_ARGS__)
@@ -45,7 +47,8 @@ static __TYPE__* create() \
 #define CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
 
 #define SAFE_DELETE(p) if (p != nullptr) {delete p; p = nullptr;}
-#define SAVE_DELETE_VECTOR(v) Defaults::getInstance()->safeVectorReleaser(v);
+#define SAFE_DELETE_VECTOR(v) Defaults::getInstance()->safeVectorReleaser(v);
+
 
 
 class Defaults
@@ -73,6 +76,7 @@ private:
 
 	sf::Vector2f		m_windowSize;
 };
+
 
 
 template<typename T>

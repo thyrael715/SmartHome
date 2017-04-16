@@ -14,7 +14,7 @@ ButtonArc::~ButtonArc()
 
 void ButtonArc::onMousePressed(sf::Event e)
 {
-	setFillColor(sf::Color(50, 150, 75, 120));
+	setFillColor(sf::Color(50, 150, 75, 255));
 }
 
 void ButtonArc::onMouseReleased(sf::Event e)

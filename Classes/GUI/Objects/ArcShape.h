@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
 #include "Shape.h"
 
 
@@ -22,14 +21,10 @@ public:
 
 	void	setRadius(float radius);
 	float	getRadius() const;
-
-public:
-
-	virtual bool contains(const sf::Vector2f& point) const override;
-
+	
 protected:
 
-	virtual void create() override;
+	virtual void reCreate() override;
 
 protected:
 	

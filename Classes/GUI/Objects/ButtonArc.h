@@ -1,10 +1,10 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+
 #include "ArcShape.h"
-#include "EventDispatcher.h"
 #include "Defaults.h"
-#include "Object.h"
+
+
 
 class ButtonArc : public ArcShape
 {

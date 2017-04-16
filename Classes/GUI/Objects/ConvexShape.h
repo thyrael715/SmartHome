@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+
 #include "Shape.h"
 
 
@@ -16,14 +16,10 @@ public:
 
 	void setPoint(std::size_t index, const sf::Vector2f& point);
 	sf::Vector2f getPoint(std::size_t index) const;
-
-public:
-
-	virtual bool contains(const sf::Vector2f& point) const override;
-
+	
 protected:
 
-	virtual void create() override;
+	virtual void reCreate() override;
 
 private:
 

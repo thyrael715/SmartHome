@@ -7,7 +7,7 @@ ConvexShape::ConvexShape(size_t pointCount)
 	: m_pointCount(pointCount)
 {
 	m_vertices.setPrimitiveType(sf::TrianglesFan);
-	create();
+	reCreate();
 }
 
 
@@ -17,7 +17,7 @@ ConvexShape::~ConvexShape()
 }
 
 
-void ConvexShape::create()
+void ConvexShape::reCreate()
 {
 	m_vertices.clear();
 
@@ -25,13 +25,16 @@ void ConvexShape::create()
 	{
 		m_vertices.append(sf::Vector2f(0.0f, 0.0f));
 	}
+
+	// Always needed
+	this->update();
 }
 
 
 void ConvexShape::setPointCount(size_t count)
 {
 	m_pointCount = count;
-	create();
+	reCreate();
 }
 
 
@@ -56,10 +59,4 @@ sf::Vector2f ConvexShape::getPoint(size_t index) const
 		return sf::Vector2f(0.0f, 0.0f);
 
 	return m_vertices[index].position;
-}
-
-
-bool ConvexShape::contains(const sf::Vector2f& point) const
-{
-	return true;
 }

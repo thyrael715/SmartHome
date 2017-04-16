@@ -12,41 +12,18 @@ ArcShape::ArcShape(float fromAngle, float toAngle, float radius)
 	m_toAngle = toAngle;
 	m_radius = radius;
 
-	create();
+	reCreate();
 }
+
 
 ArcShape::~ArcShape()
 {
 	m_vertices.clear();
-	SAVE_DELETE_VECTOR(m_outline);
+	SAFE_DELETE_VECTOR(m_outline);
 }
 
-bool ArcShape::contains(const sf::Vector2f& point) const
-{
-	std::vector<sf::Vector2f> v(m_vertices.getVertexCount());
 
-	int range = static_cast<int>(m_vertices.getVertexCount());
-	int start = 0;
-	int end = range - 1;
-
-	for (int i = 0; i < range; i++)
-	{
-		if (i % 2 == 0)
-		{
-			v[start] = sf::Vector2f(m_vertices[i].position.x, m_vertices[i].position.y);
-			start++;
-		}
-		else
-		{
-			v[end] = sf::Vector2f(m_vertices[i].position.x, m_vertices[i].position.y);
-			end--;
-		}
-	}
-
-	return Maths::isInside(v, point);
-}
-
-void ArcShape::create()
+void ArcShape::reCreate()
 {
 	m_vertices.clear();
 
@@ -74,52 +51,60 @@ void ArcShape::create()
 		sf::Vertex v1(sf::Vector2f(x1, y1));
 		sf::Vertex v2(sf::Vector2f(x2, y2));
 
-		v1.color = m_fillColor;
-		v2.color = m_fillColor;
-
 		m_vertices.append(v1);
 		m_vertices.append(v2);
 	}
+
+	// Always needed
+	this->update();
 }
+
 
 void ArcShape::setThickness(float thickness)
 {
 	m_thickness = thickness;
-	create();
+	reCreate();
 }
+
 
 float ArcShape::getThickness() const
 {
 	return m_thickness;
 }
 
+
 void ArcShape::setToAngle(float toAngle)
 {
 	m_toAngle = toAngle;
-	create();
+	reCreate();
 }
+
 
 float ArcShape::getToAngle() const
 {
 	return m_toAngle;
 }
 
+
 void ArcShape::setFromAngle(float fromAngle)
 {
 	m_fromAngle = fromAngle;
-	create();
+	reCreate();
 }
+
 
 float ArcShape::getFromAngle() const
 {
 	return m_fromAngle;
 }
 
+
 void ArcShape::setRadius(float radius)
 {
 	m_radius = radius;
-	create();
+	reCreate();
 }
+
 
 float ArcShape::getRadius() const
 {

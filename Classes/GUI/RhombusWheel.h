@@ -1,18 +1,16 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+
 #include "Object.h"
+
 
 class RhombusWheel : public Object
 {
 public:
 
-	RhombusWheel(float radius, size_t count, float w, float h);
+	RhombusWheel(float radius, size_t count, float rhombus_w, float rhombus_h);
 	virtual ~RhombusWheel();
 
-	virtual sf::FloatRect	getGlobalBounds() const;
-	virtual bool			contains(const sf::Vector2f& point) const override;
-	
 	void					setOutlineColor(sf::Color color);
 	sf::Color				getOutlineColor() const;
 
@@ -30,8 +28,7 @@ public:
 
 	// Animation
 
-	void					setAnimAngle(float angle);
-	void					setAnimCenter(sf::Vector2f center);
+	void					setAnimationSpeed(float angle);
 	void					startAnimation();
 	void					stopAnimation();
 
@@ -45,14 +42,13 @@ private:
 
 	sf::Color				m_outlineColor;
 	float					m_radius;
-	float					m_width;
-	float					m_height;
+	float					m_rhombusHeight;
+	float					m_rhombusWidth;
 	size_t					m_wheelPartCount;
 
 	// For animation
 
-	float					m_animAngle;
-	sf::Vector2f			m_animCenter;
+	float					m_animationSpeed;
 	bool					m_isAnimating;
 
 private:

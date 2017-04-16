@@ -25,9 +25,6 @@
     <ClCompile Include="..\..\Classes\Defaults.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Classes\GUI\Background.cpp">
-      <Filter>Classes\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp">
       <Filter>Classes\GUI</Filter>
     </ClCompile>
@@ -73,13 +70,22 @@
     <ClCompile Include="..\..\Classes\Base\Scheduler.cpp">
       <Filter>Classes\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\Text.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\BackgroundLayer.cpp">
+      <Filter>Classes\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\MainLayer.cpp">
+      <Filter>Classes\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Application.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Defaults.h">
       <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Classes\GUI\Background.h">
-      <Filter>Classes\GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\GUI\CentralPanel.h">
       <Filter>Classes\GUI</Filter>
@@ -125,6 +131,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Classes\Base\Scheduler.h">
       <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\Text.h">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\BackgroundLayer.h">
+      <Filter>Classes\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\MainLayer.h">
+      <Filter>Classes\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Application.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

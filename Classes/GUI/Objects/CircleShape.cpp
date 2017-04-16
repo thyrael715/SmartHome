@@ -1,6 +1,6 @@
 
 #include "CircleShape.h"
-
+#include "Defaults.h"
 
 
 CircleShape::CircleShape(float radius, size_t pointCount)
@@ -8,7 +8,7 @@ CircleShape::CircleShape(float radius, size_t pointCount)
 	, m_pointCount(pointCount)
 {
 	m_vertices.setPrimitiveType(sf::TrianglesFan);
-	create();
+	reCreate();
 }
 
 
@@ -18,7 +18,7 @@ CircleShape::~CircleShape()
 }
 
 
-void CircleShape::create()
+void CircleShape::reCreate()
 {
 	m_vertices.clear();
 
@@ -31,13 +31,16 @@ void CircleShape::create()
 
 		m_vertices.append(sf::Vector2f(x1, y1));
 	}
+
+	// Always needed
+	this->update();
 }
 
 
 void CircleShape::setRadius(float radius)
 {
 	m_radius = radius;
-	create();
+	reCreate();
 }
 
 
@@ -50,17 +53,11 @@ float CircleShape::getRadius() const
 void CircleShape::setPointCount(size_t count)
 {
 	m_pointCount = count;
-	create();
+	reCreate();
 }
 
 
 std::size_t CircleShape::getPointCount() const
 {
 	return m_pointCount;
-}
-
-
-bool CircleShape::contains(const sf::Vector2f& point) const
-{
-	return true;
 }

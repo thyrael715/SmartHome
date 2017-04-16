@@ -49,7 +49,7 @@ void EventDispatcher::removeEventListener(EventListener* listener)
 	if (iter != m_listenerMap.end())
 	{
 		auto listenerVector = iter->second;
-		for (size_t i = 0; i < listenerVector->size(); i++)
+		for (size_t i = 0; i < listenerVector->size(); ++i)
 		{
 			if (listener == (*listenerVector)[i])
 			{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+
 #include "Shape.h"
 
 
@@ -16,13 +16,9 @@ public:
 	void setPointCount(size_t count);
 	std::size_t getPointCount() const;
 
-public:
-
-	virtual bool contains(const sf::Vector2f& point) const override;
-
 protected:
 
-	virtual void create() override;
+	virtual void reCreate() override;
 
 private:
 

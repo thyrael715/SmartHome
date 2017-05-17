@@ -33,7 +33,7 @@ void Application::init()
 	m_window->setFramerateLimit(framerateLimit);
 
 	Defaults::getInstance()->setWindowSize((float)windowWidth, (float)windowHeight);
-
+	
 	m_sceneObject = MainLayer::create();
 }
 

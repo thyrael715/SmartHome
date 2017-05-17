@@ -7,13 +7,6 @@
 
 class Object : public sf::Drawable, public sf::Transformable
 {
-	enum EventType
-	{
-		MOUSE = 0,
-		KEYBOARD = 1,
-		VOICE = 2,
-		UNKNOWN = 3,
-	};
 
 	struct EventCallbackStruct
 	{
@@ -23,8 +16,17 @@ class Object : public sf::Drawable, public sf::Transformable
 
 public:
 
+	enum EventType
+	{
+		MOUSE = 0,
+		KEYBOARD = 1,
+		VOICE = 2,
+		UNKNOWN = 3,
+	};
+
 	Object();
 	virtual ~Object();
+
 	virtual bool contains(const sf::Vector2f& point) const;
 	virtual sf::FloatRect getGlobalBounds() const;
 	virtual void onUpdate(float dt){};

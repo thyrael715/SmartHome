@@ -17,7 +17,7 @@ Shape::Shape()
 
 Shape::~Shape()
 {
-	SAFE_DELETE_VECTOR(m_outline);
+	SAFE_DELETE_CONTAINER(m_outline);
 }
 
 
@@ -131,7 +131,7 @@ void Shape::updateFillColor()
 
 void Shape::updateOutline()
 {
-	SAFE_DELETE_VECTOR(m_outline);
+	SAFE_DELETE_CONTAINER(m_outline);
 
 	if (m_outlineThickness <= 0)
 	{

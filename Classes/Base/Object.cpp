@@ -247,10 +247,17 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	// Combine transforms
 	states.transform *= getTransform();
 
+	// Call object's own unique draw method 
 	this->onDraw(target, states);
-
+	
 	for (auto& it = m_children.rbegin(); it != m_children.rend(); ++it)
 	{
 		target.draw(*it->second, states);
+	}
+
+	if (Defaults::getInstance()->getMainView().getSize() != target.getView().getSize() ||
+		Defaults::getInstance()->getMainView().getCenter() != target.getView().getCenter())
+	{
+		target.setView(Defaults::getInstance()->getMainView());
 	}
 }

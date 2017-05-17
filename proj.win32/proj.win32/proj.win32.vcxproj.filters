@@ -17,6 +17,9 @@
     <Filter Include="Classes\Base">
       <UniqueIdentifier>{8515d370-0a5d-41e4-8c53-0e5a79f55f33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\SFMLExtension">
+      <UniqueIdentifier>{da90af45-703b-4e7d-aceb-bd709226ae5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -82,6 +85,30 @@
     <ClCompile Include="..\..\Classes\Application.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.cpp">
+      <Filter>Classes\SFMLExtension</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\AudioPlayer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\FolderBrowser.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\FileBrowser.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\FileSystemUtils.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\AudioFile.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\Mp3.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Classes\GUI\Objects\RectangleShape.cpp">
+      <Filter>Classes\GUI\Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Defaults.h">
@@ -143,6 +170,30 @@
     </ClInclude>
     <ClInclude Include="..\..\Classes\Application.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.hpp">
+      <Filter>Classes\SFMLExtension</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\AudioPlayer.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\FolderBrowser.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\FileBrowser.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\FileSystemUtils.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\AudioFile.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Mp3.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\GUI\Objects\RectangleShape.h">
+      <Filter>Classes\GUI\Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

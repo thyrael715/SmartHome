@@ -19,7 +19,7 @@ ArcShape::ArcShape(float fromAngle, float toAngle, float radius)
 ArcShape::~ArcShape()
 {
 	m_vertices.clear();
-	SAFE_DELETE_VECTOR(m_outline);
+	SAFE_DELETE_CONTAINER(m_outline);
 }
 
 

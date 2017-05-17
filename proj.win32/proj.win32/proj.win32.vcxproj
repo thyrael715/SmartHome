@@ -53,13 +53,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base;$(ProjectDir)..\..\Classes\SFMLExtension;$(ProjectDir)..\..\External\mpg123\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-window-d.lib;sfml-system-d.lib;libmpg123-0.lib;libout123-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;$(ProjectDir)..\..\External\mpg123\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\Resources" "$(OutDir)" /D /E /I /F /Y
@@ -79,15 +79,15 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\dev\library\SFML\include;$(ProjectDir)..\..\Classes;$(ProjectDir)..\..\Classes\GUI;$(ProjectDir)..\..\Classes\GUI\Objects;$(ProjectDir)..\..\Classes\Base;$(ProjectDir)..\..\Classes\SFMLExtension;$(ProjectDir)..\..\External\mpg123\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-window.lib;sfml-system.lib;libmpg123-0.lib;libout123-0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\dev\library\SFML\lib;$(ProjectDir)..\..\External\mpg123\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(ProjectDir)..\..\Resources" "$(OutDir)" /D /E /I /F /Y
@@ -99,10 +99,15 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Classes\Application.cpp" />
+    <ClCompile Include="..\..\Classes\AudioFile.cpp" />
+    <ClCompile Include="..\..\Classes\AudioPlayer.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventDispatcher.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListener.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerKeyboard.cpp" />
     <ClCompile Include="..\..\Classes\Base\EventListenerMouse.cpp" />
+    <ClCompile Include="..\..\Classes\Base\FileBrowser.cpp" />
+    <ClCompile Include="..\..\Classes\Base\FileSystemUtils.cpp" />
+    <ClCompile Include="..\..\Classes\Base\FolderBrowser.cpp" />
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Base\Scheduler.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
@@ -114,18 +119,26 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClCompile Include="..\..\Classes\GUI\Objects\CircleShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\ConvexShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Line.cpp" />
+    <ClCompile Include="..\..\Classes\GUI\Objects\RectangleShape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Shape.cpp" />
     <ClCompile Include="..\..\Classes\GUI\Objects\Text.cpp" />
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
     <ClCompile Include="..\..\Classes\Maths.cpp" />
+    <ClCompile Include="..\..\Classes\Mp3.cpp" />
+    <ClCompile Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Application.h" />
+    <ClInclude Include="..\..\Classes\AudioFile.h" />
+    <ClInclude Include="..\..\Classes\AudioPlayer.h" />
     <ClInclude Include="..\..\Classes\Base\EventDispatcher.h" />
     <ClInclude Include="..\..\Classes\Base\EventListener.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerKeyboard.h" />
     <ClInclude Include="..\..\Classes\Base\EventListenerMouse.h" />
+    <ClInclude Include="..\..\Classes\Base\FileBrowser.h" />
+    <ClInclude Include="..\..\Classes\Base\FileSystemUtils.h" />
+    <ClInclude Include="..\..\Classes\Base\FolderBrowser.h" />
     <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Base\Scheduler.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />
@@ -137,10 +150,13 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClInclude Include="..\..\Classes\GUI\Objects\CircleShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\ConvexShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Line.h" />
+    <ClInclude Include="..\..\Classes\GUI\Objects\RectangleShape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Shape.h" />
     <ClInclude Include="..\..\Classes\GUI\Objects\Text.h" />
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />
     <ClInclude Include="..\..\Classes\Maths.h" />
+    <ClInclude Include="..\..\Classes\Mp3.h" />
+    <ClInclude Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

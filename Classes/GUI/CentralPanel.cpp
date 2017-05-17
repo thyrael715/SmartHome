@@ -3,6 +3,7 @@
 
 
 CentralPanel::CentralPanel()
+	: m_audioPlayer(nullptr)
 {
 	
 }
@@ -10,7 +11,7 @@ CentralPanel::CentralPanel()
 
 CentralPanel::~CentralPanel()
 {
-	SAFE_DELETE_VECTOR(m_mainButtons);
+	SAFE_DELETE_CONTAINER(m_mainButtons);
 }
 
 
@@ -38,7 +39,10 @@ void CentralPanel::init()
 	createArc(180.0f, 300.0f);
 	createArc(320.0f, 360.0f);
 
-	createCentralCircleMenu();
+
+	m_audioPlayer = AudioPlayer::create();
+	this->addChild(m_audioPlayer);
+	//createCentralCircleMenu();
 }
 
 
@@ -69,9 +73,9 @@ void CentralPanel::createCentralCircleMenu()
 	float radius = C2WH(200.0f);
 	float thickness = C2WH(35.0f);
 
-	for (float i = 0; i < 24; i++)
+	for (float i = 0; i < 25; i++)
 	{
-		float start = (i * 15.0f) + 0.5f;
+		float start = (i * 14.4f) + 0.2f;
 		float end = start + 14.0f;
 
 		ButtonArc* b = new ButtonArc(start, end, radius);

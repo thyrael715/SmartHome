@@ -4,6 +4,7 @@
 #include "RhombusWheel.h"
 #include "ArcShape.h"
 #include "ButtonArc.h"
+#include "AudioPlayer.h"
 
 
 class CentralPanel : public Object
@@ -25,4 +26,5 @@ private:
 private:
 
 	std::vector<ButtonArc*>	m_mainButtons;
+	AudioPlayer* m_audioPlayer;
 };

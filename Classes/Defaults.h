@@ -47,7 +47,7 @@ static __TYPE__* create() \
 #define CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
 
 #define SAFE_DELETE(p) if (p != nullptr) {delete p; p = nullptr;}
-#define SAFE_DELETE_VECTOR(v) Defaults::getInstance()->safeVectorReleaser(v);
+#define SAFE_DELETE_CONTAINER(v) Defaults::getInstance()->safeContainerReleaser(v);
 
 
 
@@ -56,11 +56,12 @@ class Defaults
 private:
 
 	Defaults();
+	~Defaults();
 
-public:
-		
 	Defaults(const Defaults&) = delete;
 	Defaults& operator=(const Defaults&) = delete;
+
+public:
 
 	static Defaults*	getInstance();
 
@@ -69,22 +70,22 @@ public:
 	float				getWindowWidth() const;
 	float				getWindowHeight() const;
 
-	template<typename T>
-	void safeVectorReleaser(std::vector<T*>& v);
+	void				setMainView(sf::View* view);
+	sf::View&			getMainView() const;
+	
+	template<typename C_Type>
+	void safeContainerReleaser(C_Type & v);
 
 private:
 
 	sf::Vector2f		m_windowSize;
+	sf::View*			m_mainView;
 };
 
 
-
-template<typename T>
-void Defaults::safeVectorReleaser(std::vector<T*>& v)
+template<typename C_Type>
+void Defaults::safeContainerReleaser(C_Type & v)
 {
-	if (v.size() == 0)
-		return;
-
 	for (auto it = v.begin(); it != v.end(); ++it)
 	{
 		delete (*it);

@@ -13,7 +13,7 @@ EventListener::EventListener()
 
 EventListener::~EventListener()
 {
-
+	m_associatedObject = nullptr;
 }
 
 bool EventListener::init(Type eventType, std::string listenerID, const EventCallBack& onEvent)

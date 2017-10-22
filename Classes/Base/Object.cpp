@@ -11,16 +11,15 @@ Object::Object()
 
 Object::~Object()
 {
-	unregisterAllEvent();
 	removeAllChildren();
 }
 
 
 bool Object::contains(const sf::Vector2f& point) const
 {
-	for each (auto item in m_children)
+	for each (auto child in m_children)
 	{
-		if (item.second->contains(point))
+		if (child->contains(point))
 		{
 			return true;
 		}
@@ -39,9 +38,9 @@ sf::FloatRect Object::getGlobalBounds() const
 
 	sf::FloatRect boundingBox(WINDOW_WIDTH, WINDOW_HEIGHT, 0, 0);
 
-	for each (auto item in m_children)
+	for each (auto child in m_children)
 	{
-		sf::FloatRect actChildBounds = item.second->getGlobalBounds();
+		sf::FloatRect actChildBounds = child->getGlobalBounds();
 		
 		if (actChildBounds.left < boundingBox.left)
 		{
@@ -65,6 +64,28 @@ sf::FloatRect Object::getGlobalBounds() const
 	boundingBox.height -= boundingBox.top;
 
 	return boundingBox;
+}
+
+
+sf::Vector2f Object::convertToWorldSpace(const sf::Vector2f& point) const
+{
+	sf::Vector2f res(point);
+
+	Object* actParent = m_parent;
+
+	while (actParent != nullptr)
+	{
+		res += actParent->getPosition();
+		actParent = actParent->getParent();
+	}
+
+	return res;
+}
+
+
+sf::Vector2f Object::convertToObjectSpace(const sf::Vector2f& point) const
+{
+	return point - convertToWorldSpace(getPosition());
 }
 
 
@@ -144,6 +165,8 @@ void Object::unregisterAllEvent()
 	{
 		unregisterEvent(EventType(i));
 	}
+
+	m_eventMap.clear();
 }
 
 
@@ -169,28 +192,6 @@ void Object::addEvent(Object::EventType eventType, const std::function<void()>& 
 }
 
 
-sf::Vector2f Object::convertToWorldSpace(const sf::Vector2f& point) const
-{
-	sf::Vector2f res(point);
-
-	Object* actParent = m_parent;
-
-	while (actParent != nullptr)
-	{
-		res += actParent->getPosition();
-		actParent = actParent->getParent();
-	}
-
-	return res;
-}
-
-
-sf::Vector2f Object::convertToObjectSpace(const sf::Vector2f& point) const
-{
-	return point - convertToWorldSpace(getPosition());
-}
-
-
 void Object::setParent(Object* obj)
 {
 	m_parent = obj;
@@ -205,8 +206,36 @@ Object* Object::getParent() const
 
 void Object::addChild(Object* obj, int zOrder)
 {
-	m_children.insert(std::pair<int, Object*>(zOrder, obj));
-	obj->setParent(this);
+	if (obj)
+	{
+		bool isInserted = false;
+		obj->setZOrder(zOrder);
+		obj->setParent(this);
+
+		for (auto it = m_children.cbegin(); it != m_children.cend(); ++it)
+		{
+			if ((*it)->getZOrder() < zOrder)
+			{
+				if (it == m_children.cbegin())
+				{
+					m_children.push_front(obj);
+					isInserted = true;
+					break;
+				}
+				else
+				{
+					m_children.insert(it - 1, obj);
+					isInserted = true;
+					break;
+				}
+			}
+		}
+
+		if (!isInserted)
+		{
+			m_children.push_back(obj);
+		}
+	}
 }
 
 
@@ -214,9 +243,9 @@ void Object::removeChild(Object* obj)
 {
 	for (auto it = m_children.begin(); it != m_children.end(); ++it)
 	{
-		if (it->first == obj->m_zOrder && it->second == obj)
+		if (*it == obj)
 		{
-			delete it->second;
+			delete *it;
 			m_children.erase(it);
 			break;
 		}
@@ -226,19 +255,30 @@ void Object::removeChild(Object* obj)
 
 void Object::removeAllChildren()
 {
-	for (auto it = m_children.begin(); it != m_children.end();)
+	for (auto it = m_children.begin(); it != m_children.end(); ++it)
 	{
-		delete it->second;
-		it = m_children.erase(it);
+		delete *it;
 	}
 
 	m_children.clear();
 }
 
 
-std::multimap<int, Object*> Object::getChildren() const
+std::deque<Object*> Object::getChildren() const
 {
 	return m_children;
+}
+
+
+void Object::setZOrder(int zOrder)
+{
+	m_zOrder = zOrder;
+}
+
+
+int Object::getZOrder() const
+{
+	return m_zOrder;
 }
 
 
@@ -250,14 +290,14 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	// Call object's own unique draw method 
 	this->onDraw(target, states);
 	
-	for (auto& it = m_children.rbegin(); it != m_children.rend(); ++it)
+	for (auto child : m_children)
 	{
-		target.draw(*it->second, states);
+		target.draw(*child, states);
 	}
 
-	if (Defaults::getInstance()->getMainView().getSize() != target.getView().getSize() ||
-		Defaults::getInstance()->getMainView().getCenter() != target.getView().getCenter())
-	{
-		target.setView(Defaults::getInstance()->getMainView());
-	}
+	//if (Defaults::getInstance()->getMainView().getSize() != target.getView().getSize() ||
+	//	Defaults::getInstance()->getMainView().getCenter() != target.getView().getCenter())
+	//{
+	//	target.setView(Defaults::getInstance()->getMainView());
+	//}
 }

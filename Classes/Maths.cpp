@@ -116,10 +116,10 @@ bool Maths::isInside(const sf::VertexArray& polygon, sf::Vector2f p)
 
 bool Maths::isInRect(const sf::FloatRect& rect, const sf::Vector2f& point)
 {
-	if (rect.left < point.x ||
-		rect.top < point.y ||
-		rect.left + rect.width > point.x ||
-		rect.top + rect.height > point.y)
+	if (rect.left > point.x ||
+		rect.top > point.y ||
+		rect.left + rect.width < point.x ||
+		rect.top + rect.height < point.y)
 	{
 		return false;
 	}

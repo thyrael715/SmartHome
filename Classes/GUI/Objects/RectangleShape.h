@@ -17,7 +17,7 @@ protected:
 
 	virtual void reCreate() override;
 
-private:
+protected:
 
 	sf::Vector2f m_size;
 };

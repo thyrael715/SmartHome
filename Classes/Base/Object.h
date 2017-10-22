@@ -3,11 +3,11 @@
 #include "EventDispatcher.h"
 #include "Scheduler.h"
 #include "Defaults.h"
+#include <deque>
 
 
 class Object : public sf::Drawable, public sf::Transformable
 {
-
 	struct EventCallbackStruct
 	{
 		EventListener* eventListener;
@@ -35,7 +35,6 @@ public:
 	void registerEvent(EventType type);
 	void unregisterAllEvent();
 	void unregisterEvent(EventType type);
-
 	void addEvent(EventType eventType, const std::function<void()>& func);
 
 	sf::Vector2f convertToWorldSpace(const sf::Vector2f& point) const;
@@ -47,8 +46,11 @@ public:
 	void addChild(Object* obj, int zOrder = 0);
 	void removeChild(Object* obj);
 	void removeAllChildren();
-	std::multimap<int, Object*> getChildren() const;
-	
+	std::deque<Object*> getChildren() const;
+
+	void setZOrder(int zOrder);
+	int getZOrder() const;
+		
 protected:
 
 	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const {};
@@ -61,14 +63,15 @@ protected:
 	virtual void onKeyPressed(sf::Event e) {};
 	virtual void onKeyReleased(sf::Event e) {};
 
+protected:
+
+	std::map<EventType, EventCallbackStruct> m_eventMap;
+	std::deque<Object*> m_children;
+	Object* m_parent;
+	int m_zOrder;
+
 private:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-protected:
-
-	std::map<EventType, EventCallbackStruct> m_eventMap;
-	std::multimap<int, Object*> m_children;
-	Object* m_parent;
-	int m_zOrder;
 };

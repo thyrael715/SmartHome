@@ -24,7 +24,6 @@ public:
 	bool ShowDialog();
 
 	std::vector<std::string> getFileNamesWithFolder() const;
-	std::vector<std::string> getFileNamesWithoutFolder() const;
 	
 private:
 

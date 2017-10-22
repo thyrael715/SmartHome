@@ -8,36 +8,34 @@
 //class AudioFile : public sf::Music
 class AudioFile : public sfe::Mp3
 {
-public:
-
-	struct InternalData
-	{
-		std::string title;
-		std::string artist;
-		std::string album;
-		int year;
-		sf::Time duration;
-	};
 
 public:
 
-	AudioFile();
+	AudioFile(const std::string &filename);
 	virtual ~AudioFile();
 
-	bool openFromFile(const std::string &filename);
+	bool openFromFile(const std::string& filename);
 
 	std::string getFileExtension() const;
-
-	std::string getFullFileName() const;
-	std::string getFileNameWithExt() const;
 	std::string getFileNameWithoutExt() const;
 
-	InternalData getInternalData() const;
+	std::string getTitle() const { return m_title; };
+	std::string getArtist() const { return m_artist; };
+	std::string getAlbum() const { return m_album; };
+	unsigned short getYear() const { return m_year; };
+	sf::Time getDuration() const { return m_duration; };
 
 private:
 
 	void initInternalData();
 	
+protected:
+
 	std::string m_fileName;
-	InternalData m_internalData;
+
+	std::string m_title;
+	std::string m_artist;
+	std::string m_album;
+	unsigned short m_year;
+	sf::Time m_duration;
 };

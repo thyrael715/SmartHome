@@ -10,7 +10,7 @@ class Text : public Object
 public:
 
 	Text() : m_text(){};
-	Text(const sf::String& string, const sf::Font& font, unsigned int characterSize = 30) : m_text(string, font, characterSize){};
+	Text(const sf::String& text, const sf::Font& font, unsigned int characterSize = 12) : m_text(text, font, characterSize){};
 
 	void setString(const sf::String& string)				{ m_text.setString(string); };
 	void setFont(const sf::Font& font)						{ m_text.setFont(font); };
@@ -30,6 +30,10 @@ public:
 	sf::Vector2f findCharacterPos(std::size_t index) const	{ return m_text.findCharacterPos(index); };
 	sf::FloatRect getLocalBounds() const					{ return m_text.getLocalBounds(); };
 	sf::FloatRect getGlobalBounds() const					{ return m_text.getGlobalBounds(); };
+
+public:
+
+	virtual bool contains(const sf::Vector2f& point) const;
 
 protected:
 

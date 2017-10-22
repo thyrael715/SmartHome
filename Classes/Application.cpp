@@ -2,12 +2,6 @@
 #include "MainLayer.h"
 
 
-const unsigned int windowWidth		= 1600;
-const unsigned int windowHeight		= 900;
-const sf::String windowName			= "SmartHome";
-const unsigned int antialiasLevel	= 16;
-const unsigned int framerateLimit	= 40;
-
 
 Application::Application()
 	: m_window(nullptr)
@@ -26,6 +20,13 @@ Application::~Application()
 
 void Application::init()
 {
+	const unsigned int	windowWidth = 1600;
+	const unsigned int	windowHeight = 900;
+	const sf::String	windowName = "SmartHome";
+	const unsigned int	antialiasLevel = 16;
+	const unsigned int	framerateLimit = 40;
+
+
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = antialiasLevel;
 
@@ -47,8 +48,6 @@ void Application::run()
 
 	while (m_window->isOpen())
 	{
-		sf::Time deltaTime = clock.getElapsedTime();
-
 		while (m_window->pollEvent(event))
 		{
 			switch (event.type)
@@ -67,9 +66,9 @@ void Application::run()
 			}
 		}
 
-		scheduler->update(deltaTime.asSeconds());
+		scheduler->update(clock.getElapsedTime().asSeconds());
 
-		clock.restart().asSeconds();
+		clock.restart();
 		
 		// draw...
 		m_window->clear();

@@ -125,6 +125,8 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClCompile Include="..\..\Classes\GUI\RhombusWheel.cpp" />
     <ClCompile Include="..\..\Classes\Maths.cpp" />
     <ClCompile Include="..\..\Classes\Mp3.cpp" />
+    <ClCompile Include="..\..\Classes\Playlist.cpp" />
+    <ClCompile Include="..\..\Classes\PlaylistItem.cpp" />
     <ClCompile Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -156,6 +158,8 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClInclude Include="..\..\Classes\GUI\RhombusWheel.h" />
     <ClInclude Include="..\..\Classes\Maths.h" />
     <ClInclude Include="..\..\Classes\Mp3.h" />
+    <ClInclude Include="..\..\Classes\Playlist.h" />
+    <ClInclude Include="..\..\Classes\PlaylistItem.h" />
     <ClInclude Include="..\..\Classes\SFMLExtension\SoundFileReaderMp3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

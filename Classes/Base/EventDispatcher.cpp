@@ -118,6 +118,7 @@ void EventDispatcher::handleEventMouse(sf::Event e)
 		if (listener->getAssociatedObject()->contains(mousePos))
 		{
 			listener->onEvent(e);
+			return;
 		}
 	}
 }

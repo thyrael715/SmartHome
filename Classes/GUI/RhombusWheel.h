@@ -17,12 +17,6 @@ public:
 	void					setRadius(float radius);
 	float					getRadius() const;
 
-	void					setWidth(float width);
-	float					getWidth() const;
-
-	void					setHeight(float height);
-	float					getHeight() const;
-
 	void					setWheelPartCount(size_t wheelPartCount);
 	size_t					getWheelPartCount() const;
 

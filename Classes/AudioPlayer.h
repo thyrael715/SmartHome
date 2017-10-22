@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Object.h"
-#include "AudioFile.h"
-#include "FileSystemUtils.h"
-#include "RectangleShape.h"
+#include "Playlist.h"
 
 
 class AudioPlayer : public Object
@@ -23,10 +21,6 @@ public:
 
 	void init();
 
-	void openFromFile();
-	void openFromDirectory();
-	void clearAllFiles();
-
 	void play();
 	void pause();
 	void stop();
@@ -42,14 +36,5 @@ protected:
 
 private:
 
-	void createPlayList();
-
-private:
-
-	std::vector<AudioFile*> m_audioFiles;
-	AudioFile* m_actAudioFile;
-	FileSystemUtils* m_fileSystemUtils;
-	sf::View* m_scrollView;
-	sf::Font* m_font;
-	RectangleShape* m_playList;
+	Playlist* m_playlist;
 };

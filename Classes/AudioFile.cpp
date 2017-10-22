@@ -1,11 +1,15 @@
 #include "AudioFile.h"
 
 
-AudioFile::AudioFile()
-	: m_internalData()
-	, m_fileName("")
+AudioFile::AudioFile(const std::string &filename)
+	: m_fileName("")
+	, m_title("")
+	, m_artist("")
+	, m_album("")
+	, m_year(0)
+	, m_duration(sf::Time::Zero)
 {
-
+	openFromFile(filename);
 }
 
 
@@ -25,10 +29,17 @@ bool AudioFile::openFromFile(const std::string &filename)
 	//	return true;
 	//}
 
-	if (sfe::Mp3::OpenFromFile(m_fileName))
+	try
 	{
-		initInternalData();
-		return true;
+		if (sfe::Mp3::OpenFromFile(m_fileName))
+		{
+			initInternalData();
+			return true;
+		}
+	}
+	catch (...)
+	{
+		// TODO: cannot be opened
 	}
 	
 	return false;
@@ -44,22 +55,10 @@ std::string AudioFile::getFileExtension() const
 }
 
 
-std::string AudioFile::getFullFileName() const
-{
-	return m_fileName;
-}
-
-
-std::string AudioFile::getFileNameWithExt() const
-{
-	return m_fileName.substr(m_fileName.rfind("\\"));
-}
-
-
 std::string AudioFile::getFileNameWithoutExt() const
 {
-	std::string retVal = m_fileName.substr(m_fileName.rfind("\\"));
-	retVal = retVal.substr(0, retVal.rfind("."));
+	// the result without +1 would be = "\\<audio file name>"
+	std::string retVal = m_fileName.substr(m_fileName.rfind("\\") + 1);
 	
 	return retVal;
 }
@@ -92,26 +91,33 @@ void AudioFile::initInternalData()
 			{
 				if (v2 != nullptr)
 				{
-					m_internalData.title = std::string(v2->title->p, v2->title->size);
-					m_internalData.artist = std::string(v2->artist->p, v2->artist->size);
-					m_internalData.album = std::string(v2->album->p, v2->album->size);
-					m_internalData.year = atoi(std::string(v2->year->p, v2->year->size).c_str());
+					if (v2->title)
+						m_title = std::string(v2->title->p, v2->title->size);
+					else
+						m_title = getFileNameWithoutExt();
+
+					if (v2->artist)
+						m_artist = std::string(v2->artist->p, v2->artist->size);
+
+					if (v2->album)
+						m_album = std::string(v2->album->p, v2->album->size);
+					
+					if (v2->year)
+						m_year = (unsigned short)(atoi(std::string(v2->year->p, v2->year->size).c_str()));					
 				}
 			}
-
-			auto asd = getFileExtension();
-
+			
 			if (getFileExtension() == "mp3")
 			{
 				auto frameNum = mpg123_framelength(m);
 				auto frameDurationInSec = mpg123_tpf(m);
 
-				m_internalData.duration = sf::microseconds((sf::Int32)(frameNum * frameDurationInSec * 1000000));
+				m_duration = sf::microseconds((sf::Int32)(frameNum * frameDurationInSec * 1000000));
 			}
 			else
 			{
 				//m_internalData.duration = sf::Music::getDuration();
-				m_internalData.duration = sf::seconds(0);
+				m_duration = sf::seconds(0);
 			}
 
 			mpg123_close(m);
@@ -119,10 +125,4 @@ void AudioFile::initInternalData()
 			mpg123_exit();
 		}
 	}
-}
-
-
-AudioFile::InternalData AudioFile::getInternalData() const
-{
-	return m_internalData;
 }

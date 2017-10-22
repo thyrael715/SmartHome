@@ -66,9 +66,9 @@ void RhombusWheel::setOutlineColor(sf::Color color)
 {
 	m_outlineColor = color;
 	
-	for (auto& item : getChildren())
+	for (auto& actChild : getChildren())
 	{
-		if (auto child = dynamic_cast<Shape*>(item.second))
+		if (auto child = dynamic_cast<Shape*>(actChild))
 		{
 			child->setFillColor(color);
 		}
@@ -91,32 +91,6 @@ void RhombusWheel::setRadius(float radius)
 float RhombusWheel::getRadius() const
 {
 	return m_radius;
-}
-
-
-void RhombusWheel::setWidth(float width)
-{
-	m_rhombusWidth = width;
-	reCreate();
-}
-
-
-float RhombusWheel::getWidth() const
-{
-	return m_rhombusWidth;
-}
-
-
-void RhombusWheel::setHeight(float height)
-{
-	m_rhombusHeight = height;
-	reCreate();
-}
-
-
-float RhombusWheel::getHeight() const
-{
-	return m_rhombusHeight;
 }
 
 

@@ -3,6 +3,7 @@
 
 AudioFile::AudioFile(const std::string &filename)
 	: m_fileName("")
+	, m_fullName("")
 	, m_title("")
 	, m_artist("")
 	, m_album("")
@@ -58,7 +59,10 @@ std::string AudioFile::getFileExtension() const
 std::string AudioFile::getFileNameWithoutExt() const
 {
 	// the result without +1 would be = "\\<audio file name>"
-	std::string retVal = m_fileName.substr(m_fileName.rfind("\\") + 1);
+	size_t start = m_fileName.rfind("\\") + 1;
+	size_t end = (m_fileName.rfind(".")) - start;
+
+	std::string retVal = m_fileName.substr(start, end);
 	
 	return retVal;
 }
@@ -68,6 +72,10 @@ void AudioFile::initInternalData()
 {
 	if (!m_fileName.empty())
 	{
+		m_fullName = getFileNameWithoutExt();
+
+		// Read Mp3 file and fill member variables
+
 		mpg123_handle* m;	
 		mpg123_id3v1 *v1 = nullptr;
 		mpg123_id3v2 *v2 = nullptr;
@@ -93,8 +101,6 @@ void AudioFile::initInternalData()
 				{
 					if (v2->title)
 						m_title = std::string(v2->title->p, v2->title->size);
-					else
-						m_title = getFileNameWithoutExt();
 
 					if (v2->artist)
 						m_artist = std::string(v2->artist->p, v2->artist->size);

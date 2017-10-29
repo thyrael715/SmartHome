@@ -3,9 +3,10 @@
 #include "RectangleShape.h"
 #include "PlaylistItem.h"
 #include "FileSystemUtils.h"
+#include "Menu.h"
 
 
-class Playlist : public RectangleShape
+class Playlist : public Menu
 {
 public:
 
@@ -13,7 +14,7 @@ public:
 	virtual ~Playlist();
 
 	sf::View* getScrollView() const;
-	AudioFile* getCurrentAudioFile() const;
+	PlaylistItem* getCurrentAudioFile() const;
 	
 	void openFromFile();
 	void openFromDirectory();
@@ -33,9 +34,7 @@ private:
 
 private:
 
-	std::vector<PlaylistItem*> m_audioFiles;
-	PlaylistItem* m_currentPlaylistItem;
-	sf::Font* m_font;
+	RectangleShape* m_backgroundRect;
 	sf::View* m_scrollView;
 	FileSystemUtils* m_fileSystemUtils;
 };

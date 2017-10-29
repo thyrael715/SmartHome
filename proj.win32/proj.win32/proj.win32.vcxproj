@@ -108,6 +108,8 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClCompile Include="..\..\Classes\Base\FileBrowser.cpp" />
     <ClCompile Include="..\..\Classes\Base\FileSystemUtils.cpp" />
     <ClCompile Include="..\..\Classes\Base\FolderBrowser.cpp" />
+    <ClCompile Include="..\..\Classes\Base\Menu.cpp" />
+    <ClCompile Include="..\..\Classes\Base\MenuItem.cpp" />
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Base\Scheduler.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
@@ -141,6 +143,8 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClInclude Include="..\..\Classes\Base\FileBrowser.h" />
     <ClInclude Include="..\..\Classes\Base\FileSystemUtils.h" />
     <ClInclude Include="..\..\Classes\Base\FolderBrowser.h" />
+    <ClInclude Include="..\..\Classes\Base\Menu.h" />
+    <ClInclude Include="..\..\Classes\Base\MenuItem.h" />
     <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Base\Scheduler.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />

@@ -26,11 +26,7 @@ public:
 
 	Object();
 	virtual ~Object();
-
-	virtual bool contains(const sf::Vector2f& point) const;
-	virtual sf::FloatRect getGlobalBounds() const;
-	virtual void onUpdate(float dt){};
-
+	
 	void registerAllEvent();
 	void registerEvent(EventType type);
 	void unregisterAllEvent();
@@ -42,15 +38,22 @@ public:
 
 	void setParent(Object* obj);
 	Object* getParent() const;
-
-	void addChild(Object* obj, int zOrder = 0);
-	void removeChild(Object* obj);
+	
 	void removeAllChildren();
 	std::deque<Object*> getChildren() const;
 
 	void setZOrder(int zOrder);
 	int getZOrder() const;
-		
+
+public:
+
+	virtual bool contains(const sf::Vector2f& point) const;
+	virtual sf::FloatRect getGlobalBounds() const;
+	virtual void onUpdate(float dt){};
+
+	virtual void addChild(Object* obj, int zOrder = 0);
+	virtual void removeChild(Object* obj);
+
 protected:
 
 	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const {};

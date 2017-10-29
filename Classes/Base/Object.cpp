@@ -294,10 +294,4 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*child, states);
 	}
-
-	//if (Defaults::getInstance()->getMainView().getSize() != target.getView().getSize() ||
-	//	Defaults::getInstance()->getMainView().getCenter() != target.getView().getCenter())
-	//{
-	//	target.setView(Defaults::getInstance()->getMainView());
-	//}
 }

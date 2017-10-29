@@ -12,13 +12,13 @@
 
 PlaylistItem::PlaylistItem(const sf::String& path)
 	: AudioFile(path)
+	, m_background(nullptr)
 	, m_songNameText(nullptr)
 	, m_durationText(nullptr)
 	, m_font(nullptr)
-	, m_selectionState(SELECTIONSTATE_UNSELECTED)
+	, m_size(0.0f, 0.0f)
 {
 	init();
-	Scheduler::getInstance()->scheduleUpdate(this);
 }
 
 
@@ -30,6 +30,10 @@ PlaylistItem::~PlaylistItem()
 
 void PlaylistItem::init()
 {
+	initCallbacks();
+
+// #### init font ####
+
 	m_font = new sf::Font();
 
 	if (!m_font || !m_font->loadFromFile("Fonts\\arial.ttf"))
@@ -38,13 +42,13 @@ void PlaylistItem::init()
 		return;
 	}
 	
-	// Title text initialization
-
-	m_songNameText = new Text(m_title.c_str(), *m_font, PI_TEXT_FONTSIZE);
+// #### Title text initialization ####
+	 
+	m_songNameText = new Text(m_fullName.c_str(), *m_font, PI_TEXT_FONTSIZE);
 	m_songNameText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
 	this->addChild(m_songNameText);
 
-	// Song duration text initialization
+// #### Song duration text initialization ####
 
 	const float songDurationInSec = m_duration.asSeconds();
 
@@ -57,25 +61,71 @@ void PlaylistItem::init()
 		secondsInStr = "0" + secondsInStr;
 	}
 
-	std::string fullDurationStr = minutesInStr + ":" + secondsInStr;
+	std::string space = "  ";
+	std::string fullDurationStr = space + minutesInStr + ":" + secondsInStr;
 
 	m_durationText = new Text(fullDurationStr.c_str(), *m_font);
 	m_durationText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
 	this->addChild(m_durationText);
 
-	// Playlist item initialization
+// #### Playlist item initialization #### 
 	
-	setFillColor(PI_BACKGROUND_NONSELECTED);
-	setVolume(10.0f);
-
-	// Resize
-
 	const float heightScaler = 1.5f;
 
 	sf::FloatRect songNameTextBounds = m_songNameText->getGlobalBounds();
 	sf::FloatRect durationTextBounds = m_durationText->getGlobalBounds();
+
+	m_background = new RectangleShape(sf::Vector2f(songNameTextBounds.width + durationTextBounds.width, heightScaler * PI_TEXT_FONTSIZE));
+	m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
+	this->addChild(m_background);
 	
-	setSize(sf::Vector2f(songNameTextBounds.width + durationTextBounds.width, heightScaler * PI_TEXT_FONTSIZE));
+// #### init volume ####
+
+	this->setSize(m_background->getSize());
+	this->setVolume(10.0f);
+}
+
+
+void PlaylistItem::initCallbacks()
+{
+	this->onActivate = [=](){
+		setTextsFillColor(PI_TEXTCOLOR_SELECTED);
+		play();
+	};
+	this->onDeactivate = [=](){
+		setTextsFillColor(PI_TEXTCOLOR_NONSELECTED);
+		stop();
+	};
+	this->onSelect = [=](){
+		if (m_background)
+		{
+			m_background->setFillColor(PI_BACKGROUND_SELECTED);
+		}
+	};
+	this->onUnselect = [=](){
+		if (m_background)
+		{
+			m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
+		}
+	};
+}
+
+
+void PlaylistItem::setSize(const sf::Vector2f& size)
+{
+	m_size = size;
+
+	if (m_background)
+		m_background->setSize(size);
+
+	updateTextsPosition();
+	updateSongNameLength();
+}
+
+
+sf::Vector2f PlaylistItem::getSize() const
+{
+	return m_size;
 }
 
 
@@ -89,66 +139,7 @@ void PlaylistItem::setTextsFillColor(sf::Color color)
 }
 
 
-void PlaylistItem::onMousePressed(sf::Event e)
-{
-	// We only allow left mouse button
-	if (e.mouseButton.button != sf::Mouse::Left)
-		return;
-
-	const float maxClickTimeDiff = 0.5f;
-
-	std::cout << "\nm_clock.getElapsedTime().asSeconds() = " << m_clock.getElapsedTime().asSeconds();
-	if (m_clock.getElapsedTime().asSeconds() <= maxClickTimeDiff)
-	{
-		std::cout << "\nSELECTIONSTATE_SELECTED";
-		m_selectionState = SELECTIONSTATE_SELECTED;
-	}
-	else
-	{
-		std::cout << "\nSELECTIONSTATE_PRESELECTED";
-		m_selectionState = SELECTIONSTATE_PRESELECTED;
-	}
-
-	updateColors();
-
-	m_clock.restart();
-}
-
-
-void PlaylistItem::onUpdate(float dt)
-{
-	// Update texts based on the background's size
-
-	updateTextsPosiiton();
-
-	// Update Background and text colors based on the selection and audio states
-
-	updateColors();
-}
-
-
-void PlaylistItem::updateColors()
-{
-
-	if (m_selectionState == SELECTIONSTATE_SELECTED)
-	{
-		setFillColor(PI_BACKGROUND_SELECTED);
-		setTextsFillColor(PI_TEXTCOLOR_SELECTED);
-	}
-	else if (m_selectionState == SELECTIONSTATE_PRESELECTED)
-	{
-		setFillColor(PI_BACKGROUND_SELECTED);
-		setTextsFillColor(PI_TEXTCOLOR_NONSELECTED);
-	}
-	else
-	{
-		setFillColor(PI_BACKGROUND_NONSELECTED);
-		setTextsFillColor(PI_TEXTCOLOR_NONSELECTED);
-	}
-}
-
-
-void PlaylistItem::updateTextsPosiiton()
+void PlaylistItem::updateTextsPosition()
 {
 	if (m_songNameText && m_durationText)
 	{
@@ -158,26 +149,40 @@ void PlaylistItem::updateTextsPosiiton()
 		auto s1 = m_songNameText->getString().toAnsiString();
 		auto s2 = m_durationText->getString().toAnsiString();
 
-		float newHeightForSongNameText = ((getSize().y / 2.0f) - (songNameTextBounds.height / 2.0f)) - songNameTextBounds.top;
+		float newHeightForSongNameText = ((m_size.y / 2.0f) - (songNameTextBounds.height / 2.0f)) - songNameTextBounds.top;
 		m_songNameText->setPosition(-songNameTextBounds.left, newHeightForSongNameText);
 
-		float newWidthForDurationText = getSize().x - durationTextBounds.width - durationTextBounds.left;
-		float newHeightForDurationText = ((getSize().y / 2.0f) - (durationTextBounds.height / 2.0f)) - durationTextBounds.top;
+		float newWidthForDurationText = m_size.x - durationTextBounds.width - durationTextBounds.left;
+		float newHeightForDurationText = ((m_size.y / 2.0f) - (durationTextBounds.height / 2.0f)) - durationTextBounds.top;
 		m_durationText->setPosition(newWidthForDurationText, newHeightForDurationText);
 	}
 }
 
 
-
-SelectionState PlaylistItem::getSelectionState() const
+void PlaylistItem::updateSongNameLength()
 {
-	return m_selectionState;
-}
+	if (m_songNameText && m_durationText)
+	{
+		const auto maxSize = m_size.x - m_durationText->getGlobalBounds().width;
 
+		if (m_songNameText->getGlobalBounds().width > maxSize)
+		{
+			const float precent = m_size.x / m_songNameText->getGlobalBounds().width;
+			const unsigned short maxCharLength = precent * m_fullName.length();
 
-void PlaylistItem::setSelectionState(SelectionState state)
-{
-	m_selectionState = state;
+			for (unsigned short j = maxCharLength; j >= 0; --j)
+			{
+				std::string str = m_fullName.substr(0, j) + "...";
+				Text tempText(str.c_str(), *m_font, m_songNameText->getCharacterSize());
+
+				if (tempText.getGlobalBounds().width < maxSize)
+				{
+					m_songNameText->setString(str);
+					break;
+				}
+			}
+		}
+	}
 }
 
 

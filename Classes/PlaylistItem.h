@@ -2,54 +2,38 @@
 
 #include "Text.h"
 #include "AudioFile.h"
+#include "MenuItem.h"
 #include "RectangleShape.h"
 
 
-enum SelectionState
-{
-	SELECTIONSTATE_UNSELECTED,
-	SELECTIONSTATE_PRESELECTED,
-	SELECTIONSTATE_SELECTED
-};
-
-
-class PlaylistItem : public AudioFile, public RectangleShape
+class PlaylistItem : public AudioFile, public MenuItem
 {
 public:
-
-
+	
 	PlaylistItem(const sf::String& path);
 	virtual ~PlaylistItem();
 
 	Text* getSongNameText() const;
 	Text* getDurationText() const;
+	void setSize(const sf::Vector2f& size);
+	sf::Vector2f getSize() const;
 
-	SelectionState getSelectionState() const;
-	void setSelectionState(SelectionState state);
-
-public:
-
-	virtual void onUpdate(float dt) override;
-	
-protected:
-
-	virtual void onMousePressed(sf::Event e) override;
-	
 private:
 
 	void init();
+	void initCallbacks();
 	void setTextsFillColor(sf::Color color);
 
-	void updateColors();
-	void updateTextsPosiiton();
+	void updateTextsPosition();
+	void updateSongNameLength();
 	
 private:
+
+	RectangleShape* m_background;
 
 	Text* m_songNameText;
 	Text* m_durationText;
 
 	sf::Font* m_font;	
-	sf::Clock m_clock;
-
-	SelectionState m_selectionState;
+	sf::Vector2f m_size;
 };

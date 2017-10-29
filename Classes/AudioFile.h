@@ -19,6 +19,7 @@ public:
 	std::string getFileExtension() const;
 	std::string getFileNameWithoutExt() const;
 
+	std::string getFullName() const { return m_fullName; };
 	std::string getTitle() const { return m_title; };
 	std::string getArtist() const { return m_artist; };
 	std::string getAlbum() const { return m_album; };
@@ -32,7 +33,7 @@ private:
 protected:
 
 	std::string m_fileName;
-
+	std::string m_fullName;
 	std::string m_title;
 	std::string m_artist;
 	std::string m_album;

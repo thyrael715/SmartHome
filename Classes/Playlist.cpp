@@ -5,9 +5,8 @@
 
 
 Playlist::Playlist(const sf::Vector2f& size)
-	: RectangleShape(size)
-	, m_currentPlaylistItem(nullptr)
-	, m_font(nullptr)
+	: Menu(MenuOrientation::VERTICAL, true)
+	, m_backgroundRect(new RectangleShape(size))
 	, m_scrollView(nullptr)
 	, m_fileSystemUtils(nullptr)
 {
@@ -18,25 +17,23 @@ Playlist::Playlist(const sf::Vector2f& size)
 
 Playlist::~Playlist()
 {
-	SAFE_DELETE(m_font);
-	SAFE_DELETE(m_currentPlaylistItem);
 	SAFE_DELETE(m_fileSystemUtils);
 }
 
 
 void Playlist::init()
 {
+	// FileSystem
 	m_fileSystemUtils = new FileSystemUtils();
-	
-	m_font = new sf::Font();
 
-	if (!m_font->loadFromFile("Fonts\\arial.ttf"))
-	{
-		// error...
-	}
+	// Background
+	m_backgroundRect->setFillColor(sf::Color(20, 20, 20));
+	this->addChild(m_backgroundRect);
 
-	m_scrollView = new sf::View(sf::FloatRect(getPosition().x, getPosition().y, m_size.x, m_size.y));
-	m_scrollView->setViewport(sf::FloatRect(getPosition().x / WINDOW_WIDTH, getPosition().y / WINDOW_HEIGHT, m_size.x / WINDOW_WIDTH, m_size.y / WINDOW_HEIGHT));
+	// ScrollView
+	auto size = m_backgroundRect->getSize();
+	m_scrollView = new sf::View(sf::FloatRect(getPosition().x, getPosition().y, size.x, size.y));
+	m_scrollView->setViewport(sf::FloatRect(getPosition().x / WINDOW_WIDTH, getPosition().y / WINDOW_HEIGHT, size.x / WINDOW_WIDTH, size.y / WINDOW_HEIGHT));
 }
 
 
@@ -81,8 +78,6 @@ void Playlist::openFromDirectory()
 			if (isSupportedFileExt(fileExt))
 			{
 				PlaylistItem* entity = createPlaylistItem(fullPath);
-				m_audioFiles.push_back(entity);
-
 				this->addChild(entity);
 			}
 		}
@@ -93,40 +88,9 @@ void Playlist::openFromDirectory()
 PlaylistItem* Playlist::createPlaylistItem(std::string& path)
 {
 	PlaylistItem* item = new PlaylistItem(path);
-	item->registerEvent(EventType::MOUSE);
-	item->setSize(sf::Vector2f(this->getGlobalBounds().width, item->getSize().y));
-	item->addEvent(EventType::MOUSE, [=]()
-	{		
-		if (item->getSelectionState() == SELECTIONSTATE_SELECTED)
-		{
-			std::cout << "\nCurrently playing: " << item->getDurationText()->getString().toAnsiString();
-
-			if (m_currentPlaylistItem && m_currentPlaylistItem != item)
-			{
-				m_currentPlaylistItem->setSelectionState(SELECTIONSTATE_UNSELECTED);
-				m_currentPlaylistItem->stop();
-			}
-
-			m_currentPlaylistItem = item;
-			m_currentPlaylistItem->play();
-		}
-		else if (item->getSelectionState() == SELECTIONSTATE_PRESELECTED)
-		{
-			if (m_currentPlaylistItem)
-			{
-				m_currentPlaylistItem->setSelectionState(SELECTIONSTATE_UNSELECTED);
-			}
-
-			m_currentPlaylistItem = item;
-		}
-	});
-
-	item->RectangleShape::setPosition(0, m_audioFiles.size() * item->getSize().y);
+	item->setSize(sf::Vector2f(m_backgroundRect->getSize().x, item->getSize().y));
+	item->Object::setPosition(sf::Vector2f(20, 10));
 	
-	//m_audioFiles.push_back(audio);
-
-	this->addChild(item);
-
 	return item;
 }
 
@@ -170,11 +134,15 @@ void Playlist::onUpdate(float dt)
 	// ScrollView cannot be add as a child to anything
 
 	const sf::Vector2f position = getPosition();
-	const sf::Vector2f size = getSize();
+	const sf::Vector2f size = m_backgroundRect->getSize();
 	
 	m_scrollView->setCenter(position.x + size.x / 2, position.y + size.y / 2);
 	m_scrollView->setSize(sf::Vector2f(size.x, size.y));
-	m_scrollView->setViewport(sf::FloatRect(position.x / WINDOW_WIDTH, position.y / WINDOW_HEIGHT, size.x / WINDOW_WIDTH, size.y / WINDOW_HEIGHT));
+
+	m_scrollView->setViewport(sf::FloatRect(position.x / WINDOW_WIDTH, 
+											position.y / WINDOW_HEIGHT,
+											size.x / WINDOW_WIDTH,
+											size.y / WINDOW_HEIGHT));
 }
 
 
@@ -184,7 +152,7 @@ sf::View* Playlist::getScrollView() const
 }
 
 
-AudioFile* Playlist::getCurrentAudioFile() const
+PlaylistItem* Playlist::getCurrentAudioFile() const
 {
-	return m_currentPlaylistItem;
+	return dynamic_cast<PlaylistItem*>(m_selectedItem);
 }

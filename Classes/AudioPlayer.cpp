@@ -25,7 +25,6 @@ void AudioPlayer::init()
 
 	m_playlist = new Playlist(sf::Vector2f(playList_W, playList_H));
 	m_playlist->setPosition(WINDOW_WIDTH / 2 - playList_W / 2, WINDOW_HEIGHT - playList_H);
-	m_playlist->setFillColor(sf::Color(20, 20, 20));
 	
 	// create buttons
 

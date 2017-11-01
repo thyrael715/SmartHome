@@ -6,7 +6,7 @@
 
 Playlist::Playlist(const sf::Vector2f& size)
 	: Menu(MenuOrientation::VERTICAL, true)
-	, m_backgroundRect(new RectangleShape(size))
+	, m_size(size)
 	, m_scrollView(nullptr)
 	, m_fileSystemUtils(nullptr)
 {
@@ -27,15 +27,32 @@ void Playlist::init()
 	m_fileSystemUtils = new FileSystemUtils();
 
 	// Background
-	m_backgroundRect->setFillColor(sf::Color(20, 20, 20));
+	m_backgroundRect = new RectangleShape(m_size);
+	m_backgroundRect->setFillColor(sf::Color(50, 50, 50));
 	this->addChild(m_backgroundRect);
 
 	// ScrollView
-	auto size = m_backgroundRect->getSize();
-	m_scrollView = new sf::View(sf::FloatRect(getPosition().x, getPosition().y, size.x, size.y));
-	m_scrollView->setViewport(sf::FloatRect(getPosition().x / WINDOW_WIDTH, getPosition().y / WINDOW_HEIGHT, size.x / WINDOW_WIDTH, size.y / WINDOW_HEIGHT));
+	m_scrollView = new sf::View(sf::FloatRect(getPosition().x, getPosition().y, m_size.x, m_size.y));
+	m_scrollView->setViewport(sf::FloatRect(getPosition().x / WINDOW_WIDTH, getPosition().y / WINDOW_HEIGHT, m_size.x / WINDOW_WIDTH, m_size.y / WINDOW_HEIGHT));
 }
 
+
+void Playlist::onMousePressed(sf::Event e)
+{
+	if (m_backgroundRect->contains(sf::Vector2f((float)(e.mouseButton.x), (float)(e.mouseButton.y))))
+	{
+		Menu::onMousePressed(e);
+	}
+}
+
+
+void Playlist::onMouseReleased(sf::Event e)
+{
+	if (m_backgroundRect->contains(sf::Vector2f((float)(e.mouseButton.x), (float)(e.mouseButton.y))))
+	{
+		Menu::onMouseReleased(e);
+	}
+}
 
 
 void Playlist::openFromFile()
@@ -87,10 +104,11 @@ void Playlist::openFromDirectory()
 
 PlaylistItem* Playlist::createPlaylistItem(std::string& path)
 {
+	const float height = C2WW(30.0f);
+
 	PlaylistItem* item = new PlaylistItem(path);
-	item->setSize(sf::Vector2f(m_backgroundRect->getSize().x, item->getSize().y));
-	item->Object::setPosition(sf::Vector2f(20, 10));
-	
+	item->setSize(sf::Vector2f(m_backgroundRect->getSize().x, height));
+
 	return item;
 }
 
@@ -134,15 +152,14 @@ void Playlist::onUpdate(float dt)
 	// ScrollView cannot be add as a child to anything
 
 	const sf::Vector2f position = getPosition();
-	const sf::Vector2f size = m_backgroundRect->getSize();
 	
-	m_scrollView->setCenter(position.x + size.x / 2, position.y + size.y / 2);
-	m_scrollView->setSize(sf::Vector2f(size.x, size.y));
+	m_scrollView->setCenter(position.x + m_size.x / 2, position.y + m_size.y / 2);
+	m_scrollView->setSize(sf::Vector2f(m_size.x, m_size.y));
 
 	m_scrollView->setViewport(sf::FloatRect(position.x / WINDOW_WIDTH, 
 											position.y / WINDOW_HEIGHT,
-											size.x / WINDOW_WIDTH,
-											size.y / WINDOW_HEIGHT));
+											m_size.x / WINDOW_WIDTH,
+											m_size.y / WINDOW_HEIGHT));
 }
 
 

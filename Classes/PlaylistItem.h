@@ -13,8 +13,6 @@ public:
 	PlaylistItem(const sf::String& path);
 	virtual ~PlaylistItem();
 
-	Text* getSongNameText() const;
-	Text* getDurationText() const;
 	void setSize(const sf::Vector2f& size);
 	sf::Vector2f getSize() const;
 
@@ -36,4 +34,5 @@ private:
 
 	sf::Font* m_font;	
 	sf::Vector2f m_size;
+	static size_t m_instanceCounter;
 };

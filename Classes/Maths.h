@@ -16,6 +16,8 @@ public:
 	static bool isInside(const sf::VertexArray& polygon, sf::Vector2f p);
 	static bool isInRect(const sf::FloatRect& rect, const sf::Vector2f& point);
 
+	static float getDistance(sf::Vector2f a, sf::Vector2f b);
+
 protected:
 
 	explicit Maths();

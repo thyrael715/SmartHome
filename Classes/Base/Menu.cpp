@@ -7,7 +7,7 @@ Menu::Menu(MenuOrientation orientation, bool isDoubleClickSupport)
 	: m_selectedItem(nullptr)
 	, m_activatedItem(nullptr)
 	, m_orientation(orientation)
-	, m_spaceBetweenItems(0.0f)
+	, m_spaceBetweenItems(1.0f)
 	, m_isDoubleClickSupport(isDoubleClickSupport)
 {
 	init();
@@ -50,8 +50,11 @@ void Menu::onMousePressed(sf::Event e)
 	// lambda function for double click
 	std::function<bool()> isDoubleClick = [=]()
 	{
-		if ((m_prevClick.x == e.mouseButton.x && m_prevClick.y == e.mouseButton.y) &&
-			m_selectedItem == actSelectedItem)
+		const unsigned short maxDistance = 10;
+		sf::Vector2f pointA((float)(e.mouseButton.x), (float)(e.mouseButton.y));
+		sf::Vector2f pointB((float)(m_prevClick.x), (float)(m_prevClick.y));
+
+		if (Maths::getDistance(pointA, pointB) < maxDistance && m_selectedItem == actSelectedItem)
 		{
 			const float maxClickTimeDiff = 0.5f;
 

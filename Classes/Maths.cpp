@@ -126,3 +126,12 @@ bool Maths::isInRect(const sf::FloatRect& rect, const sf::Vector2f& point)
 
 	return true;
 }
+
+
+float Maths::getDistance(sf::Vector2f a, sf::Vector2f b)
+{
+	const float r1 = pow((a.x - b.x), 2.0f);
+	const float r2 = pow((a.y - b.y), 2.0f);
+
+	return sqrt(r1 + r2);
+}

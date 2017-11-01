@@ -24,7 +24,7 @@ void AudioPlayer::init()
 	const float playList_H = C2WH(150.0f);
 
 	m_playlist = new Playlist(sf::Vector2f(playList_W, playList_H));
-	m_playlist->setPosition(WINDOW_WIDTH / 2 - playList_W / 2, WINDOW_HEIGHT - playList_H);
+	m_playlist->setPosition(WINDOW_WIDTH / 2 - playList_W / 2, WINDOW_HEIGHT - playList_H - 30);
 	
 	// create buttons
 

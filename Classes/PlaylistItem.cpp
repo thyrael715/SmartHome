@@ -1,13 +1,17 @@
 #include "PlaylistItem.h"
 
 
-#define PI_TEXTCOLOR_SELECTED		sf::Color(50, 50, 200)
-#define PI_TEXTCOLOR_NONSELECTED	sf::Color(40, 255, 255, 255)
-#define PI_BACKGROUND_SELECTED		sf::Color(255, 50, 50, 200)
-#define PI_BACKGROUND_NONSELECTED	COLOR_TRANSPARENT
+#define PI_TEXTCOLOR_SELECTED		sf::Color(0, 0, 0)
+#define PI_TEXTCOLOR_NONSELECTED	sf::Color(200, 200, 200, 255)
+#define PI_BACKGROUND_SELECTED		sf::Color(30, 30, 30, 255)
+#define PI_BACKGROUND_NONSELECTED	sf::Color(10, 10, 10, 255)
+#define PI_BACKGROUND_ACTIVATED		sf::Color(40, 255, 255, 255)
 
-#define PI_TEXT_MARGIN		1
+#define PI_TEXT_MARGIN		10
 #define PI_TEXT_FONTSIZE	12
+
+
+size_t PlaylistItem::m_instanceCounter = 0;
 
 
 PlaylistItem::PlaylistItem(const sf::String& path)
@@ -18,6 +22,7 @@ PlaylistItem::PlaylistItem(const sf::String& path)
 	, m_font(nullptr)
 	, m_size(0.0f, 0.0f)
 {
+	m_instanceCounter++;
 	init();
 }
 
@@ -30,6 +35,8 @@ PlaylistItem::~PlaylistItem()
 
 void PlaylistItem::init()
 {
+	// TODO: create separate number Text for each entity
+
 	initCallbacks();
 
 // #### init font ####
@@ -41,7 +48,7 @@ void PlaylistItem::init()
 		// error...
 		return;
 	}
-	
+
 // #### Title text initialization ####
 	 
 	m_songNameText = new Text(m_fullName.c_str(), *m_font, PI_TEXT_FONTSIZE);
@@ -61,8 +68,7 @@ void PlaylistItem::init()
 		secondsInStr = "0" + secondsInStr;
 	}
 
-	std::string space = "  ";
-	std::string fullDurationStr = space + minutesInStr + ":" + secondsInStr;
+	std::string fullDurationStr = "  " + minutesInStr + ":" + secondsInStr;
 
 	m_durationText = new Text(fullDurationStr.c_str(), *m_font);
 	m_durationText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
@@ -70,19 +76,13 @@ void PlaylistItem::init()
 
 // #### Playlist item initialization #### 
 	
-	const float heightScaler = 1.5f;
-
-	sf::FloatRect songNameTextBounds = m_songNameText->getGlobalBounds();
-	sf::FloatRect durationTextBounds = m_durationText->getGlobalBounds();
-
-	m_background = new RectangleShape(sf::Vector2f(songNameTextBounds.width + durationTextBounds.width, heightScaler * PI_TEXT_FONTSIZE));
+	m_background = new RectangleShape();
 	m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
-	this->addChild(m_background);
+	this->addChild(m_background, 1);
 	
 // #### init volume ####
 
-	this->setSize(m_background->getSize());
-	this->setVolume(10.0f);
+	this->setVolume(2.0f);
 }
 
 
@@ -90,20 +90,25 @@ void PlaylistItem::initCallbacks()
 {
 	this->onActivate = [=](){
 		setTextsFillColor(PI_TEXTCOLOR_SELECTED);
+		m_background->setFillColor(PI_BACKGROUND_ACTIVATED);
 		play();
 	};
+
 	this->onDeactivate = [=](){
 		setTextsFillColor(PI_TEXTCOLOR_NONSELECTED);
+		m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
 		stop();
 	};
+
 	this->onSelect = [=](){
-		if (m_background)
+		if (getStatus() != sf::SoundStream::Playing)
 		{
 			m_background->setFillColor(PI_BACKGROUND_SELECTED);
 		}
 	};
+
 	this->onUnselect = [=](){
-		if (m_background)
+		if (getStatus() != sf::SoundStream::Playing)
 		{
 			m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
 		}
@@ -119,7 +124,6 @@ void PlaylistItem::setSize(const sf::Vector2f& size)
 		m_background->setSize(size);
 
 	updateTextsPosition();
-	updateSongNameLength();
 }
 
 
@@ -143,18 +147,18 @@ void PlaylistItem::updateTextsPosition()
 {
 	if (m_songNameText && m_durationText)
 	{
-		sf::FloatRect songNameTextBounds = m_songNameText->getGlobalBounds();
-		sf::FloatRect durationTextBounds = m_durationText->getGlobalBounds();
+		sf::FloatRect b1 = m_songNameText->getGlobalBounds();
+		sf::FloatRect b2 = m_durationText->getGlobalBounds();
 
-		auto s1 = m_songNameText->getString().toAnsiString();
-		auto s2 = m_durationText->getString().toAnsiString();
+		float h1 = ((m_size.y / 2.0f) - (b1.height / 2.0f)) - b1.top;
+		m_songNameText->setPosition(-b1.left + PI_TEXT_MARGIN, h1);
 
-		float newHeightForSongNameText = ((m_size.y / 2.0f) - (songNameTextBounds.height / 2.0f)) - songNameTextBounds.top;
-		m_songNameText->setPosition(-songNameTextBounds.left, newHeightForSongNameText);
+		float w2 = m_size.x - b2.width - b2.left;
+		float h2 = ((m_size.y / 2.0f) - (b2.height / 2.0f)) - b2.top;
+		m_durationText->setPosition(w2 - PI_TEXT_MARGIN, h2);
 
-		float newWidthForDurationText = m_size.x - durationTextBounds.width - durationTextBounds.left;
-		float newHeightForDurationText = ((m_size.y / 2.0f) - (durationTextBounds.height / 2.0f)) - durationTextBounds.top;
-		m_durationText->setPosition(newWidthForDurationText, newHeightForDurationText);
+		// At last update songname text
+		updateSongNameLength();
 	}
 }
 
@@ -163,17 +167,15 @@ void PlaylistItem::updateSongNameLength()
 {
 	if (m_songNameText && m_durationText)
 	{
-		const auto maxSize = m_size.x - m_durationText->getGlobalBounds().width;
+		Text tempText(m_fullName.c_str(), *m_font, m_songNameText->getCharacterSize());
+		const auto maxSize = m_size.x - m_durationText->getGlobalBounds().width - (2 * PI_TEXT_MARGIN);
 
-		if (m_songNameText->getGlobalBounds().width > maxSize)
+		if (tempText.getGlobalBounds().width > maxSize)
 		{
-			const float precent = m_size.x / m_songNameText->getGlobalBounds().width;
-			const unsigned short maxCharLength = precent * m_fullName.length();
-
-			for (unsigned short j = maxCharLength; j >= 0; --j)
+			for (unsigned short j = tempText.getString().getSize(); j >= 0; --j)
 			{
-				std::string str = m_fullName.substr(0, j) + "...";
-				Text tempText(str.c_str(), *m_font, m_songNameText->getCharacterSize());
+				std::string str = tempText.getString().toAnsiString().substr(0, j) + "...";
+				tempText = Text(str.c_str(), *m_font, tempText.getCharacterSize());
 
 				if (tempText.getGlobalBounds().width < maxSize)
 				{
@@ -182,18 +184,9 @@ void PlaylistItem::updateSongNameLength()
 				}
 			}
 		}
+		else
+		{
+			m_songNameText->setString(tempText.getString());
+		}
 	}
 }
-
-
-Text* PlaylistItem::getSongNameText() const
-{
-	return m_songNameText;
-}
-
-
-Text* PlaylistItem::getDurationText() const
-{
-	return m_durationText;
-}
-

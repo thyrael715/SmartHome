@@ -1,8 +1,6 @@
 #include "Menu.h"
 
 
-
-
 Menu::Menu(MenuOrientation orientation, bool isDoubleClickSupport)
 	: m_selectedItem(nullptr)
 	, m_activatedItem(nullptr)
@@ -45,47 +43,49 @@ void Menu::onMousePressed(sf::Event e)
 	if (e.mouseButton.button != sf::Mouse::Left || !m_isDoubleClickSupport)
 		return;
 
-	MenuItem* actSelectedItem = getMenuItemForClick(e.mouseButton.x, e.mouseButton.y);
-	
-	// lambda function for double click
-	std::function<bool()> isDoubleClick = [=]()
+	// If we clicked on a menuitem
+	if (MenuItem* actSelectedItem = getMenuItemForClick(e.mouseButton.x, e.mouseButton.y))
 	{
-		const unsigned short maxDistance = 10;
-		sf::Vector2f pointA((float)(e.mouseButton.x), (float)(e.mouseButton.y));
-		sf::Vector2f pointB((float)(m_prevClick.x), (float)(m_prevClick.y));
-
-		if (Maths::getDistance(pointA, pointB) < maxDistance && m_selectedItem == actSelectedItem)
+		// lambda function for double click
+		std::function<bool()> isDoubleClick = [=]()
 		{
-			const float maxClickTimeDiff = 0.5f;
+			const unsigned short maxDistance = 10;
+			sf::Vector2f pointA((float)(e.mouseButton.x), (float)(e.mouseButton.y));
+			sf::Vector2f pointB((float)(m_prevClick.x), (float)(m_prevClick.y));
 
-			if (m_clock.getElapsedTime().asSeconds() <= maxClickTimeDiff)
+			if (Maths::getDistance(pointA, pointB) < maxDistance && m_selectedItem == actSelectedItem)
 			{
-				m_prevClick.x = 0;
-				m_prevClick.y = 0;
+				const float maxClickTimeDiff = 0.5f;
 
-				return true;
+				if (m_clock.getElapsedTime().asSeconds() <= maxClickTimeDiff)
+				{
+					m_prevClick.x = 0;
+					m_prevClick.y = 0;
+
+					return true;
+				}
 			}
-		}
-		else
+			else
+			{
+				m_prevClick = e.mouseButton;
+			}
+
+			return false;
+		};
+
+		// Mouse click handling
+
+		// Single click
+		selectionProcess(actSelectedItem);
+
+		if (isDoubleClick())
 		{
-			m_prevClick = e.mouseButton;
+			// Double click
+			activationProcess(actSelectedItem);
 		}
 
-		return false;
-	};
-	
-	// Mouse click handling
-
-	// Single click
-	selectionProcess(actSelectedItem);
-
-	if (isDoubleClick())
-	{
-		// Double click
-		activationProcess(actSelectedItem);
+		m_clock.restart();
 	}
-
-	m_clock.restart();
 }
 
 
@@ -94,8 +94,10 @@ void Menu::onMouseReleased(sf::Event e)
 	if (e.mouseButton.button != sf::Mouse::Left || m_isDoubleClickSupport)
 		return;
 
-	MenuItem* actSelectedItem = getMenuItemForClick(e.mouseButton.x, e.mouseButton.y);
-	activationProcess(actSelectedItem);
+	if (MenuItem* item = getMenuItemForClick(e.mouseButton.x, e.mouseButton.y))
+	{
+		activationProcess(item);
+	}		
 }
 
 
@@ -204,3 +206,17 @@ bool Menu::isMenuItem(Object* obj) const
 
 	return dynamic_cast<MenuItem*>(obj) != nullptr;
 }
+
+
+MenuItem* Menu::getSelectedItem() const
+{
+	return m_selectedItem;
+}
+
+
+MenuItem* Menu::getActivatedItem() const
+{
+	return m_activatedItem;
+}
+
+

@@ -12,7 +12,7 @@ AudioPlayer::AudioPlayer()
 
 AudioPlayer::~AudioPlayer()
 {
-	SAFE_DELETE(m_playlist);
+	//SAFE_DELETE(m_playlist);
 }
 
 
@@ -21,11 +21,11 @@ void AudioPlayer::init()
 	// create playlist
 
 	const float playList_W = C2WW(300.0f);
-	const float playList_H = C2WH(150.0f);
+	const float playList_H = C2WH(300.0f);
 
 	m_playlist = new Playlist(sf::Vector2f(playList_W, playList_H));
-	m_playlist->setPosition(WINDOW_WIDTH / 2 - playList_W / 2, WINDOW_HEIGHT - playList_H - 30);
-	
+	m_playlist->setPosition(WINDOW_WIDTH - playList_W, WINDOW_HEIGHT - playList_H);
+
 	// create buttons
 
 	ButtonArc* btn = new ButtonArc(91.0f, 106.0f, 200.0f);
@@ -61,18 +61,10 @@ void AudioPlayer::stop()
 	m_playlist->getCurrentAudioFile()->stop();
 }
 
-
 void AudioPlayer::onDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
-	auto defaultView = target.getView();
-
-	target.setView(*(m_playlist->getScrollView()));
-	target.draw(*m_playlist);
-	target.setView(defaultView);
-}
-
-
-void AudioPlayer::onUpdate(float dt)
-{
-
+	if (m_playlist)
+	{
+		target.draw(*m_playlist);
+	}
 }

@@ -14,6 +14,8 @@ public:
 	virtual ~PlaylistItem();
 
 	void setSize(const sf::Vector2f& size);
+	void setWidth(const float& width);
+	void setHeight(const float& height);
 	sf::Vector2f getSize() const;
 
 private:

@@ -57,6 +57,8 @@ public:
 protected:
 
 	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const {};
+	virtual void onBeforeDraw(sf::RenderTarget& target, sf::RenderStates& states) const {};
+	virtual void onAfterDraw(sf::RenderTarget& target, sf::RenderStates& states) const {};
 
 	virtual void onMousePressed(sf::Event e) {};
 	virtual void onMouseReleased(sf::Event e) {};

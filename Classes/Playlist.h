@@ -1,16 +1,15 @@
 #pragma once
 
-#include "RectangleShape.h"
+#include "ScrollMenu.h"
 #include "PlaylistItem.h"
 #include "FileSystemUtils.h"
-#include "Menu.h"
 
 
-class Playlist : public Menu
+class Playlist : public Object
 {
 public:
 
-	Playlist(const sf::Vector2f& size = sf::Vector2f(0.0f, 0.0f));
+	Playlist(const sf::Vector2f& size = ZERO);
 	virtual ~Playlist();
 
 	sf::View* getScrollView() const;
@@ -19,25 +18,18 @@ public:
 	void openFromFile();
 	void openFromDirectory();
 
-public:
-
-	virtual void onMousePressed(sf::Event e) override;
-	virtual void onMouseReleased(sf::Event e) override;
-	virtual void onUpdate(float dt) override;
-	
 private:
 	
 	void init();
 
-	PlaylistItem* createPlaylistItem(std::string& path);
+	void addPlaylistItem(std::string& path);
 	void clearPlaylist();
-
 	bool isSupportedFileExt(std::string& fileExt) const;
 
 private:
 
 	RectangleShape* m_backgroundRect;
-	sf::View* m_scrollView;
+	ScrollMenu* m_scrollMenu;
 	FileSystemUtils* m_fileSystemUtils;
 	sf::Vector2f m_size;
 };

@@ -284,6 +284,8 @@ int Object::getZOrder() const
 
 void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	onBeforeDraw(target, states);
+
 	// Combine transforms
 	states.transform *= getTransform();
 
@@ -294,4 +296,6 @@ void Object::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*child, states);
 	}
+
+	onAfterDraw(target, states);
 }

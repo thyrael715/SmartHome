@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MenuItem.h"
+#include "RectangleShape.h"
 
 
 class Menu : public Object
@@ -20,12 +21,14 @@ public:
 	virtual void addChild(Object* obj, int zOrder = 0) override;
 	void setOrientation(MenuOrientation orientation);
 
+	MenuItem* getSelectedItem() const;
+	MenuItem* getActivatedItem() const;
+
 protected:
 
 	virtual void onMousePressed(sf::Event e) override;
 	virtual void onMouseReleased(sf::Event e) override;
 
-protected:
 
 	bool isMenuItem(Object* obj) const;
 
@@ -34,17 +37,12 @@ protected:
 	void alignMenuItemVertically(MenuItem* item);
 
 	MenuItem* getMenuItemForClick(int x, int y) const;
-
-protected:
-		
-	MenuItem* m_selectedItem;
-	MenuItem* m_activatedItem;
-
+	
 private:
 
 	void activationProcess(MenuItem* selectedItem);
 	void selectionProcess(MenuItem* selectedItem);
-
+	
 private:
 
 	sf::Event::MouseButtonEvent m_prevClick;
@@ -52,4 +50,9 @@ private:
 	float m_spaceBetweenItems;
 	bool m_isDoubleClickSupport;
 	sf::Clock m_clock;
+
+	MenuItem* m_selectedItem;
+	MenuItem* m_activatedItem;
 };
+
+

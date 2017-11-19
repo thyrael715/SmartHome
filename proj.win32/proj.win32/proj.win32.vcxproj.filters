@@ -121,6 +121,9 @@
     <ClCompile Include="..\..\Classes\Base\MenuItem.cpp">
       <Filter>Classes\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Classes\Base\ScrollMenu.cpp">
+      <Filter>Classes\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Classes\Defaults.h">
@@ -217,6 +220,9 @@
       <Filter>Classes\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Classes\Base\MenuItem.h">
+      <Filter>Classes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Classes\Base\ScrollMenu.h">
       <Filter>Classes\Base</Filter>
     </ClInclude>
   </ItemGroup>

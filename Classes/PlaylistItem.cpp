@@ -2,10 +2,10 @@
 
 
 #define PI_TEXTCOLOR_SELECTED		sf::Color(0, 0, 0)
-#define PI_TEXTCOLOR_NONSELECTED	sf::Color(200, 200, 200, 255)
-#define PI_BACKGROUND_SELECTED		sf::Color(30, 30, 30, 255)
-#define PI_BACKGROUND_NONSELECTED	sf::Color(10, 10, 10, 255)
-#define PI_BACKGROUND_ACTIVATED		sf::Color(40, 255, 255, 255)
+#define PI_TEXTCOLOR_NONSELECTED	sf::Color(255, 255, 255)
+#define PI_BACKGROUND_SELECTED		sf::Color(30, 30, 30)
+#define PI_BACKGROUND_NONSELECTED	sf::Color(10, 10, 10)
+#define PI_BACKGROUND_ACTIVATED		sf::Color(40, 255, 255)
 
 #define PI_TEXT_MARGIN		10
 #define PI_TEXT_FONTSIZE	12
@@ -82,7 +82,7 @@ void PlaylistItem::init()
 	
 // #### init volume ####
 
-	this->setVolume(2.0f);
+	this->setVolume(10.0f);
 }
 
 
@@ -115,22 +115,6 @@ void PlaylistItem::initCallbacks()
 	};
 }
 
-
-void PlaylistItem::setSize(const sf::Vector2f& size)
-{
-	m_size = size;
-
-	if (m_background)
-		m_background->setSize(size);
-
-	updateTextsPosition();
-}
-
-
-sf::Vector2f PlaylistItem::getSize() const
-{
-	return m_size;
-}
 
 
 void PlaylistItem::setTextsFillColor(sf::Color color)
@@ -189,4 +173,34 @@ void PlaylistItem::updateSongNameLength()
 			m_songNameText->setString(tempText.getString());
 		}
 	}
+}
+
+void PlaylistItem::setSize(const sf::Vector2f& size)
+{
+	m_size = size;
+
+	if (m_background)
+		m_background->setSize(m_size);
+
+	updateTextsPosition();
+}
+
+
+sf::Vector2f PlaylistItem::getSize() const
+{
+	return m_size;
+}
+
+
+void PlaylistItem::setWidth(const float& width)
+{
+	m_size.x = width;
+	this->setSize(m_size);
+}
+
+
+void PlaylistItem::setHeight(const float& height)
+{
+	m_size.y = height;
+	this->setSize(m_size);
 }

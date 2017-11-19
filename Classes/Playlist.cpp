@@ -5,13 +5,11 @@
 
 
 Playlist::Playlist(const sf::Vector2f& size)
-	: Menu(MenuOrientation::VERTICAL, true)
-	, m_size(size)
-	, m_scrollView(nullptr)
+	: m_size(size)
+	, m_scrollMenu(nullptr)
 	, m_fileSystemUtils(nullptr)
 {
 	init();
-	Scheduler::getInstance()->scheduleUpdate(this);
 }
 
 
@@ -28,30 +26,17 @@ void Playlist::init()
 
 	// Background
 	m_backgroundRect = new RectangleShape(m_size);
-	m_backgroundRect->setFillColor(sf::Color(50, 50, 50));
+	m_backgroundRect->setFillColor(sf::Color(41, 41, 53));
 	this->addChild(m_backgroundRect);
 
-	// ScrollView
-	m_scrollView = new sf::View(sf::FloatRect(getPosition().x, getPosition().y, m_size.x, m_size.y));
-	m_scrollView->setViewport(sf::FloatRect(getPosition().x / WINDOW_WIDTH, getPosition().y / WINDOW_HEIGHT, m_size.x / WINDOW_WIDTH, m_size.y / WINDOW_HEIGHT));
-}
+	// Scrollable menu
+	const sf::Vector2f border(2.0f, 2.0f);
 
-
-void Playlist::onMousePressed(sf::Event e)
-{
-	if (m_backgroundRect->contains(sf::Vector2f((float)(e.mouseButton.x), (float)(e.mouseButton.y))))
-	{
-		Menu::onMousePressed(e);
-	}
-}
-
-
-void Playlist::onMouseReleased(sf::Event e)
-{
-	if (m_backgroundRect->contains(sf::Vector2f((float)(e.mouseButton.x), (float)(e.mouseButton.y))))
-	{
-		Menu::onMouseReleased(e);
-	}
+	m_scrollMenu = new ScrollMenu(Menu::VERTICAL, true);
+	m_scrollMenu->setSize(m_size - border);
+	m_scrollMenu->setPosition(border.x / 2.0f, border.y / 2.0f);
+	m_scrollMenu->setFillColor(sf::Color(41, 41, 53));
+	this->addChild(m_scrollMenu);
 }
 
 
@@ -72,6 +57,13 @@ void Playlist::openFromFile()
 }
 
 
+// example:
+// entry.basename();			// "C-BooL - Magic Symphony ft. Giang Pham (Official Video)"
+// entry.branch_path();			// "C:/Users/Sharagoth/Music"
+// entry.directory_string();	// "C:\\Users\\Sharagoth\\Music\\C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
+// entry.filename();			// "C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
+// entry.file_string();			// "C:\\Users\\Sharagoth\\Music\\C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
+
 void Playlist::openFromDirectory()
 {
 	if (m_fileSystemUtils->showFolderDialog())
@@ -82,34 +74,26 @@ void Playlist::openFromDirectory()
 
 		for (auto entry : entries)
 		{
-			// example:
-			// entry.basename();			// "C-BooL - Magic Symphony ft. Giang Pham (Official Video)"
-			// entry.branch_path();			// "C:/Users/Sharagoth/Music"
-			// entry.directory_string();	// "C:\\Users\\Sharagoth\\Music\\C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
-			// entry.filename();			// "C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
-			// entry.file_string();			// "C:\\Users\\Sharagoth\\Music\\C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3"
-			
 			std::string fullPath = entry.directory_string();
 			std::string fileExt = fullPath.substr(fullPath.rfind('.') + 1);
 
-			if (isSupportedFileExt(fileExt))
+			if (isSupportedFileExt(fileExt) && m_scrollMenu)
 			{
-				PlaylistItem* entity = createPlaylistItem(fullPath);
-				this->addChild(entity);
+				addPlaylistItem(fullPath);
 			}
 		}
 	}
 }
 
 
-PlaylistItem* Playlist::createPlaylistItem(std::string& path)
+void Playlist::addPlaylistItem(std::string& path)
 {
 	const float height = C2WW(30.0f);
 
-	PlaylistItem* item = new PlaylistItem(path);
-	item->setSize(sf::Vector2f(m_backgroundRect->getSize().x, height));
+	PlaylistItem* entity = new PlaylistItem(path);
+	entity->setSize(sf::Vector2f(m_scrollMenu->getSize().x, height));
 
-	return item;
+	m_scrollMenu->addChild(entity);
 }
 
 
@@ -146,30 +130,12 @@ bool Playlist::isSupportedFileExt(std::string& fileExt) const
 }
 
 
-void Playlist::onUpdate(float dt)
-{
-	// update scroll view
-	// ScrollView cannot be add as a child to anything
-
-	const sf::Vector2f position = getPosition();
-	
-	m_scrollView->setCenter(position.x + m_size.x / 2, position.y + m_size.y / 2);
-	m_scrollView->setSize(sf::Vector2f(m_size.x, m_size.y));
-
-	m_scrollView->setViewport(sf::FloatRect(position.x / WINDOW_WIDTH, 
-											position.y / WINDOW_HEIGHT,
-											m_size.x / WINDOW_WIDTH,
-											m_size.y / WINDOW_HEIGHT));
-}
-
-
-sf::View* Playlist::getScrollView() const
-{
-	return m_scrollView;
-}
-
-
 PlaylistItem* Playlist::getCurrentAudioFile() const
 {
-	return dynamic_cast<PlaylistItem*>(m_selectedItem);
+	if (m_scrollMenu)
+	{
+		return dynamic_cast<PlaylistItem*>(m_scrollMenu->getActivatedItem());
+	}
+
+	return nullptr;
 }

@@ -4,13 +4,16 @@
 #include "FolderBrowser.h"
 #include <filesystem>
 
+using namespace std::tr2::sys;
+
 
 
 class FileSystemUtils
 {
+
 public:
 
-	typedef std::list<std::tr2::sys::basic_directory_entry<std::tr2::sys::path>::path_type> DirectoryEntryList;
+	typedef std::list<basic_directory_entry<path>::path_type> DirectoryEntryList;
 
 public:
 

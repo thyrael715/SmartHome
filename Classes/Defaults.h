@@ -41,6 +41,8 @@ static __TYPE__* create() \
 #define COLOR_BASECOLOR_CIAN	sf::Color(0, 174, 175)
 #define COLOR_BASECOLOR_BLUE	sf::Color(2, 186, 248)
 
+#define ZERO	sf::Vector2f(0.0f, 0.0f)
+
 #define CALLBACK_0(__selector__,__target__, ...) std::bind(&__selector__,__target__, ##__VA_ARGS__)
 #define CALLBACK_1(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, ##__VA_ARGS__)
 #define CALLBACK_2(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, ##__VA_ARGS__)

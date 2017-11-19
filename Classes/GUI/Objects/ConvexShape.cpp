@@ -23,7 +23,7 @@ void ConvexShape::reCreate()
 
 	for (size_t i = 0; i < m_pointCount; i++)
 	{
-		m_vertices.append(sf::Vector2f(0.0f, 0.0f));
+		m_vertices.append(ZERO);
 	}
 
 	// Always needed
@@ -56,7 +56,7 @@ void ConvexShape::setPoint(size_t index, const sf::Vector2f& point)
 sf::Vector2f ConvexShape::getPoint(size_t index) const
 {
 	if (index >= m_vertices.getVertexCount())
-		return sf::Vector2f(0.0f, 0.0f);
+		return ZERO;
 
 	return m_vertices[index].position;
 }

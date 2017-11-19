@@ -32,8 +32,7 @@ protected:
 protected:
 
 	virtual void onDraw(sf::RenderTarget& target, sf::RenderStates& states) const override;
-	virtual void onUpdate(float dt) override;
-
+		
 private:
 
 	Playlist* m_playlist;

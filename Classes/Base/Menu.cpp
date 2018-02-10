@@ -1,12 +1,13 @@
 #include "Menu.h"
 
 
-Menu::Menu(MenuOrientation orientation, bool isDoubleClickSupport)
+Menu::Menu(Orientation orientation, bool isDoubleClickSupport)
 	: m_selectedItem(nullptr)
 	, m_activatedItem(nullptr)
 	, m_orientation(orientation)
 	, m_spaceBetweenItems(1.0f)
 	, m_isDoubleClickSupport(isDoubleClickSupport)
+	, m_menuitemLayer(nullptr)
 {
 	init();
 }
@@ -21,6 +22,9 @@ Menu::~Menu()
 
 void Menu::init()
 {
+	m_menuitemLayer = new Object();
+	this->addChild(m_menuitemLayer);
+
 	registerEvent(EventType::MOUSE);
 }
 
@@ -28,13 +32,15 @@ void Menu::init()
 void Menu::addChild(Object* obj, int zOrder)
 {
 	// Menu only supports menuitems
-	MenuItem* item = dynamic_cast<MenuItem*>(obj);
-	if (item)
+	if (MenuItem* item = dynamic_cast<MenuItem*>(obj))
 	{
-		this->alignMenuItem(item);
+		alignMenuItem(item);
+		m_menuitemLayer->addChild(obj, zOrder);
 	}
-
-	Object::addChild(obj, zOrder);
+	else
+	{		
+		Object::addChild(obj, zOrder);
+	}
 }
 
 
@@ -127,12 +133,11 @@ void Menu::selectionProcess(MenuItem* selectedItem)
 
 MenuItem* Menu::getMenuItemForClick(int x, int y) const
 {
-	for each (Object* child in m_children)
+	for each (auto child in m_menuitemLayer->getChildren())
 	{
-		MenuItem* item = dynamic_cast<MenuItem*>(child);
-		if (item && item->contains(sf::Vector2f((float)x, (float)y)))
+		if (child->contains(sf::Vector2f((float)x, (float)y)))
 		{
-			return item;
+			return dynamic_cast<MenuItem*>(child);
 		}
 	}
 
@@ -144,12 +149,12 @@ void Menu::alignMenuItem(MenuItem* item)
 {
 	switch (m_orientation)
 	{
-	case Menu::HORIZONTAL:
+	case HORIZONTAL:
 	{
 		alignMenuItemHorizontally(item);
 		break;
 	}
-	case Menu::VERTICAL:
+	case VERTICAL:
 	{
 		alignMenuItemVertically(item);
 		break;
@@ -162,49 +167,26 @@ void Menu::alignMenuItem(MenuItem* item)
 
 void Menu::alignMenuItemHorizontally(MenuItem* item)
 {
-	auto newPosX = 0.0f;
+	auto childrenNum = m_menuitemLayer->getChildren().size();
+	auto newPosX = childrenNum * (item->getGlobalBounds().width + m_spaceBetweenItems);
 
-	for each (auto child in m_children)
-	{
-		if (child != item && isMenuItem(child))
-		{
-			newPosX += (child->getGlobalBounds().width + m_spaceBetweenItems);
-		}
-	}
-
-	item->setPosition(newPosX, item->getPosition().y);
+	item->move(newPosX, 0.0f);
 }
 
 
 void Menu::alignMenuItemVertically(MenuItem* item)
 {
-	auto newPosY = 0.0f;
+	auto childrenNum = m_menuitemLayer->getChildren().size();
+	auto newPosY = childrenNum * (item->getGlobalBounds().height + m_spaceBetweenItems);
 
-	for each (auto child in m_children)
-	{
-		if (child != item && isMenuItem(child))
-		{
-			newPosY += (child->getGlobalBounds().height + m_spaceBetweenItems);
-		}
-	}
-
-	item->setPosition(item->getPosition().x, newPosY);
+	item->move(0.0f, newPosY);
 }
 
 
-void Menu::setOrientation(MenuOrientation orientation)
+void Menu::setOrientation(Orientation orientation)
 {
 	m_orientation = orientation;
 	// TODO: realign the menuitems based on orientation
-}
-
-
-bool Menu::isMenuItem(Object* obj) const
-{
-	if (!obj)
-		return false;
-
-	return dynamic_cast<MenuItem*>(obj) != nullptr;
 }
 
 

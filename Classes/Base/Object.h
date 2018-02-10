@@ -45,6 +45,9 @@ public:
 	void setZOrder(int zOrder);
 	int getZOrder() const;
 
+	void move(float toX, float toY);
+	void move(sf::Vector2f toMovePos);
+
 public:
 
 	virtual bool contains(const sf::Vector2f& point) const;

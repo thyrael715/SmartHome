@@ -73,7 +73,7 @@ void EventDispatcher::triggerEventHandling(sf::Event e)
 		// Mouse event handling
 		case sf::Event::MouseButtonPressed:
 		case sf::Event::MouseButtonReleased:
-		case sf::Event::MouseWheelMoved:
+		case sf::Event::MouseWheelScrolled:
 		case sf::Event::MouseMoved:
 		{
 			handleEventMouse(e);
@@ -108,18 +108,30 @@ std::vector<EventListener*>* EventDispatcher::getListeners(const std::string lis
 void EventDispatcher::handleEventMouse(sf::Event e)
 {
 	auto listenerVector = getListeners(EventListenerMouse::LISTENER_ID);
-	sf::Vector2f mousePos((float)e.mouseButton.x, (float)e.mouseButton.y);
+	EventListener* maxZOrderedListener = nullptr;
 
 	if (listenerVector == nullptr)
 		return;
-
+	
+	// Iterates through all of the mouse listeners
+	// and selects the clicked object which has the highest Z-order number.
 	for each (auto& listener in *listenerVector)
 	{
-		if (listener->getAssociatedObject()->contains(mousePos))
+		if (maxZOrderedListener &&
+			maxZOrderedListener->getAssociatedObject()->getZOrder() > listener->getAssociatedObject()->getZOrder())
 		{
-			listener->onEvent(e);
-			return;
+			continue;
 		}
+
+		if (listener->getAssociatedObject()->contains(sf::Vector2f(MOUSE_RELATIVE_POS)))
+		{
+			maxZOrderedListener = listener;
+		}
+	}
+
+	if (maxZOrderedListener)
+	{
+		maxZOrderedListener->onEvent(e);
 	}
 }
 

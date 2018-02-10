@@ -26,16 +26,16 @@ void Playlist::init()
 
 	// Background
 	m_backgroundRect = new RectangleShape(m_size);
-	m_backgroundRect->setFillColor(sf::Color(41, 41, 53));
+	m_backgroundRect->setFillColor(sf::Color(255, 0, 0));
 	this->addChild(m_backgroundRect);
 
 	// Scrollable menu
 	const sf::Vector2f border(2.0f, 2.0f);
 
-	m_scrollMenu = new ScrollMenu(Menu::VERTICAL, true);
+	m_scrollMenu = new ScrollMenu(VERTICAL, true);
 	m_scrollMenu->setSize(m_size - border);
 	m_scrollMenu->setPosition(border.x / 2.0f, border.y / 2.0f);
-	m_scrollMenu->setFillColor(sf::Color(41, 41, 53));
+	m_scrollMenu->setBackgroundColor(sf::Color(41, 41, 53));
 	this->addChild(m_scrollMenu);
 }
 
@@ -91,7 +91,7 @@ void Playlist::addPlaylistItem(std::string& path)
 	const float height = C2WW(30.0f);
 
 	PlaylistItem* entity = new PlaylistItem(path);
-	entity->setSize(sf::Vector2f(m_scrollMenu->getSize().x, height));
+	entity->setSize(m_scrollMenu->getSizeWithoutScrollBar().x, height);
 
 	m_scrollMenu->addChild(entity);
 }

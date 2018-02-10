@@ -41,7 +41,12 @@ sf::FloatRect Object::getGlobalBounds() const
 	for each (auto child in m_children)
 	{
 		sf::FloatRect actChildBounds = child->getGlobalBounds();
-		
+
+		actChildBounds.left += child->getPosition().x;
+		actChildBounds.top += child->getPosition().y;
+		actChildBounds.width += child->getPosition().x;
+		actChildBounds.height += child->getPosition().y;
+				
 		if (actChildBounds.left < boundingBox.left)
 		{
 			boundingBox.left = actChildBounds.left;
@@ -209,8 +214,13 @@ void Object::addChild(Object* obj, int zOrder)
 	if (obj)
 	{
 		bool isInserted = false;
-		obj->setZOrder(zOrder);
 		obj->setParent(this);
+
+		if (zOrder == 0)
+			obj->setZOrder(this->getZOrder() + m_children.size());
+		else
+			obj->setZOrder(zOrder);
+
 
 		for (auto it = m_children.cbegin(); it != m_children.cend(); ++it)
 		{
@@ -279,6 +289,19 @@ void Object::setZOrder(int zOrder)
 int Object::getZOrder() const
 {
 	return m_zOrder;
+}
+
+
+void Object::move(float toX, float toY)
+{
+	auto actPos = getPosition();
+	setPosition(sf::Vector2f(actPos.x + toX, actPos.y + toY));
+}
+
+
+void Object::move(sf::Vector2f toMovePos)
+{
+	setPosition(sf::Vector2f(getPosition() + toMovePos));
 }
 
 

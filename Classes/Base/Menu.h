@@ -8,18 +8,12 @@ class Menu : public Object
 {
 public:
 
-	enum MenuOrientation
-	{
-		HORIZONTAL,
-		VERTICAL
-	};
-
-	Menu(MenuOrientation orientation, bool isDoubleClickSupport = false);
+	Menu(Orientation orientation, bool isDoubleClickSupport = false);
 	virtual ~Menu();
 	void init();
 
 	virtual void addChild(Object* obj, int zOrder = 0) override;
-	void setOrientation(MenuOrientation orientation);
+	void setOrientation(Orientation orientation);
 
 	MenuItem* getSelectedItem() const;
 	MenuItem* getActivatedItem() const;
@@ -28,10 +22,7 @@ protected:
 
 	virtual void onMousePressed(sf::Event e) override;
 	virtual void onMouseReleased(sf::Event e) override;
-
-
-	bool isMenuItem(Object* obj) const;
-
+	
 	void alignMenuItem(MenuItem* item);
 	void alignMenuItemHorizontally(MenuItem* item);
 	void alignMenuItemVertically(MenuItem* item);
@@ -43,13 +34,15 @@ private:
 	void activationProcess(MenuItem* selectedItem);
 	void selectionProcess(MenuItem* selectedItem);
 	
-private:
+protected:
 
 	sf::Event::MouseButtonEvent m_prevClick;
-	MenuOrientation m_orientation;
+	Orientation m_orientation;
 	float m_spaceBetweenItems;
 	bool m_isDoubleClickSupport;
 	sf::Clock m_clock;
+
+	Object* m_menuitemLayer;
 
 	MenuItem* m_selectedItem;
 	MenuItem* m_activatedItem;

@@ -27,14 +27,22 @@ static __TYPE__* create() \
 #define STOI(S) std::stoi(S)
 #define ITOS(I) std::to_string(I)
 
-#define WINDOW_WIDTH  Defaults::getInstance()->getWindowWidth()
-#define WINDOW_HEIGHT Defaults::getInstance()->getWindowHeight()
+#define WINDOW_WIDTH  Defaults::getInstance()->getRenderWindow()->getSize().x
+#define WINDOW_HEIGHT Defaults::getInstance()->getRenderWindow()->getSize().y
 
-#define C2WW(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowWidth() * \
-										(v / Defaults::getInstance()->getWindowWidth())))
+#define MOUSE_ABSOLUTE_POS sf::Mouse::getPosition()
+#define MOUSE_ABSOLUTE_POS_X sf::Mouse::getPosition().x
+#define MOUSE_ABSOLUTE_POS_Y sf::Mouse::getPosition().y
 
-#define C2WH(v) static_cast<decltype(v)>(floorf(Defaults::getInstance()->getWindowHeight() * \
-										(v / Defaults::getInstance()->getWindowHeight())))
+#define MOUSE_RELATIVE_POS   sf::Mouse::getPosition(*(Defaults::getInstance()->getRenderWindow()))
+#define MOUSE_RELATIVE_POS_X sf::Mouse::getPosition(*(Defaults::getInstance()->getRenderWindow())).x
+#define MOUSE_RELATIVE_POS_Y sf::Mouse::getPosition(*(Defaults::getInstance()->getRenderWindow())).y
+
+#define C2WW(v) static_cast<decltype(v)>(floorf((float)(Defaults::getInstance()->getRenderWindow()->getSize().x) * \
+										(v / (float)(Defaults::getInstance()->getRenderWindow()->getSize().x))))
+
+#define C2WH(v) static_cast<decltype(v)>(floorf((float)(Defaults::getInstance()->getRenderWindow()->getSize().y) * \
+										(v / (float)(Defaults::getInstance()->getRenderWindow()->getSize().y))))
 
 #define COLOR_TRANSPARENT		sf::Color(0, 0, 0, 0)
 #define COLOR_WHITE				sf::Color(255, 255, 255)
@@ -52,6 +60,14 @@ static __TYPE__* create() \
 #define SAFE_DELETE_CONTAINER(v) Defaults::getInstance()->safeContainerReleaser(v);
 
 
+enum Orientation
+{
+	UNKNOWN,
+	HORIZONTAL,
+	VERTICAL
+};
+
+
 
 class Defaults
 {
@@ -67,21 +83,15 @@ public:
 
 	static Defaults*	getInstance();
 
-	void				setWindowSize(float x, float y);
-	sf::Vector2f		getWindowSize() const;
-	float				getWindowWidth() const;
-	float				getWindowHeight() const;
-
-	void				setMainView(sf::View* view);
-	sf::View&			getMainView() const;
-	
+	void				setRenderWindow(sf::RenderWindow* renderWindow);
+	sf::RenderWindow*	getRenderWindow() const;
+		
 	template<typename C_Type>
 	void safeContainerReleaser(C_Type & v);
 
 private:
 
-	sf::Vector2f		m_windowSize;
-	sf::View*			m_mainView;
+	sf::RenderWindow*	m_mainWindow;
 };
 
 

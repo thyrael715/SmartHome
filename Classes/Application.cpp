@@ -33,7 +33,7 @@ void Application::init()
 	m_window = new sf::RenderWindow(sf::VideoMode(windowWidth, windowHeight), windowName, sf::Style::Default, settings);
 	m_window->setFramerateLimit(framerateLimit);
 
-	Defaults::getInstance()->setWindowSize((float)windowWidth, (float)windowHeight);
+	Defaults::getInstance()->setRenderWindow(m_window);
 	
 	m_sceneObject = MainLayer::create();
 }
@@ -59,6 +59,8 @@ void Application::run()
 				}
 				case sf::Event::MouseButtonPressed:
 				case sf::Event::MouseButtonReleased:
+				case sf::Event::MouseWheelScrolled:
+				case sf::Event::MouseMoved:
 				{
 					EventDispatcher::getInstance()->triggerEventHandling(event);
 					break;

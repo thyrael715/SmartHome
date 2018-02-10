@@ -1,16 +1,17 @@
 #include "Defaults.h"
 
 Defaults::Defaults()
-	: m_windowSize(0, 0)
-	, m_mainView(nullptr)
+	: m_mainWindow(nullptr)
 {
-	m_mainView = new sf::View();
+
 }
+
 
 Defaults::~Defaults()
 {
-	SAFE_DELETE(m_mainView);
+	m_mainWindow = nullptr;
 }
+
 
 Defaults* Defaults::getInstance()
 {
@@ -18,33 +19,14 @@ Defaults* Defaults::getInstance()
 	return d;
 }
 
-void Defaults::setWindowSize(float x, float y)
-{
-	m_windowSize.x = x;
-	m_windowSize.y = y;
 
-	if (m_mainView)
-	{
-		m_mainView->reset(sf::FloatRect(0, 0, x, y));
-	}
+void Defaults::setRenderWindow(sf::RenderWindow* renderWindow)
+{
+	m_mainWindow = renderWindow;
 }
 
-sf::Vector2f Defaults::getWindowSize() const
-{
-	return m_windowSize;
-}
 
-float Defaults::getWindowWidth() const
+sf::RenderWindow* Defaults::getRenderWindow() const
 {
-	return m_windowSize.x;
-}
-
-float Defaults::getWindowHeight() const
-{
-	return m_windowSize.y;
-}
-
-sf::View& Defaults::getMainView() const
-{
-	return *m_mainView;
+	return m_mainWindow;
 }

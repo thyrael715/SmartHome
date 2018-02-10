@@ -35,10 +35,6 @@ PlaylistItem::~PlaylistItem()
 
 void PlaylistItem::init()
 {
-	// TODO: create separate number Text for each entity
-
-	initCallbacks();
-
 // #### init font ####
 
 	m_font = new sf::Font();
@@ -51,13 +47,13 @@ void PlaylistItem::init()
 
 // #### Title text initialization ####
 	 
-	m_songNameText = new Text(m_fullName.c_str(), *m_font, PI_TEXT_FONTSIZE);
+	m_songNameText = new Text(getFileName().c_str(), *m_font, PI_TEXT_FONTSIZE);
 	m_songNameText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
 	this->addChild(m_songNameText);
 
 // #### Song duration text initialization ####
 
-	const float songDurationInSec = m_duration.asSeconds();
+	const float songDurationInSec = getDuration().asSeconds();
 
 	std::string minutesInStr = ITOS((int)(songDurationInSec) / 60);
 	std::string secondsInStr = ITOS((int)(songDurationInSec) % 60);
@@ -83,6 +79,10 @@ void PlaylistItem::init()
 // #### init volume ####
 
 	this->setVolume(10.0f);
+
+	// TODO: create separate number Text for each entity
+
+	initCallbacks();
 }
 
 
@@ -151,7 +151,7 @@ void PlaylistItem::updateSongNameLength()
 {
 	if (m_songNameText && m_durationText)
 	{
-		Text tempText(m_fullName.c_str(), *m_font, m_songNameText->getCharacterSize());
+		Text tempText(getFileName().c_str(), *m_font, m_songNameText->getCharacterSize());
 		const auto maxSize = m_size.x - m_durationText->getGlobalBounds().width - (2 * PI_TEXT_MARGIN);
 
 		if (tempText.getGlobalBounds().width > maxSize)
@@ -186,21 +186,13 @@ void PlaylistItem::setSize(const sf::Vector2f& size)
 }
 
 
+void PlaylistItem::setSize(const float width, const float height)
+{
+	setSize(sf::Vector2f(width, height));
+}
+
+
 sf::Vector2f PlaylistItem::getSize() const
 {
 	return m_size;
-}
-
-
-void PlaylistItem::setWidth(const float& width)
-{
-	m_size.x = width;
-	this->setSize(m_size);
-}
-
-
-void PlaylistItem::setHeight(const float& height)
-{
-	m_size.y = height;
-	this->setSize(m_size);
 }

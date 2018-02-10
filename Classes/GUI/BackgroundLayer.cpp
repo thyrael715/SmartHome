@@ -72,7 +72,7 @@ void BackgroundLayer::createHexaGrid()
 
 void BackgroundLayer::createGradientForGrid()
 {
-	auto windowSize = Defaults::getInstance()->getWindowSize();
+	auto windowSize = Defaults::getInstance()->getRenderWindow()->getSize();
 
 	gradientVertices = new sf::Vertex[16]
 	{

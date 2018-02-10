@@ -113,6 +113,7 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClCompile Include="..\..\Classes\Base\Object.cpp" />
     <ClCompile Include="..\..\Classes\Base\Scheduler.cpp" />
     <ClCompile Include="..\..\Classes\Base\ScrollMenu.cpp" />
+    <ClCompile Include="..\..\Classes\Base\Slider.cpp" />
     <ClCompile Include="..\..\Classes\Defaults.cpp" />
     <ClCompile Include="..\..\Classes\GUI\BackgroundLayer.cpp" />
     <ClCompile Include="..\..\Classes\GUI\CentralPanel.cpp" />
@@ -149,6 +150,7 @@ xcopy "$(OutDir)..\*.dll" "$(OutDir)" /D /Y</Command>
     <ClInclude Include="..\..\Classes\Base\Object.h" />
     <ClInclude Include="..\..\Classes\Base\Scheduler.h" />
     <ClInclude Include="..\..\Classes\Base\ScrollMenu.h" />
+    <ClInclude Include="..\..\Classes\Base\Slider.h" />
     <ClInclude Include="..\..\Classes\Defaults.h" />
     <ClInclude Include="..\..\Classes\GUI\BackgroundLayer.h" />
     <ClInclude Include="..\..\Classes\GUI\CentralPanel.h" />

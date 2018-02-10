@@ -1,31 +1,35 @@
 #ifndef MP3_H_INCLUDED
 #define MP3_H_INCLUDED
 
+
 #include <SFML/Audio.hpp>
 #include "mpg123.h"
 
-namespace sfe
+
+class Mp3 : public sf::SoundStream
 {
-	class Mp3 : public sf::SoundStream
-	{
-	public:
-		Mp3();
-		~Mp3();
+public:
 
-		bool OpenFromFile(const std::string& filename);
-		bool OpenFromMemory(void* data, size_t sizeInBytes);
+	Mp3();
+	~Mp3();
 
-	protected:
-		bool onGetData(Chunk& data);
-		void onSeek(sf::Time timeOffset);
+	bool openFromFile(const std::string& filename);
+	bool openFromMemory(void* data, size_t sizeInBytes);
+	sf::Time getDuration() const;
 
-	private:
-		mpg123_handle*      myHandle;
-		size_t              myBufferSize;
-		unsigned char*      myBuffer;
-		sf::Mutex           myMutex;
-	};
+protected:
 
-} // namespace sfe
+	bool onGetData(Chunk& data);
+	void onSeek(sf::Time timeOffset);
+
+private:
+
+	sf::Time		myDuration;
+	mpg123_handle*  myHandle;
+	size_t          myBufferSize;
+	unsigned char*  myBuffer;
+	sf::Mutex       myMutex;
+};
+
 
 #endif // MP3_H_INCLUDED

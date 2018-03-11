@@ -24,7 +24,7 @@ void Application::init()
 	const unsigned int	windowHeight = 900;
 	const sf::String	windowName = "SmartHome";
 	const unsigned int	antialiasLevel = 16;
-	const unsigned int	framerateLimit = 40;
+	const unsigned int	framerateLimit = 60;
 
 
 	sf::ContextSettings settings;

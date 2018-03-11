@@ -25,9 +25,14 @@ public:
 	void pause();
 	void stop();
 
+public:
+
+	virtual void onUpdate(float dt) override;
+
 protected:
 
 	AudioPlayer();
+	void run();
 
 protected:
 
@@ -36,4 +41,5 @@ protected:
 private:
 
 	Playlist* m_playlist;
+	sf::VertexArray VA2;
 };

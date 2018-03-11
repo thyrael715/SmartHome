@@ -14,8 +14,8 @@
 size_t PlaylistItem::m_instanceCounter = 0;
 
 
-PlaylistItem::PlaylistItem(const sf::String& path)
-	: AudioFile(path)
+PlaylistItem::PlaylistItem(const std::string& path)
+	: AudioFile(path.c_str())
 	, m_background(nullptr)
 	, m_songNameText(nullptr)
 	, m_durationText(nullptr)
@@ -47,9 +47,9 @@ void PlaylistItem::init()
 
 // #### Title text initialization ####
 	 
-	m_songNameText = new Text(getFileName().c_str(), *m_font, PI_TEXT_FONTSIZE);
+	m_songNameText = new Text(getName().c_str(), *m_font, PI_TEXT_FONTSIZE);
 	m_songNameText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
-	this->addChild(m_songNameText);
+	addChild(m_songNameText);
 
 // #### Song duration text initialization ####
 
@@ -68,19 +68,15 @@ void PlaylistItem::init()
 
 	m_durationText = new Text(fullDurationStr.c_str(), *m_font);
 	m_durationText->setFillColor(PI_TEXTCOLOR_NONSELECTED);
-	this->addChild(m_durationText);
+	addChild(m_durationText);
 
 // #### Playlist item initialization #### 
 	
 	m_background = new RectangleShape();
 	m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
-	this->addChild(m_background, 1);
+	addChild(m_background, 1);
 	
-// #### init volume ####
-
-	this->setVolume(10.0f);
-
-	// TODO: create separate number Text for each entity
+// TODO: create separate number Text for each entity
 
 	initCallbacks();
 }
@@ -101,14 +97,14 @@ void PlaylistItem::initCallbacks()
 	};
 
 	this->onSelect = [=](){
-		if (getStatus() != sf::SoundStream::Playing)
+		if (getStatus() != Status::Playing)
 		{
 			m_background->setFillColor(PI_BACKGROUND_SELECTED);
 		}
 	};
 
 	this->onUnselect = [=](){
-		if (getStatus() != sf::SoundStream::Playing)
+		if (getStatus() != Status::Playing)
 		{
 			m_background->setFillColor(PI_BACKGROUND_NONSELECTED);
 		}
@@ -151,7 +147,7 @@ void PlaylistItem::updateSongNameLength()
 {
 	if (m_songNameText && m_durationText)
 	{
-		Text tempText(getFileName().c_str(), *m_font, m_songNameText->getCharacterSize());
+		Text tempText(getName().c_str(), *m_font, m_songNameText->getCharacterSize());
 		const auto maxSize = m_size.x - m_durationText->getGlobalBounds().width - (2 * PI_TEXT_MARGIN);
 
 		if (tempText.getGlobalBounds().width > maxSize)

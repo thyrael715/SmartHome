@@ -13,7 +13,8 @@ public:
 	virtual ~Playlist();
 
 	sf::View* getScrollView() const;
-	PlaylistItem* getCurrentAudioFile() const;
+	PlaylistItem* getActivatedItem() const;
+	PlaylistItem* getSelectedItem() const;
 	
 	void openFromFile();
 	void openFromDirectory();

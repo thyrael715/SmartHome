@@ -6,40 +6,6 @@
 int main()
 {
 	Application* app = Application::create();
-	
-	//FileSystemUtils fd;
-	//if (fd.showFolderDialog())
-	//{
-	//	auto files = fd.getFilesWithinFolder(fd.getFolderBrowser()->getFolder());
-
-	//	for each (auto file in files)
-	//	{
-	//		std::cout << "directory_string = " << file.directory_string() << std::endl;
-	//		std::cout << "branch_path = " << file.branch_path() << std::endl;
-	//		std::cout << "filename = " << file.filename() << std::endl;
-	//		std::cout << "parent_path = " << file.parent_path() << std::endl;
-	//		std::cout << "relative_path = " << file.relative_path() << std::endl;
-	//		std::cout << "root_directory = " << file.root_directory() << std::endl;
-	//		std::cout << "root_name = " << file.root_name() << std::endl;
-	//		std::cout << "root_path = " << file.root_path() << std::endl;
-	//		std::cout << " =================================== \n";
-
-	//	}
-	//}
-
-	//FolderBrowser* fb = FolderBrowser::getInstance();
-	//
-	//if (fb->ShowDialog())
-	//{
-	//	auto files = fb->getFileNames();
-
-	//	for each (auto file in files)
-	//	{
-	//		std::cout << "FILENAME = " << file << std::endl;
-	//	}
-	//}
-
-
 	app->run();
 
 	delete app;
@@ -48,191 +14,125 @@ int main()
 }
 
 
+
+
+
+//
+//#include <SFML/Graphics.hpp>
+//#include <SFML/Audio.hpp>
+//#include "AudioVisualizer.h"
+//#include <iostream>
+//
+//using namespace std;
+//using namespace sf;
 //
 //
-///*
-//id3dump: Print ID3 tags of files, scanned using libmpg123.
 //
-//copyright 2007 by the mpg123 project - free software under the terms of the LGPL 2.1
-//see COPYING and AUTHORS files in distribution or http://mpg123.org
-//initially written by Thomas Orgis
-//*/
-//
-//#include "mpg123.h"
-//#include <string.h>
-//#include "stdio.h"
-//#include "sys/types.h"
-//
-///* Helper for v1 printing, get these strings their zero byte. */
-//void safe_print(char* name, char *data, size_t size)
+//void print(sound_system_c& s)
 //{
-//	char safe[31];
-//	if (size>30) return;
+//	size_t dur = s.getDuration();
+//	std::cout << "\nDuration = " << dur;
+//	std::cout << "\nMinute: " << ((dur / 1000) / 60) << ", seconds: " << ((dur / 1000) % 60);
 //
-//	memcpy(safe, data, size);
-//	safe[size] = 0;
-//	printf("%s: %s\n", name, safe);
-//}
-//
-///* Print out ID3v1 info. */
-//void print_v1(mpg123_id3v1 *v1)
-//{
-//	safe_print("Title", v1->title, sizeof(v1->title));
-//	safe_print("Artist", v1->artist, sizeof(v1->artist));
-//	safe_print("Album", v1->album, sizeof(v1->album));
-//	safe_print("Year", v1->year, sizeof(v1->year));
-//	safe_print("Comment", v1->comment, sizeof(v1->comment));
-//	printf("Genre: %i", v1->genre);
-//}
-//
-///* Split up a number of lines separated by \n, \r, both or just zero byte
-//and print out each line with specified prefix. */
-//void print_lines(const char* prefix, mpg123_string *inlines)
-//{
-//	size_t i;
-//	int hadcr = 0, hadlf = 0;
-//	char *lines = NULL;
-//	char *line = NULL;
-//	size_t len = 0;
-//
-//	if (inlines != NULL && inlines->fill)
-//	{
-//		lines = inlines->p;
-//		len = inlines->fill;
-//	}
-//	else return;
-//
-//	line = lines;
-//	for (i = 0; i<len; ++i)
-//	{
-//		if (lines[i] == '\n' || lines[i] == '\r' || lines[i] == 0)
-//		{
-//			char save = lines[i]; /* saving, changing, restoring a byte in the data */
-//			if (save == '\n') ++hadlf;
-//			if (save == '\r') ++hadcr;
-//			if ((hadcr || hadlf) && hadlf % 2 == 0 && hadcr % 2 == 0) line = "";
-//
-//			if (line)
-//			{
-//				lines[i] = 0;
-//				printf("%s%s\n", prefix, line);
-//				line = NULL;
-//				lines[i] = save;
-//			}
-//		}
-//		else
-//		{
-//			hadlf = hadcr = 0;
-//			if (line == NULL) line = lines + i;
-//		}
-//	}
-//}
-//
-///* Print out the named ID3v2  fields. */
-//void print_v2(mpg123_id3v2 *v2)
-//{
-//	print_lines("Title: ", v2->title);
-//	print_lines("Artist: ", v2->artist);
-//	print_lines("Album: ", v2->album);
-//	print_lines("Year: ", v2->year);
-//	print_lines("Comment: ", v2->comment);
-//	print_lines("Genre: ", v2->genre);
-//}
-//
-///* Print out all stored ID3v2 fields with their 4-character IDs. */
-//void print_raw_v2(mpg123_id3v2 *v2)
-//{
-//	size_t i;
-//	for (i = 0; i<v2->texts; ++i)
-//	{
-//		char id[5];
-//		memcpy(id, v2->text[i].id, 4);
-//		id[4] = 0;
-//		printf("%s\n", id);
-//		print_lines(" ", &v2->text[i].text);
-//	}
-//	for (i = 0; i<v2->extras; ++i)
-//	{
-//		char id[5];
-//		memcpy(id, v2->extra[i].id, 4);
-//		id[4] = 0;
-//		printf("%s description(%s)\n",
-//			id,
-//			v2->extra[i].description.fill ? v2->extra[i].description.p : "");
-//		print_lines(" ", &v2->extra[i].text);
-//	}
-//	for (i = 0; i<v2->comments; ++i)
-//	{
-//		char id[5];
-//		char lang[4];
-//		memcpy(id, v2->comment_list[i].id, 4);
-//		id[4] = 0;
-//		memcpy(lang, v2->comment_list[i].lang, 3);
-//		lang[3] = 0;
-//		printf("%s description(%s) language(%s): \n",
-//			id,
-//			v2->comment_list[i].description.fill ? v2->comment_list[i].description.p : "",
-//			lang);
-//		print_lines(" ", &v2->comment_list[i].text);
-//	}
+//	auto name = s.getName();
+//	std::cout << "\nname = " << name;
 //}
 //
 //int main()
 //{
-//	sf::Clock clock;
-//	int i;
-//	mpg123_handle* m;
-//	
-//	mpg123_init();
-//	m = mpg123_new(NULL, NULL);
+//	RenderWindow window(VideoMode(900, 900, 32), "Window");
+//
+//	std::string filename = "C-BooL - Magic Symphony ft. Giang Pham (Official Video).mp3";
+//	std::string filename2 = "Sonic Palms - On the Beach (Club Mix).mp3";
+//	std::string filename3 = "Dion and The Belmonts - Greatest Hits - 13. Donna The Prima Donna.flac";
+//	std::string filename4 = "Bangbros_-_Highflyer_Groove-T_Edit_(mp3.pm).mp3";
+//	std::string filename5 = "C:\\Users\\Sharagoth\\Music\\Johnny Tillotson - Poetry In Motion.mp3";
+//	std::string filename6 = "C:\\Users\\Sharagoth\\Music\\Bon Jovi - Its My Life (TuneSquad Bootleg).mp3";
+//	std::string filename7 = "C:\\Users\\Sharagoth\\Music\\Civil War-Bay Of Pigs myhitmp3.top .mp3";
+//	std::string filename8 = "C:\\Users\\Sharagoth\\Music\\Deep Spirit - Youre Makin Me High _Ozi Club Mix_.mp3";
+//	std::string filename9 = "C:\\Users\\Sharagoth\\Music\\Dion_-_Runaround_Sue_HD[ListenVid.com].mp3";
+//	std::string filename10 = "C:\\Users\\Sharagoth\\Music\\GLORYHAMMER - Rise Of The Chaos WizardsNapalm Records.mp3";
+//	std::string filename11 = "C:\\Users\\Sharagoth\\Music\\Little Peggy March - I Will Follow Him (1963) HQ.mp3";
+//	std::string filename12 = "C:\\Users\\Sharagoth\\Music\\Metalwings-Crying of the Sun myhitmp3.top.mp3";
+//	std::string filename13 = "C:\\Users\\Sharagoth\\Music\\Orden_Ogan_-_Finis_Coronat_Opus_(mp3.pm).mp3";
+//	std::string filename14 = "C:\\Users\\Sharagoth\\Music\\Peggy March - I Will Follow Him (50th Anniversary Recording).mp3";
+//	std::string filename15 = "C:\\Users\\Sharagoth\\Music\\Samantha_Jade_-_Firestarter_(www.primemusic.ru).mp3";
+//	std::string filename16 = "C:\\Users\\Sharagoth\\Music\\Dion and The Belmonts - Greatest Hits - 03. Runaround Sue.flac";
+//	std::string filename17 = "C:\\Users\\Sharagoth\\Music\\Dion and The Belmonts - Greatest Hits - 13. Donna The Prima Donna.flac";
+//	std::string filename18 = "C:\\Users\\Sharagoth\\Music\\01-imprezive_meets_pink_planet_-_alive_(original_mix)-zzzz.mp3";
+//	std::string filename19 = "C:\\Users\\Sharagoth\\Music\\03. Army Of The Night.mp3";
+//	std::string filename20 = "C:\\Users\\Sharagoth\\Music\\07 - Who Needs You.mp3";
+//	std::string filename21 = "C:\\Users\\Sharagoth\\Music\\Another Furry Rave - In The UK [HD].mp3";
 //
 //
-//	mpg123_id3v1 *v1;
-//	mpg123_id3v2 *v2;
-//	int meta;
+//	Event event;
 //
-//	const char* path = "Music/Oleg Kvasha - _Zelenoglazoe Taksi [Club Remix]_.mp3";
+//	FMOD_SYSTEM *fmod_system;
+//	FMOD_RESULT result1 = FMOD_System_Create(&fmod_system);
+//	FMOD_RESULT result2 = FMOD_System_SetSoftwareFormat(fmod_system, OUTPUTRATE, FMOD_SOUND_FORMAT_PCM16, 2, 0, FMOD_DSP_RESAMPLER_LINEAR);
+//	FMOD_RESULT result3 = FMOD_System_Init(fmod_system, 32, FMOD_INIT_NORMAL, 0);
 //
-//	if (mpg123_open(m, path) != MPG123_OK)
+//	sound_system_c s1(fmod_system, filename.c_str()); print(s1);
+//	sound_system_c s2(fmod_system, filename2.c_str()); print(s2);
+//	sound_system_c s3(fmod_system, filename3.c_str()); print(s3);
+//	sound_system_c s4(fmod_system, filename4.c_str()); print(s4);
+//	sound_system_c s5(fmod_system, filename5.c_str()); print(s5);
+//	sound_system_c s6(fmod_system, filename6.c_str()); print(s6);
+//	sound_system_c s7(fmod_system, filename7.c_str()); print(s7);
+//	sound_system_c s8(fmod_system, filename8.c_str()); print(s8);
+//	sound_system_c s9(fmod_system, filename9.c_str()); print(s9);
+//	sound_system_c s10(fmod_system, filename10.c_str()); print(s10);
+//	sound_system_c s11(fmod_system, filename11.c_str()); print(s11);
+//	sound_system_c s12(fmod_system, filename12.c_str()); print(s12);
+//	sound_system_c s13(fmod_system, filename13.c_str()); print(s13);
+//	sound_system_c s14(fmod_system, filename14.c_str()); print(s14);
+//	sound_system_c s15(fmod_system, filename15.c_str()); print(s15);
+//	sound_system_c s16(fmod_system, filename16.c_str()); print(s16);
+//	sound_system_c s17(fmod_system, filename17.c_str()); print(s17);
+//	sound_system_c s18(fmod_system, filename18.c_str()); print(s18);
+//	sound_system_c s19(fmod_system, filename19.c_str()); print(s19);
+//	sound_system_c s20(fmod_system, filename20.c_str()); print(s20);
+//	sound_system_c s21(fmod_system, filename21.c_str()); print(s21);
+//
+//
+//	s21.play_music();
+//	s21.setVolume(0.2f);
+//	s21.setIsPaused(false);
+//
+//	while (window.isOpen())
 //	{
-//		fprintf(stderr, "Cannot open %s: %s\n", path, mpg123_strerror(m));
-//		return 1;
+//		while (window.pollEvent(event))
+//		{
+//			if (event.type == sf::Event::Closed)
+//				window.close();
+//
+//			if (event.type == sf::Event::KeyPressed)
+//			{
+//				if (event.key.code == sf::Keyboard::S)
+//				{
+//					std::cout << "\nStop";
+//					s21.stop();
+//				}
+//				if (event.key.code == sf::Keyboard::P)
+//				{
+//					std::cout << "\nPause";
+//					s21.pause();
+//				}
+//				if (event.key.code == sf::Keyboard::R)
+//				{
+//					std::cout << "\nPlay";
+//					s21.play_music();
+//				}
+//			}
+//		}
+//
+//		window.clear();
+//		//s21.run();
+//		//window.draw(s21.VA2);
+//		window.display();
 //	}
-//	mpg123_scan(m);
-//	meta = mpg123_meta_check(m);
-//
-//	if (meta & MPG123_ID3 && mpg123_id3(m, &v1, &v2) == MPG123_OK)
-//	{
-//		printf("Tag data on %s:\n", path);
-//		printf("\n====      ID3v1       ====\n");
-//		if (v1 != NULL) print_v1(v1);
-//
-//		printf("\n====      ID3v2       ====\n");
-//		if (v2 != NULL) print_v2(v2);
-//
-//		printf("\n==== ID3v2 Raw frames ====\n");
-//		if (v2 != NULL) print_raw_v2(v2);
-//	}
-//	else
-//		printf("Nothing found for %s.\n", path);
-//
-//	off_t length = mpg123_length(m);
-//	std::cout << "\n\nlength = " << length << std::endl;
-//
-//	auto frameLength = mpg123_framelength(m);
-//	auto frameDurationInSec = mpg123_tpf(m);
-//
-//	std::cout << "frameLength = " << frameLength << std::endl;
-//	std::cout << "frameDurationInSec = " << frameDurationInSec << std::endl;
-//
-//	mpg123_close(m);
-//
-//	mpg123_delete(m);
-//	mpg123_exit();
-//
-//	sf::Time deltaTime = clock.getElapsedTime();
-//	std::cout << "deltaTime = " << deltaTime.asSeconds();
-//
 //
 //	return 0;
 //}
+
+

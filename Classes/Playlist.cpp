@@ -3,6 +3,8 @@
 #include "Text.h"
 
 
+#define PL_BUTTONS_HEIGHT 20
+
 
 Playlist::Playlist(const sf::Vector2f& size)
 	: m_size(size)
@@ -27,6 +29,7 @@ void Playlist::init()
 	// Background
 	m_backgroundRect = new RectangleShape(m_size);
 	m_backgroundRect->setFillColor(sf::Color(255, 0, 0));
+	m_backgroundRect->move(sf::Vector2f(0, (-1)*PL_BUTTONS_HEIGHT));
 	this->addChild(m_backgroundRect);
 
 	// Scrollable menu
@@ -36,6 +39,7 @@ void Playlist::init()
 	m_scrollMenu->setSize(m_size - border);
 	m_scrollMenu->setPosition(border.x / 2.0f, border.y / 2.0f);
 	m_scrollMenu->setBackgroundColor(sf::Color(41, 41, 53));
+	m_scrollMenu->move(sf::Vector2f(0, (-1)*PL_BUTTONS_HEIGHT));
 	this->addChild(m_scrollMenu);
 }
 
@@ -66,6 +70,7 @@ void Playlist::openFromFile()
 
 void Playlist::openFromDirectory()
 {
+	// TODO: make it threadsafe, GUI should NOT be stopped while browsing
 	if (m_fileSystemUtils->showFolderDialog())
 	{
 		// TODO: refactor the mechanism of filebrowser and folderbrowser
@@ -99,8 +104,13 @@ void Playlist::addPlaylistItem(std::string& path)
 
 void Playlist::clearPlaylist()
 {
-	// TODO: there is a problem somewhere
+	// Stop currently playing PlaylistItem
+	if (PlaylistItem* actItem = getActivatedItem())
+	{
+		//actItem->stop();
+	}
 
+	// TODO: there is a problem somewhere
 	for (auto it = m_children.cbegin(); it != m_children.cend(); ++it)
 	{
 		if (dynamic_cast<Text*>(*it) != nullptr)
@@ -130,12 +140,12 @@ bool Playlist::isSupportedFileExt(std::string& fileExt) const
 }
 
 
-PlaylistItem* Playlist::getCurrentAudioFile() const
+PlaylistItem* Playlist::getActivatedItem() const
 {
-	if (m_scrollMenu)
-	{
-		return dynamic_cast<PlaylistItem*>(m_scrollMenu->getActivatedItem());
-	}
+	return dynamic_cast<PlaylistItem*>(m_scrollMenu->getActivatedItem());
+}
 
-	return nullptr;
+PlaylistItem* Playlist::getSelectedItem() const
+{
+	return dynamic_cast<PlaylistItem*>(m_scrollMenu->getSelectedItem());
 }

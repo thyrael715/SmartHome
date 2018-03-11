@@ -10,7 +10,7 @@ class PlaylistItem : public AudioFile, public MenuItem
 {
 public:
 	
-	PlaylistItem(const sf::String& path);
+	PlaylistItem(const std::string& path);
 	virtual ~PlaylistItem();
 
 	void setSize(const sf::Vector2f& size);

@@ -82,7 +82,7 @@ bool Mp3::openFromFile(const std::string& filename)
 		return false;
 	}
 
-	myBufferSize = mpg123_outblock(myHandle);
+	myBufferSize = mpg123_outblock(myHandle)*2;
 	myBuffer = new unsigned char[myBufferSize];
 	if (!myBuffer)
 	{
@@ -164,6 +164,9 @@ bool Mp3::onGetData(Chunk& data)
 
 		data.samples = (short*)myBuffer;
 		data.sampleCount = done / sizeof(short);
+
+		myRealBuffer = (short*)myBuffer;
+		myRealBufferSize = myBufferSize;
 
 		return (data.sampleCount > 0);
 	}

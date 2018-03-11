@@ -1,6 +1,9 @@
 #include "ScrollMenu.h"
 
 
+#define SM_SCROLLSPEED 30
+
+
 ScrollMenu::ScrollMenu(Orientation orientation, bool isDoubleClickSupport)
 	: Menu(orientation, isDoubleClickSupport)
 	, m_size(ZERO)
@@ -33,9 +36,11 @@ void ScrollMenu::init()
 	m_slider = new Slider(m_orientation);
 	m_slider->setScrollableArea(m_size);
 	m_slider->setObjectToBeScrolled(m_menuitemLayer);
+	m_slider->setScrollSpeed(SM_SCROLLSPEED);
 	this->addChild(m_slider);
 
 	Scheduler::getInstance()->scheduleUpdate(this);
+	registerEvent(EventType::MOUSE);
 }
 
 
@@ -65,6 +70,47 @@ void ScrollMenu::onBeforeDraw(sf::RenderTarget& target, sf::RenderStates& states
 void ScrollMenu::onAfterDraw(sf::RenderTarget& target, sf::RenderStates& states) const
 {
 	target.setView(target.getDefaultView());
+}
+
+
+void ScrollMenu::onMouseScrolled(sf::Event e)
+{
+	if (m_menuitemLayer &&
+		m_menuitemLayer->getGlobalBounds().height > m_background->getSize().y)
+	{
+		// align delegate object
+		float newPosY = e.mouseWheelScroll.delta * SM_SCROLLSPEED;
+		float minY = -1 * (m_menuitemLayer->getGlobalBounds().height - m_size.y);
+		float maxY = 0.0f;
+
+		// Scrolling to the bottom of the delegate object
+		if (m_menuitemLayer->getPosition().y + newPosY <= minY)
+		{
+			m_menuitemLayer->setPosition(sf::Vector2f(m_menuitemLayer->getPosition().x, minY));
+		}
+		// Scrolling to the top of the delegate object
+		else if (m_menuitemLayer->getPosition().y + newPosY >= maxY)
+		{
+			m_menuitemLayer->setPosition(sf::Vector2f(m_menuitemLayer->getPosition().x, maxY));
+		}
+		// Otherwise just move the object to be scrolled
+		else
+		{
+			m_menuitemLayer->move(0.0f, newPosY);
+		}
+
+		// update the position of Slider's indicator
+		if (m_slider)
+		{
+			m_slider->updateIndicatorPos();
+		}
+	}
+}
+
+
+bool ScrollMenu::contains(const sf::Vector2f& point) const
+{
+	return m_background->contains(point);
 }
 
 

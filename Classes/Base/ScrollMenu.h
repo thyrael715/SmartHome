@@ -19,7 +19,9 @@ public:
 
 public:
 
-	virtual void onUpdate(float dt) override;
+	virtual void onUpdate(float dt) override; 
+	virtual bool contains(const sf::Vector2f& point) const override;
+	virtual void onMouseScrolled(sf::Event e) override;
 
 protected:
 

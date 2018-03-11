@@ -3,7 +3,6 @@
 
 
 #define SLIDER_INDICATOR_FIX_SIZE	10
-#define SLIDER_SCROLLSPEED			30
 #define SLIDER_SIZE					10
 
 
@@ -13,7 +12,7 @@ Slider::Slider(Orientation orientation)
 	, m_objectToBeScrolled(nullptr)
 	, m_orientation(orientation)
 	, m_scrollableArea(ZERO)
-	, m_delta(0.0f)
+	, m_scrollSpeed(0.0f)
 {
 	init();
 }
@@ -21,7 +20,7 @@ Slider::Slider(Orientation orientation)
 
 Slider::~Slider()
 {
-
+	m_objectToBeScrolled = nullptr;
 }
 
 
@@ -37,19 +36,19 @@ void Slider::init()
 
 void Slider::onMousePressed(sf::Event e)
 {
-
+	// TODO: implement it
 }
 
 
 void Slider::onMouseReleased(sf::Event e)
 {
-
+	// TODO: implement it
 }
 
 
 void Slider::onMouseMoved(sf::Event e)
 {
-
+	// TODO: implement it
 }
 
 
@@ -59,7 +58,7 @@ void Slider::onMouseScrolled(sf::Event e)
 		m_objectToBeScrolled->getGlobalBounds().height > m_scrollableArea.y)
 	{
 		// align delegate object
-		float newPosY = e.mouseWheelScroll.delta * SLIDER_SCROLLSPEED;
+		float newPosY = e.mouseWheelScroll.delta * m_scrollSpeed;
 		float minY = -1 * (m_objectToBeScrolled->getGlobalBounds().height - m_size.y);
 		float maxY = 0.0f;
 
@@ -73,7 +72,7 @@ void Slider::onMouseScrolled(sf::Event e)
 		{
 			m_objectToBeScrolled->setPosition(sf::Vector2f(m_objectToBeScrolled->getPosition().x, maxY));
 		}
-		// Otherwise
+		// Otherwise just move the object to be scrolled
 		else
 		{
 			m_objectToBeScrolled->move(0.0f, newPosY);
@@ -103,14 +102,15 @@ void Slider::updateIndicatorPos()
 }
 
 
+void Slider::setScrollSpeed(float speed)
+{
+	m_scrollSpeed = speed;
+}
+
+
 void Slider::setObjectToBeScrolled(Object* obj)
 {
 	m_objectToBeScrolled = obj;
-
-	if (m_objectToBeScrolled)
-	{
-		m_delta = getSize().y / m_objectToBeScrolled->getGlobalBounds().height;
-	}
 }
 
 

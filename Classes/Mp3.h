@@ -17,6 +17,10 @@ public:
 	bool openFromMemory(void* data, size_t sizeInBytes);
 	sf::Time getDuration() const;
 
+	size_t  myRealBufferSize;
+	short*  myRealBuffer;
+	unsigned char*  myBuffer;
+
 protected:
 
 	bool onGetData(Chunk& data);
@@ -27,7 +31,6 @@ private:
 	sf::Time		myDuration;
 	mpg123_handle*  myHandle;
 	size_t          myBufferSize;
-	unsigned char*  myBuffer;
 	sf::Mutex       myMutex;
 };
 
